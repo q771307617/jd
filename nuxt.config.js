@@ -22,6 +22,7 @@ module.exports = {
   */
   css: [
     'assets/main.css',
+    'assets/scss/reset.scss',
     'element-ui/lib/theme-chalk/index.css',
   ],
   /*
@@ -45,6 +46,25 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      // 添加sass
+      const sassResourcesLoader = {  
+        loader: 'sass-resources-loader',  
+        options: {  
+          resources: [  
+           'assets/scss/reset.scss'
+          ]  
+        }  
+      }
+      // 遍历nuxt定义的loader配置，向里面添加新的配置。  
+      config.module.rules.forEach((rule) => {  
+        if (rule.test.toString() === '/\\.vue$/') {  
+          rule.options.loaders.sass.push(sassResourcesLoader)  
+          rule.options.loaders.scss.push(sassResourcesLoader)  
+        }  
+        if (['/\\.sass$/', '/\\.scss$/'].indexOf(rule.test.toString()) !== -1) {  
+          rule.use.push(sassResourcesLoader)  
+        }  
+      })   
     }
   },
   plugins: [
