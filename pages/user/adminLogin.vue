@@ -7,6 +7,7 @@
 <script>
 export default {
   name: 'HelloWorld',
+  layout: 'index',
   data() {
     return {
       msg: 'Welcome to Your Vue.js App'
