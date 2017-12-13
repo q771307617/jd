@@ -46,6 +46,7 @@
   export default {
     data() {
       return {
+        onRoutes: ' ',
         name: 'linxin',
         menus: [
           {
@@ -116,6 +117,9 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      handleCommand() {
+
       },
       // 菜单激活回调
       selectMenu(routerName) {
