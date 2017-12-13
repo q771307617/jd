@@ -12,7 +12,7 @@
 					<p class="navRight"><a href="javascript:">退出</a></p>
 				</div>
 			</div>
-			<nuxt class="content"/>
+			<nuxt id="content"/>
 			<div class="footer" v-if="$route.name!='index'">底部</div>
 				
 	</div>
@@ -32,9 +32,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.nuxt-link-active {
-  color: #f54203;
-}
+// .nuxt-link-active {
+//   color: #f54203;
+// }
 a {
   color: #fff;
 }
@@ -93,8 +93,8 @@ a {
       display: inline-block;
       border-radius:5px;
       width:3px;
-      height: 40px;
-      margin-bottom:-16px;
+      height: 38px;
+      margin-bottom:-15px;
     }
   }
   .navRight {
@@ -111,16 +111,16 @@ a {
   a:hover {
     color: #f54203;
   }
-  .nuxt-link-active {
+  .nuxt-link-exact-active {
     color: #ffbf50;
   }
 }
 .footer {
 }
-.content {
+#content {
   min-height: 700px;
   height: auto;
-  width: 1080px;
+  width: 1200px;
   margin: 0 auto;
 }
 </style>
