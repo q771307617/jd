@@ -3,16 +3,18 @@
   <div class="wrapper">
     <!-- 顶部 -->
     <div class="header">
-      <div class="logo"><img class="logo-left" src="../assets/img/国徽.png">  后台管理系统</div>
+      <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">  后台管理系统</div>
       <div class="user-info">
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-           <img class="user-logo" src="../assets/img/国徽.png">
-           {{name}}
+           <img class="logo-user" src="../assets/img/国徽.png">
+           {{name}}<a style="margin:0 30px;">退出</a>
            </span>
+           <!-- 
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="loginout">退出</el-dropdown-item>
           </el-dropdown-menu>
+          -->
         </el-dropdown>
       </div>
     </div>
@@ -140,6 +142,18 @@
     height:100%;
     overflow: hidden;
 }
+.content{
+  background: none repeat scroll 0 0 #fff;
+  position: absolute;
+  left: 250px;
+  right: 0;
+  top: 90px;
+  bottom:0;
+  width: auto;
+  padding:40px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
   .el-menu-demo a {
     color: #fff;
     text-decoration: none;
@@ -150,26 +164,41 @@
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        height: 70px;
+        height: 90px;
         font-size: 22px;
-        line-height: 70px;
+        line-height: 90px;
         color: #fff;
     }
   .header .logo {
+    display:flex;
+    align-items: center;
     float: left;
-    width: 250px;
+    font-family:MicrosoftYaHei-Bold;
+    font-size:34px;
+    color:#ffffff;
+    line-height: 90px;
     text-align: center;
+  }
+  .logo-left{
+   margin-left:22px;
+   padding-right: 30px;
+   line-height: 90px;
+   max-width:66px;
+   max-height:68px;
+  }
+  .logo-user{
+    max-width:66px;
+   max-height:68px;
   }
   .user-info {
     float: right;
-    padding-right: 50px;
     font-size: 16px;
     color: #fff;
   }
   .user-info .el-dropdown-link {
     position: relative;
     display: inline-block;
-    padding-left: 50px;
+    font-size:16px;
     color: #fff;
     cursor: pointer;
     vertical-align: middle;
@@ -191,10 +220,11 @@
     position: absolute;
     width: 230px;
     left: 0;
-    top: 70px;
+    top: 90px;
     bottom: 0;
   }
   .sidebar>ul {
     height: 100%;
   }
+
 </style>
