@@ -4,19 +4,7 @@
     <!-- 顶部 -->
     <div class="header">
       <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">  后台管理系统</div>
-      <div class="user-info">
-        <el-dropdown trigger="click" @command="handleCommand">
-          <span class="el-dropdown-link">
-           <img class="logo-user" src="../assets/img/国徽.png">
-           {{name}}<a style="margin:0 30px;">退出</a>
-           </span>
-           <!-- 
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="loginout">退出</el-dropdown-item>
-          </el-dropdown-menu>
-          -->
-        </el-dropdown>
-      </div>
+   <div class="user-info">{{role}}{{name}}<a style="margin:0 30px;">退出</a></div>
     </div>
     <!-- 侧边栏 -->
     <div class="sidebar">
@@ -49,7 +37,8 @@
     data() {
       return {
         onRoutes: ' ',
-        name: 'linxin',
+        name: '王厂长',
+        role: '管理员',
         menus: [
           {
             icon: 'el-icon-setting',
