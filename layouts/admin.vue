@@ -215,9 +215,5 @@
   .sidebar>ul {
     height: 100%;
   }
-<<<<<<< HEAD
 
 </style>
-=======
-</style>
->>>>>>> gs/master
