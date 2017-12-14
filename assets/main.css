@@ -11,3 +11,21 @@
 .page-enter, .page-leave-to {
     opacity: 0;
 }
+/**
+表格样式
+*/
+.el-table .warning-row {
+  text-align:center;
+  background: #eff6fa;
+}
+
+.el-table .success-row {
+  text-align:center;
+}
+.el-table .cell-name {
+  overflow: hidden !important;
+  border-right:1px solid #c3c9cd;
+}
+
+
+
