@@ -1,12 +1,54 @@
 <template>
   <div>
     <div id="mapDiv" style=""></div>
-    
+    <div class="seach">
+      <!-- <input  type="text">
+      <span></span> -->
+      <el-input placeholder="请输入企业名称" v-model="seachInput" class="input-with-select">
+        <!-- <el-select v-model="select" slot="prepend" placeholder="请选择">
+          <el-option label="餐厅名" value="1"></el-option>
+          <el-option label="订单号" value="2"></el-option>
+          <el-option label="用户电话" value="3"></el-option>
+        </el-select> -->
+        <el-button  slot="append" style="background:#1c7bef;" icon="el-icon-search"></el-button>
+      </el-input>
+      <div class="seachJl">
+        <el-button><i class="el-icon-location" style="color:#1c7bef;"></i>建德市</el-button>
+        <el-select class="xz" v-model="select1" slot="prepend" placeholder="乡镇">
+            <el-option label="餐厅名" value="1"></el-option>
+            <el-option label="订单号" value="2"></el-option>
+            <el-option label="用户电话" value="3"></el-option>
+        </el-select>
+        <el-select class="hy" v-model="select2" slot="prepend" placeholder="行业分类">
+            <el-option label="餐厅名" value="1"></el-option>
+            <el-option label="订单号" value="2"></el-option>
+            <el-option label="用户电话" value="3"></el-option>
+        </el-select>
+      </div>
+    </div>
+    <div class="right">
+        <p><i class="el-icon-caret-right" style="color:#1c7bef;"></i></p>
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>1</li>
+          <li>2</li>
+          <li>1</li>
+          <li>2</li>
+        </ul>
+    </div>
   </div>
 </template>
 <script>
 
 export default {
+  data() {
+    return {
+      seachInput: '',
+      select1: '',
+      select2: ''
+    };
+  },
   head: {
     script: [
       {src: 'http://api.tianditu.com/api?v=4.0'},
@@ -36,12 +78,46 @@ export default {
 <style lang="scss" scoped>
 body #mapDiv{
   width:100%;
+  min-width: 1200px;
   min-height:600px;
   position:absolute;
   top:140px;
   left:0;
   bottom:0px;
 }
+.seach{
+  position:absolute;
+  top:147px;
+  left:100px;
+  z-index:999;
+  width: 800px;
+  .input-with-select{
+    width:250px;
+    float: left;
+    margin-right:50px;
+  }
+  .seachJl{
+    // float: left;
+    el-button{
+    }
+    .xz{
+      width:120px
+    }
+    .hy{width:120px}
+  }
+  
+}
+.right{
+  position:absolute;
+  top:147px;
+  right:0px;
+  z-index:999;
+  p{
 
+  }
+  ul{
+    
+  }
+}
 
 </style>

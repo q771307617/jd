@@ -16,25 +16,18 @@ dt,
 dd,
 ul,
 ol,
-li,
+// li,
 pre,
 form,
 fieldset,
 legend,
-button,
+// button,
 input,
 textarea,
 th,
 td {
   margin: 0;
   padding: 0;
-}
-body,
-button,
-input,
-select,
-textarea {
-  font: 12px/1.5tahoma, arial, \5b8b\4f53;
 }
 h1,
 h2,
@@ -99,11 +92,7 @@ table {
 /*# sourceMappingURL=reset.css.map */
 
 /**样式重置**/ 
-* {
-    margin: 0;
-    padding: 0;
-  }
-  
+
   body {
     font-size: 14px;
     font-weight: 500;
