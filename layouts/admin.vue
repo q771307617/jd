@@ -3,11 +3,11 @@
   <div class="wrapper">
     <!-- 顶部 -->
     <div class="header">
-      <div class="logo"><img class="logo-left" src="../assets/img/国徽.png">  后台管理系统</div>
+      <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">  后台管理系统</div>
       <div class="user-info">
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-           <img class="user-logo" src="../assets/img/国徽.png">
+           <img class="user-logo" src="../assets/img/emblem.png">
            {{name}}
            </span>
           <el-dropdown-menu slot="dropdown">
@@ -40,7 +40,7 @@
      <div class="content">
             <transition name="move" mode="out-in">	<nuxt/>	</transition>
      </div>
-  </div>		
+  </div>
 </template>
 <script>
   export default {
@@ -186,7 +186,7 @@
     text-align: center;
   }
    .sidebar {
-     background-color:#354f8a;
+    background-color:#354f8a;
     display: block;
     position: absolute;
     width: 230px;

@@ -1,6 +1,5 @@
 <template>
   <div class="hello">
-    后台登录
   </div>
 </template>
 
