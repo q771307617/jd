@@ -55,11 +55,8 @@ export default {
     }
   }
 };
-</script scoped>
-<style>
-.login {
-  font-family: MicrosoftYaHei;
-}
+</script>
+<style lang="scss" scoped>
 .login .container {
   width: 1920px;
   height: 1080px;
@@ -78,13 +75,11 @@ export default {
   left: 350px;
 }
 .login .container .slogan .one{
-  font-family:hzgb;
   font-size:48px;
   color:#ffffff;
   /* color:linear-gradient(-180deg, #88FAFF 0%, #69ADFF 97%); */
 }
 .login .container .slogan .two{
-  font-family:MicrosoftYaHei;
   font-size:18px;
   color:#ffffff;
 }
@@ -121,7 +116,7 @@ export default {
   color: #333333;
 }
 .el-input__inner{
-  height: 44px;
+  height: 44px !important;
   padding: 0;
 }
 .el-input__prefix{
@@ -131,7 +126,6 @@ export default {
   font-style: normal;
   background-color: red;
   background: url(../assets/img/iconadmin.png) no-repeat -20px -20px;
-  z-index: 20;
 }
 .login .container .content .btn {
   background: #1c7bef;

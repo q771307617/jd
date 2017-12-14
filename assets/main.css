@@ -1,6 +1,13 @@
+
+.move-enter-active,.move-leave-active{
+  transition: opacity .5s;
+}
+.move-enter,.move-leave{
+  opacity: 0;
+}
 .page-enter-active, .page-leave-active {
-    transition: opacity .5s;
+    transition: opacity .25s;
   }
-  .page-enter, .page-leave-to {
+.page-enter, .page-leave-to {
     opacity: 0;
-  }
+}
