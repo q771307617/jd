@@ -125,7 +125,7 @@ export default {
   height: 20px;
   font-style: normal;
   background-color: red;
-  background: url(../assets/img/iconadmin.png) no-repeat -20px -20px;
+  background: url(../assets/img/bgAdminLogin.png) no-repeat -20px -20px;
 }
 .login .container .content .btn {
   background: #1c7bef;
