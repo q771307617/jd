@@ -30,7 +30,7 @@
      <div class="content">
             <transition name="move" mode="out-in">	<nuxt/>	</transition>
      </div>
-  </div>		
+  </div>
 </template>
 <script>
   export default {
@@ -204,7 +204,7 @@
     text-align: center;
   }
    .sidebar {
-     background-color:#354f8a;
+    background-color:#354f8a;
     display: block;
     position: absolute;
     width: 230px;
@@ -215,5 +215,9 @@
   .sidebar>ul {
     height: 100%;
   }
+<<<<<<< HEAD
 
 </style>
+=======
+</style>
+>>>>>>> gs/master
