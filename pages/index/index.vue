@@ -27,15 +27,18 @@
       </div>
     </div>
     <div class="right">
-        <p><i class="el-icon-caret-right" style="color:#1c7bef;"></i></p>
-        <ul>
-          <li>1</li>
-          <li>2</li>
-          <li>1</li>
-          <li>2</li>
-          <li>1</li>
-          <li>2</li>
-        </ul>
+        <p class="p" @click="rmShow"><i class="el-icon-caret-right" style="color:#1c7bef;"></i></p>
+        <div class="rm">
+          <p><span></span> 热门企业</p>
+          <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>1</li>
+            <li>2</li>
+            <li>1</li>
+            <li>2</li>
+          </ul>
+        </div>
     </div>
   </div>
 </template>
@@ -55,9 +58,8 @@ export default {
       {src: 'http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/ImageOverlay.js'}
     ]
   },
-  methods: {
-  },
   mounted() {
+    /* 地图 */
     window.$('.ddd').text('aaaa');
     var map;
     var zoom = 11;
@@ -72,6 +74,25 @@ export default {
     img1 = new window.T.ImageOverlay('http://chuantu.biz/t6/173/1512980653x-1404793565.png', bd, {opacity: '.5', alt: '建德市'}, {minZoom: '13', maxZoom: '20'});
     // map.addOverLay(img);
     map.addOverLay(img1);
+    /** 热门企业 **/
+    // window.$('.p').on('click',function() {
+    //   console.log('aaa')
+    // })
+  },
+  methods: {
+    rmShow() {
+      // alert('A');
+      console.log(window.$('.rm').css('width'));
+      if (window.$('.rm').css('width') === '0px') {
+        window.$('.rm').animate({width: '356px'});
+        window.$('.p i').removeClass('el-icon-caret-left').addClass('el-icon-caret-right');
+        window.$('.p').animate({right: '356px'});
+        return;
+      }
+      window.$('.rm').animate({width: '0px'});
+      window.$('.p i').removeClass('el-icon-caret-right').addClass('el-icon-caret-left');
+      window.$('.p').animate({right: '0'});
+    }
   }
 };
 </script>
@@ -108,16 +129,60 @@ body #mapDiv{
   
 }
 .right{
+  overflow: hidden;
   position:absolute;
-  top:147px;
+  top:140px;
   right:0px;
+  bottom:0px;
   z-index:999;
-  p{
+  width: 376px;
+  min-height:600px; 
+  .p{
+    position:absolute;
+    display: inline-block;
+    height: 40px;
+    width: 20px;
+    background: #f2f8ff;
+    margin-top: 100%;
+    border-radius:5px 0 0 5px; 
+    i{
+      height: 20px;
+      width: 20px;
+      margin-top:10px;
+      text-align: center;
+    }
+  }
+  .rm{
+    float:right;
+    background: #f2f8ff;
+    width: 356px; 
+    height:100%;  
+    p{height:18px;line-height:18px;
+      font-family:MicrosoftYaHei-Bold;
+      font-size:16px;
+      font-weight:600;
+      color:#333333;
+      width: 346px;
+      padding: 14px 5px;
+      span{
+        display: inline-block;
+        background:#f2ba55;
+        width:4px;
+        height:18px;
+        margin-bottom:-3px; 
+        margin-right: 5px;
+      }
+    }
+    ul{
+      float:left;
+      padding: 0 5px;
+      
+      li{
 
+      }
+    }
   }
-  ul{
-    
-  }
+  
 }
 
 </style>

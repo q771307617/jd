@@ -9,7 +9,7 @@
 						<nuxt-link :to="{name:'index-dataAnalysis'}">数据分析</nuxt-link><span></span>
 						<nuxt-link :to="{name:'index-enterprise'}">企业管理</nuxt-link>
 					</p>
-					<p class="navRight"><a href="javascript:">退出</a></p>
+					<p class="navRight"><a href="javascript:"> <i class="el-icon-remove-outline"></i> 退出</a></p>
 				</div>
 			</div>
 			<nuxt id="content"/>
