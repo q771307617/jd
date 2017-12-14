@@ -11,6 +11,11 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script:[
+      {src:'http://api.tianditu.com/api?v=4.0'},
+      {src:'http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/ImageOverlay.js'},
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' }
     ]
   },
   /*
