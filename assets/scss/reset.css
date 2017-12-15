@@ -112,6 +112,7 @@ body {
 }
 
 .ellipsis {
+  width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -241,10 +242,6 @@ body {
   height: 0;
   clear: both;
   visibility: hidden;
-}
-.el-table__body-wrapper {
-  overflow: hidden;
-  position: relative;
 }
 
 .flex-box {
