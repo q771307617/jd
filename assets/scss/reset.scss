@@ -105,7 +105,11 @@ table {
   .main {
     background: #fff;
   }
-  
+  .ellipsis{
+      white-space: nowrap;  
+      text-overflow:ellipsis; 
+      overflow:hidden;
+  }
   .primary-bg {
     /**background:#2d8cf0!important;*/
     background: RGB(246, 116, 4) !important;

@@ -9,11 +9,14 @@
 						<nuxt-link :to="{name:'index-dataAnalysis'}">数据分析</nuxt-link><span></span>
 						<nuxt-link :to="{name:'index-enterprise'}">企业管理</nuxt-link>
 					</p>
-					<p class="navRight"><a href="javascript:"> <i class="el-icon-remove-outline"></i> 退出</a></p>
+					<p class="navRight"><nuxt-link :to="{name:'login'}"> <i class="el-icon-remove-outline"></i> 退出</nuxt-link></p>
 				</div>
 			</div>
 			<nuxt id="content"/>
-			<div class="footer" v-if="$route.name!='index'">底部</div>
+			<div class="footer" v-if="$route.name!='index'">
+        <p>关于我们</p>
+        <p>@2017 jiandezhengfuxinxi Reserved. 浙ICP备案15043816号-1 浙公网安备 33010902000325</p>
+      </div>
 				
 	</div>
 
@@ -41,10 +44,21 @@ a {
 .footer {
   width: 100%;
   min-width:1200px;
-  min-height: 130px;
-  line-height: 130px;
+  height: 55px;
+  max-height: 55px;
   text-align: center;
-  background: #545c64;
+  background:#014bb2;
+  padding: 40px 0;
+  color: #FFF;
+  p{
+    height: 20px;
+    line-height: 20px;
+    font-family:MicrosoftYaHei;
+    font-size:12px;
+    color:#ffffff;
+    text-align:center;
+    padding: 3px;
+  }
 }
 .header {
   width: 100%;
@@ -115,12 +129,10 @@ a {
     color: #ffbf50;
   }
 }
-.footer {
-}
 #content {
-  min-height: 700px;
+  min-height: 800px;
   height: auto;
-  width: 1200px;
+  // width: 1200px;
   margin: 0 auto;
 }
 </style>
