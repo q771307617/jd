@@ -10,13 +10,13 @@
         <p class="text"><span v-if="isType">管理员</span>登录</p>
         <div class="demo-input-size">
             <el-input  placeholder="管理员账号" v-model="userInfo.username" class="input" autofocus>
-              <i slot="prefix"></i>
+              <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
             </el-input>
             <el-input placeholder="密码" type="password" v-model="userInfo.password" class="input">
-              <i slot="prefix"></i>
+              <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
             </el-input>
             <el-input placeholder="验证码" v-model="userInfo.code" class="input" style="width: 214px;margin-right:164px; ">
-              <i slot="prefix"></i>
+              <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
             </el-input>
           <el-button class="btn" @click="login">登录</el-button>
         </div>
@@ -56,7 +56,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .login .container {
   width: 1920px;
   height: 1080px;
@@ -116,8 +116,8 @@ export default {
   color: #333333;
 }
 .el-input__inner{
-  height: 44px !important;
   padding: 0;
+  margin-left: 50px;
 }
 .el-input__prefix{
   display: inline-block;
@@ -125,7 +125,21 @@ export default {
   height: 20px;
   font-style: normal;
   background-color: red;
-  background: url(../assets/img/bgAdminLogin.png) no-repeat -20px -20px;
+  margin-left: 50px;
+}
+.icon{
+  display: block;
+  background: url(../assets/img/iconBackground.png) no-repeat;
+  width:20px;
+  height:20px;
+  margin: 10px 15px;
+  font-style: normal
+}
+.icon::after{
+  content: "|";
+  width:1px;
+  height:29px;
+  margin-left: 38px;
 }
 .login .container .content .btn {
   background: #1c7bef;
@@ -135,8 +149,9 @@ export default {
   font-size: 18px;
   color: #fff;
 }
-.el-input-group__prepend {
-  background-color: #fff;
+.el-input /deep/ .el-input--prefix,
+.el-input /deep/ .el-input__inner{
+  padding-left: 80px;
 }
 </style>
 
