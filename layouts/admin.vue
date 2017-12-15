@@ -3,12 +3,12 @@
   <div class="wrapper">
     <!-- 顶部 -->
     <div class="header">
-      <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">  后台管理系统</div>
+      <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
    <div class="user-info">{{role}}{{name}}<a style="margin:0 30px;">退出</a></div>
     </div>
     <!-- 侧边栏 -->
     <div class="sidebar">
-      <el-menu :default-active="onRoutes" class="el-menu-vertical-demo"  unique-opened router>
+      <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" text-color="#fff" background-color="#354f8a" active-text-color="#ffd04b" unique-opened router>
         <template v-for="item in menus">
               <template v-if="item.subs">
                 <el-submenu :index="item.index">
@@ -18,10 +18,10 @@
                         </el-menu-item>
                     </el-submenu>
                 </template>
-                <template v-else>
+                <template v-else><nuxt-link :to="{name:item.index}">
                   <el-menu-item :index="item.index">
                     <i :class="item.icon"></i>{{ item.title }}
-                  </el-menu-item>
+                  </el-menu-item></nuxt-link>
                 </template>
             </template>
         </el-menu>
@@ -36,63 +36,63 @@
   export default {
     data() {
       return {
-        onRoutes: ' ',
+        onRoutes: 'admin',
         name: '王厂长',
         role: '管理员',
         menus: [
           {
             icon: 'el-icon-setting',
-            index: 'readme',
-            title: '自述'
+            index: 'admin',
+            title: '企业管理'
           },
           {
             icon: 'el-icon-menu',
-            index: '2',
-            title: '表格',
-            subs: [
-              {
-                index: 'basetable',
-                title: '基础表格'
-              },
-              {
-                index: 'vuetable',
-                title: 'Vue表格组件'
-              }
-            ]
-          },
-          {
-            icon: 'el-icon-date',
-            index: '3',
-            title: '表单',
-            subs: [
-              {
-                index: 'baseform',
-                title: '基本表单'
-              },
-              {
-                index: 'vueeditor',
-                title: '编辑器'
-              },
-              {
-                index: 'markdown',
-                title: 'markdown'
-              },
-              {
-                index: 'upload',
-                title: '文件上传'
-              }
-            ]
-          },
-          {
-            icon: 'el-icon-star-on',
-            index: 'basecharts',
-            title: '图表'
-          },
-          {
-            icon: 'el-icon-upload2',
-            index: 'drag',
-            title: '拖拽'
+            index: 'admin-role',
+            title: '表格'
+            // subs: [
+            //   {
+            //     index: 'basetable',
+            //     title: '基础表格'
+            //   },
+            //   {
+            //     index: 'vuetable',
+            //     title: 'Vue表格组件'
+            //   }
+            // ]
           }
+          //     {
+          //       icon: 'el-icon-date',
+          //       index: '3',
+          //       title: '表单',
+          //       subs: [
+          //         {
+          //           index: 'baseform',
+          //           title: '基本表单'
+          //         },
+          //         {
+          //           index: 'vueeditor',
+          //           title: '编辑器'
+          //         },
+          //         {
+          //           index: 'markdown',
+          //           title: 'markdown'
+          //         },
+          //         {
+          //           index: 'upload',
+          //           title: '文件上传'
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       icon: 'el-icon-star-on',
+          //       index: 'basecharts',
+          //       title: '图表'
+          //     },
+          //     {
+          //       icon: 'el-icon-upload2',
+          //       index: 'drag',
+          //       title: '拖拽'
+          //     }
         ]
       };
     },
@@ -129,17 +129,18 @@
 .wrapper{
     width:100%;
     height:100%;
+    min-width:1200px;
     overflow: hidden;
 }
+
 .content{
   background: none repeat scroll 0 0 #fff;
   position: absolute;
   left: 250px;
   right: 0;
-  top: 90px;
+  top: 108px;
   bottom:0;
   width: auto;
-  padding:40px;
   box-sizing: border-box;
   overflow-y: scroll;
 }
