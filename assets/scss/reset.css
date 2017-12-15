@@ -111,6 +111,13 @@ body {
   background: #fff;
 }
 
+.ellipsis {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .primary-bg {
   /**background:#2d8cf0!important;*/
   background: RGB(246, 116, 4) !important;
@@ -235,10 +242,6 @@ body {
   height: 0;
   clear: both;
   visibility: hidden;
-}
-.el-table__body-wrapper {
-  overflow: hidden;
-  position: relative;
 }
 
 .flex-box {
