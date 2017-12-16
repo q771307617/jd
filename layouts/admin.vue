@@ -8,7 +8,13 @@
     </div>
     <!-- 侧边栏 -->
     <div class="sidebar">
-      <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" text-color="#fff" background-color="#354f8a" active-text-color="#ffd04b" unique-opened router>
+      <el-menu :default-active="onRoutes" 
+      class="el-menu-vertical-demo" 
+      text-color="#fff" 
+      background-color="#354f8a" 
+      active-text-color="#ffd04b" 
+      unique-opened 
+      @select="selectMenu">
         <template v-for="item in menus">
               <template v-if="item.subs">
                 <el-submenu :index="item.index">
@@ -18,10 +24,10 @@
                         </el-menu-item>
                     </el-submenu>
                 </template>
-                <template v-else><nuxt-link :to="{name:item.index}">
+                <template v-else>
                   <el-menu-item :index="item.index">
                     <i :class="item.icon"></i>{{ item.title }}
-                  </el-menu-item></nuxt-link>
+                  </el-menu-item>
                 </template>
             </template>
         </el-menu>
@@ -48,7 +54,7 @@
           {
             icon: 'el-icon-menu',
             index: 'admin-role',
-            title: '表格'
+            title: '角色管理'
             // subs: [
             //   {
             //     index: 'basetable',
@@ -132,7 +138,6 @@
     min-width:1200px;
     overflow: hidden;
 }
-
 .content{
   background: none repeat scroll 0 0 #fff;
   position: absolute;
@@ -143,6 +148,7 @@
   width: auto;
   box-sizing: border-box;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
   .el-menu-demo a {
     color: #fff;

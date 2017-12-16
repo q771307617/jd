@@ -9,11 +9,13 @@
       <hr>
       <br>
       <p class="navLeft">
-        <nuxt-link :to="{name:'admin-company-addCompany'}">基本信息</nuxt-link>
         <span></span>
-        <nuxt-link :to="{name:'admin-company-normData'}">指标数据</nuxt-link>
         <span></span>
       </p>
+      <el-radio-group v-model="radio" fill="#f2ba55" @change="change">
+        <el-radio-button label="admin-company-addCompany">基本信息</el-radio-button>
+        <el-radio-button label="admin-company-normData"> 指标数据</el-radio-button>
+      </el-radio-group>
       <nuxt-child/>
     </div>
   </div>
@@ -23,12 +25,28 @@
 export default {
   data() {
     return {
+      radio: 'admin-company-addCompany'
     };
+  },
+  methods: {
+    change(val) {
+      this.$router.push({
+        name: val,
+        query: {
+          type: this.$route.query.type,
+          companyId: this.$route.query.companyId
+        }
+      });
+    }
   }
 };
 </script>
 
 
 <style scoped>
+/* 深度击穿 */
 
+.el-table /deep/ .el-table__body-wrapper {
+  overflow: visible;
+}
 </style>
