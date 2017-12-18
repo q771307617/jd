@@ -22,6 +22,7 @@
     "axios": "^0.17.1",
     "css-loader": "^0.28.7",
     "element-ui": "^2.0.7",
+    "moment": "^2.20.0",
     "node-sass": "^4.7.2",
     "nuxt": "^1.0.0-rc11",
     "postcss-loader": "^2.0.9",
@@ -34,6 +35,8 @@
     "vue-template-compiler": "2.5.9"
   },
   "devDependencies": {
+    "@nuxtjs/axios": "^4.5.0",
+    "@nuxtjs/proxy": "^1.1.2",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
