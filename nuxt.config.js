@@ -21,6 +21,12 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
+  proxy: {
+    '/api/*': {
+      target: 'http://192.168.2.200:8082/',
+      secure: false
+    }
+  },
   loading: { color: '#3B8070' },
   /*
   **页面过渡动画
