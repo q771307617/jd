@@ -67,7 +67,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import utils from '~/plugins/utils';
 export default {
+  computed: {
+    ...mapState({
+      state: state => state.Pub
+    })
+  },
   data() {
     return {
       input21: '',
@@ -88,6 +95,9 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    console.log(this.state, utils.getName(1, this.state.townShip));
   },
   methods: {
     handleSizeChange(val) {
