@@ -36,5 +36,10 @@ export default {
     { key: '15', name: '有机硅' },
     { key: '16', name: '其他新材料' },
     { key: '17', name: '新能源' }
+  ],
+  scale: [
+    { key: '0', name: '不限' },
+    { key: '1', name: '规上' },
+    { key: '2', name: '规下' }
   ]
 };

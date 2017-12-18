@@ -48,23 +48,18 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="10"
-        layout="prev, pager, next, total, jumper"
-        :total="40">
-      </el-pagination>
+      <pages :count='25' :pageNum='1' :pageSize='5'  @size-change="handleSizeChange" @current-change="handleCurrentChange" />
     </div>  
     <nuxt-child/>
   </div>
 </template>
 
 <script>
+import pages from '~/components/pages';
 export default {
+  components: {
+    pages
+  },
   data() {
     return {
       radio3: '0',
