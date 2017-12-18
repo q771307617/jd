@@ -24,7 +24,7 @@
                 <el-col :span="8">
                   <ul>
                     <h1>公司名称</h1>
-                    <li v-for="item in data1">{{item}}</li>
+                    <li v-for="item in data1" :key="item.id">{{item}}</li>
                   </ul>
                 </el-col>
                 <el-col :span="16">

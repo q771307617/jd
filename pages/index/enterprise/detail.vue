@@ -13,7 +13,7 @@
           <el-row>
             <el-col :span="5">
               <ul>
-                <li v-for="data1 in companyList">{{data1}}</li>
+                <li v-for="data1 in companyList" :key="data1.id">{{data1}}</li>
               </ul>
             </el-col>
             <el-col :span="12">
@@ -32,7 +32,7 @@
             <el-col :span="12">
               <el-col :span="10">
                 <ul>
-                  <li v-for="data2 in dataIndex1">{{data2}}</li>
+                  <li v-for="data2 in dataIndex1" :key="data2.id">{{data2}}</li>
                 </ul>
               </el-col>
               <el-col :span="14">
@@ -46,7 +46,7 @@
             <el-col :span="12">
               <el-col :span="10">
                 <ul>
-                  <li v-for="data3 in dataIndex1">{{data3}}</li>
+                  <li v-for="data3 in dataIndex1" :key="data3.id">{{data3}}</li>
                 </ul>
               </el-col>
               <el-col :span="14">

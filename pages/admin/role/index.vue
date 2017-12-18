@@ -9,18 +9,18 @@
       <el-table-column prop="date" label="角色名称" min-width="150" header-align="center"></el-table-column>
       <el-table-column prop="name" label="用户名" min-width="150" header-align="center"></el-table-column>
       <el-table-column label="账号状态" min-width="150" header-align="center">
-          <template slot-scope="scope">
+          <div slot-scope="scope">
             <el-switch v-model="value3"></el-switch>
-        </template>
+        </div>
       </el-table-column>
       <el-table-column label="操作" min-width="100" header-align="center">
-        <template slot-scope="scope">
+        <div slot-scope="scope">
           <el-button type="text" @click="addAccount = true" size="small" value="修改">修改</el-button>
           <el-button type="text" @click="deleteAccount = true" size="small" value="删除">删除</el-button>
-        </template>
+        </div>
       </el-table-column>
     </el-table>
-    <el-row class="footer-page">
+    <div class="footer-page">
       <el-col :span="14">&nbsp</el-col>
       <el-col :span="10">
       <el-pagination
@@ -37,7 +37,7 @@
       </el-pagination>
       </el-col>
       <!-- <el-col :span="1"><el-button size="mini"  type="primary" @click="handleCurrentChange(currentPage4)">确定</el-button></el-col> -->
-    </el-row>
+    </div>
   </el-col>
 
   <!-- 新增、修改账号弹出框 -->
