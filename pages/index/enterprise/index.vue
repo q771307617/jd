@@ -8,54 +8,79 @@
               <template slot="append" id="enterprise-index-check">搜&nbsp&nbsp索</template>
             </el-input>
           </el-col>
+        </el-row>
+        <el-row class="search">
+          <el-row>
+            <el-col :span="4">行业：</el-col>
+            <el-col :span="19">2</el-col>
+            <el-col :span="1">
+              <a @click="showTrade" class="more">更多<i class='el-icon-arrow-down'></i></a>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4">乡镇：</el-col>
+            <el-col :span="19">
+              <transition name="el-zoom-in-top">
+                <div class="transition-box">.el-zoom-in-top</div>
+              </transition>
+            </el-col>
+            <el-col :span="1">
+              <a @click="showTrade" class="more">更多<i class='el-icon-arrow-down'></i></a>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="4">规上/规下：</el-col>
+            <el-col :span="18">2</el-col>
+          </el-row>
+        </el-row>
+        <el-row>
           <el-col :span="24" class="selecteType">
             <el-col :span="4">1</el-col>
             <el-col :span="20">2</el-col>
           </el-col>
           <el-col :span="24">
-              行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业
+            行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业
           </el-col>
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content">
-              <el-col :span="6">
-                <div class="imgInfo"><img src="" alt=""></div>
+            <el-col :span="6">
+              <div class="imgInfo"><img src="" alt=""></div>
+            </el-col>
+            <el-col :span="15">
+              <el-col :span="8">
+                <ul>
+                  <h1>公司名称</h1>
+                  <li v-for="item in data1" :key="item">{{item}}</li>
+                </ul>
               </el-col>
-              <el-col :span="15">
-                <el-col :span="8">
-                  <ul>
-                    <h1>公司名称</h1>
-                    <li v-for="item in data1">{{item}}</li>
-                  </ul>
-                </el-col>
-                <el-col :span="16">
-                  <ul>
-                    <li>&nbsp</li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                  </ul>
-                </el-col>
+              <el-col :span="16">
+                <ul>
+                  <li>&nbsp</li>
+                  <li>1</li>
+                  <li>1</li>
+                  <li>1</li>
+                  <li>1</li>
+                </ul>
               </el-col>
-              <el-col :span="3">
-                <el-button type="primary" style="margin-top: 80px">查看企业详情</el-button>
-              </el-col>
+            </el-col>
+            <el-col :span="3">
+              <el-button type="primary" style="margin-top: 80px">查看企业详情</el-button>
+            </el-col>
           </el-col>
           <!-- 分页 -->
           <el-col :span="24">
             <el-col :span="10">&nbsp</el-col>
             <el-col :span="14">
-              <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage4"
-                :page-sizes="[100, 200, 300, 400]"
-                :page-size="10"
-                background
-                prev-text="上一页"
-                next-text="下一页"
-                layout="total, prev, pager, next, jumper"
-                :total="400">
+              <el-pagination @size-change="handleSizeChange"
+               @current-change="handleCurrentChange" 
+               :current-page="currentPage4" 
+               :page-sizes="[100, 200, 300, 400]" 
+               :page-size="10" 
+               background 
+               prev-text="上一页" 
+               next-text="下一页" 
+               layout="total, prev, pager, next, jumper" 
+               :total="400">
               </el-pagination>
             </el-col>
           </el-col>
@@ -70,6 +95,18 @@
 export default {
   data() {
     return {
+      show: false,
+      params: {
+        chargePersonType: null,
+        companyName: null,
+        pageNum: null,
+        pageSize: null,
+        partyMemberNumberType: null,
+        scaleType: null,
+        staffScaleType: null,
+        townId: null,
+        tradeId: null
+      },
       input21: '',
       currentPage4: 4,
       data1: [
@@ -96,6 +133,9 @@ export default {
     // 改变页数时回调
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    showTrade() {
+      this.show = true;
     }
   }
 };
@@ -103,6 +143,24 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.ListDetail{
+  .search{
+    margin-top:23px; 
+    background:#ffffff;
+    border:1px solid #d4e1ea;
+  }
+  .more{
+    font-family:MicrosoftYaHei;
+    font-size:12px;
+    color:#666666;
+    letter-spacing:0;
+    text-align:center;
+    border:1px solid #e0e0e0;
+    border-radius:1px;
+    width:40px;
+    height:18px;
+  }
+}
 .el-container {
   width: 1200px;
   margin: 0 auto;
@@ -112,7 +170,7 @@ export default {
         border-bottom: 1px solid #d4e1ea;
         margin-bottom: 20px;
       }
-      .selecteType{
+      .selecteType {
         border: 1px solid #d4e1ea;
         margin: 20px 0;
       }
