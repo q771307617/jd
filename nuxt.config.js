@@ -21,8 +21,12 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
   proxy: {
-    '/api/*': {
+    '/api': {
       target: 'http://192.168.2.200:8082/',
       secure: false
     }
@@ -43,6 +47,11 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    analyze: true,
+    // or
+    analyze: {
+      analyzerMode: 'static'
+  },
     /*
     ** Run ESLint on save
     */
@@ -73,7 +82,7 @@ module.exports = {
           rule.options.loaders.scss.push(sassResourcesLoader)  
         }  
         if (['/\\.sass$/', '/\\.scss$/'].indexOf(rule.test.toString()) !== -1) {  
-          rule.use.push(sassResourcesLoader)  
+          rule.use.push(sassResourcesLoader)
         }  
       })   
     }
