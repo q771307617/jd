@@ -1,17 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Pub from './public';
 
+// 文件导出内容
 Vue.use(Vuex);
-
-const store = () => new Vuex.Store({
-
-  state: {
-    counter: 0
-  },
-  mutations: {
-    increment(state) {
-      state.counter++;
-    }
+let Store = () => new Vuex.Store({
+  modules: {
+    Pub
   }
 });
-export default store;
+export default Store;
