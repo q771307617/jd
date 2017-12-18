@@ -2,7 +2,10 @@
     <div id="main" class = "main">
 
 			<div class="header">
-				<p><img src="./../assets/img/frontHeader.png" alt=""></p>
+				<p>
+          <img class="frontHeader" src="./../assets/img/frontHeader.png" alt="">
+          <img class="frontHeaderIcon" src="./../assets/img/frontHeaderIcon.png" alt="">
+        </p>
 				<div class="nav">
 					<p class="navLeft">
 						<nuxt-link :to="{name:'index'}">首页</nuxt-link><span></span>
@@ -72,14 +75,19 @@ a {
 }
 .header p {
   height: 100px;
+  .frontHeader {
+    width: 100%;
+    min-width:1200px;
+    height: 101px;
+    margin:0 auto;
+  }
+  .frontHeaderIcon{
+    position: absolute;
+    top: 0px;
+    left:22px;
+    height: 101px;
+  }
 }
-.header p img {
-  width: 100%;
-  min-width:1200px;
-  height: 101px;
-  margin:0 auto;
-}
-
 .nav {
   width: 1200px;
   height: 40px;

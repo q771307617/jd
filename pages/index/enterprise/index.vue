@@ -68,7 +68,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import utils from '~/plugins/utils';
+import { pub, time } from '~/plugins/utils/index';
+
 export default {
   computed: {
     ...mapState({
@@ -97,7 +98,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.state, utils.getName(1, this.state.townShip));
+    console.log(this.state, pub.getName(this.state.townShip, 1), time.formatTime());
   },
   methods: {
     handleSizeChange(val) {
