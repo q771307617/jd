@@ -126,9 +126,10 @@ export default {
 </style>
 <style scoped lang="scss">
 .mainContent{
-    el-pagination{
-      display: inline-block;
-      text-align:right;
+    .el-pagination{
+        width:420px;
+        float: right;
+        margin-top:10px;
     }
 }
 </style>
