@@ -61,6 +61,7 @@ ol {
 }
 
 a {
+  cursor: pointer;
   text-decoration: none;
   font-family: MicrosoftYaHei-Bold;
   font-size: 14px;
@@ -511,10 +512,7 @@ body {
   width: 2.4rem;
 }
 
-.h5-input a.disabled {
-  cursor: not-allowed;
-  color: #888888;
-}
+
 
 /** input placeholder 颜色修改*/
 input {

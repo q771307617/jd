@@ -20,24 +20,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row class="footer-page">
-      <el-col :span="14">&nbsp</el-col>
-      <el-col :span="10">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="10"
-        background
-        prev-text="上一页"
-        next-text="下一页"
-        layout="total, prev, pager, next, jumper"
-        :total="400">
-      </el-pagination>
-      </el-col>
-      <!-- <el-col :span="1"><el-button size="mini"  type="primary" @click="handleCurrentChange(currentPage4)">确定</el-button></el-col> -->
-    </el-row>
   </el-col>
 
   <!-- 新增、修改账号弹出框 -->
