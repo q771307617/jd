@@ -67,7 +67,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import { pub, time } from '~/plugins/utils/index';
+
 export default {
+  computed: {
+    ...mapState({
+      state: state => state.Pub
+    })
+  },
   data() {
     return {
       input21: '',
@@ -88,6 +96,9 @@ export default {
         }
       ]
     };
+  },
+  mounted() {
+    console.log(this.state, pub.getName(this.state.townShip, 1), time.formatTime());
   },
   methods: {
     handleSizeChange(val) {
