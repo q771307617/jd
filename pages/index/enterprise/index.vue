@@ -76,15 +76,25 @@
           </el-col>
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content">
-            <el-col :span="6">
-              <div class="imgInfo"><img src="" alt=""></div>
-            </el-col>
-            <el-col :span="15">
-              <el-col :span="8">
-                <ul>
-                  <h1>公司名称</h1>
-                  <li v-for="item in data1" :key="item">{{item}}</li>
-                </ul>
+              <el-col :span="6">
+                <div class="imgInfo"><img src="" alt=""></div>
+              </el-col>
+              <el-col :span="15">
+                <el-col :span="8">
+                  <ul>
+                    <h1>公司名称</h1>
+                    <li v-for="item in data1" :key="item.id">{{item}}</li>
+                  </ul>
+                </el-col>
+                <el-col :span="16">
+                  <ul>
+                    <li>&nbsp</li>
+                    <li>1</li>
+                    <li>1</li>
+                    <li>1</li>
+                    <li>1</li>
+                  </ul>
+                </el-col>
               </el-col>
               <el-col :span="16">
                 <ul>
