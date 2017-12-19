@@ -118,14 +118,7 @@ import api from './../../../plugins/api.js';
 import {
   mapState
 } from 'vuex';
-import { pub, time } from '~/plugins/utils/index';
-
 export default {
-  computed: {
-    ...mapState({
-      state: state => state.Pub
-    })
-  },
   data() {
     return {
       isActiveIndustry: true,
