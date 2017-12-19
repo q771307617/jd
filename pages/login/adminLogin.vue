@@ -29,10 +29,11 @@
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="updateCode"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="updateCode"><img :src="verifycodeUrl" alt="" style="width: 113px;height:40px"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
+                  <p class="hint">{{msg}}</p>
             </div>
           <el-button class="btn" @click="submitLogin">登录</el-button>
         </div>
@@ -42,33 +43,40 @@
   </div>
 </template>
 <script>
-// import api from '../../plugins/api';
+import api from '~/plugins/api';
+import qs from 'qs';
 export default {
   data() {
     return {
       username: '',
       password: '',
-      type: 1,
+      type: '',
       code: '',
       UserHint: '',
       PasswordHint: '',
-      CodeHint: ''
+      CodeHint: '',
+      verifycodeUrl: '',
+      msg: ''
     };
   },
   methods: {
     // 提交登录
     submitLogin() {
-      // const params = {
-      //   username: this.username,
-      //   password: this.password,
-      //   type: this.type
-      // };
-      console.log(12311);
-      this.checkName(this.username);
-      this.checkPassword(this.password);
-      // api.post('user/login', params).then((response) => {
-      //   console.log(response);
-      // });
+      let userStatus = this.checkName(this.username);
+      let passwordStatus = this.checkPassword(this.password);
+      if (userStatus && passwordStatus) {
+        api.post('user/login', qs.stringify({
+          username: this.username,
+          password: this.password,
+          type: 3
+        })).then((response) => {
+          if (response.status === 200) {
+            this.$router.push({name: 'admin'});
+          } else {
+            this.msg = response.msg;
+          }
+        });
+      }
     },
     // 验证码更新
     updateCode() {
@@ -101,7 +109,7 @@ export default {
         let reg = /(^\s+)|(\s+$)/g;
         let regex = new RegExp(reg);
         // 不存在空格且密码长度为6-20位
-        if (!regex.test(password)) {
+        if (!regex.test(password) && password.length > 5) {
           return true;
         } else {
           this.Password = '';
@@ -109,10 +117,18 @@ export default {
           return false;
         }
       }
+    },
+    // 获取验证码
+    checkCode() {
+      api.get('/user/verifycode').then((res) => {
+        console.log(res);
+        this.verifycodeUrl = res;
+      });
     }
   },
   mounted() {
     this.$nextTick(() => {
+      this.checkCode();
       // this.username = null;
       // this.submitLogin();
       // this.checkName(this.username);
