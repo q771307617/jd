@@ -23,10 +23,10 @@
         <el-button>
           <i class='el-icon-location' style='color:#1c7bef;'></i>建德市</el-button>
         <el-select class='xz' v-model='select1' slot='prepend' placeholder='乡镇'>
-            <el-option v-for = "item in townShip" :label='item.name' :value='item.key'></el-option>
+            <el-option v-for = "item in townShip " :key='item' :label='item.name' :value='item.id'></el-option>
         </el-select>
         <el-select class='hy' v-model='select2' slot='prepend' placeholder='行业分类'>
-            <el-option v-for = "item in industry" :label='item.name' :value='item.key'></el-option>
+            <el-option v-for = "item in industry" :label='item.tradeName':key='item' :value='item.id'></el-option>
         </el-select>
       </div>
     </div>
@@ -35,7 +35,7 @@
         <div class='rm'>
           <p class="rmTitle"><span></span> 热门企业</p>
           <ul>
-            <li v-for = "item in remenParams">
+            <li v-for = "item in remenParams" :key='item'>
               <p>
                 <img :src='item.factoryImageUrl' alt=''>
               </p>
@@ -53,17 +53,8 @@
 </template>
 <script>
 import api from '~/plugins/api';
-// import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 export default {
-  async hotCompany({
-    params
-  }) {
-    return api.getCompany()
-      .then((e) => {
-        console.log(e);
-        return {};
-      });
-  },
   data() {
     return {
       seachInput: '',
@@ -89,6 +80,13 @@ export default {
       src: 'http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/ImageOverlay.js'
     }
     ]
+  },
+  computed: {
+    ...mapState({
+      townShip: state => state.Lists.AllTownShip,
+      scale: state => state.Lists.scale,
+      industry: state => state.Lists.AllIndustry
+    })
   },
   mounted() {
     this.remen();
@@ -258,7 +256,7 @@ export default {
     },
     searchcompany() {
       let searchParams = this.searchParams;
-      api.post('company/searchcompany', { searchParams })
+      api.get('company/searchcompany', { searchParams })
         .then(e => {
           this.remenParams = e.data;
           console.log(e);
