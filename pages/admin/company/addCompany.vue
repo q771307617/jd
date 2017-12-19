@@ -23,10 +23,10 @@
             <el-input v-model="ruleForm.name" class="input-length" v-if="showInput"></el-input>
             <div v-else>div</div>
           </el-form-item>
-          <el-form-item label="所属乡镇：" prop="townId">
+          <!--<el-form-item label="所属乡镇：" prop="townId">
             <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
             <div v-else>div</div>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput">
               <el-option :label="item.name" :value="item.key" v-for="item in townShip" :key="item.key"></el-option>
@@ -207,9 +207,9 @@ export default {
   },
   computed: {
     ...mapState({
-      townShip: state => state.Pub.townShip,
-      scale: state => state.Pub.scale,
-      industry: state => state.Pub.industry
+      townShip: state => state.Lists.AllTownShip,
+      scale: state => state.Lists.scale,
+      industry: state => state.Lists.AllIndustry
     })
   },
   methods: {

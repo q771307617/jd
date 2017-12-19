@@ -16,10 +16,10 @@
             <el-col :span="20">
               <ul class="industry"  v-bind:class="{ hidden: isActiveIndustry}">
                 <li class="industry-list">
-                  <a :class="{select: params.tradeId === null}" @click="selectIndustry(null)">不限</a>
+                  <a :class="{select: params.tradeId == null}" @click="selectIndustry(null)">不限</a>
                 </li>
-                <li v-for="item in industry" :key="item.key" class="industry-list">
-                  <a @click="selectIndustry(item.key)"  :class="{select: item.key === params.tradeId}">{{item.name}}</a>
+                <li v-for="item in industry" :key="item.id" class="industry-list">
+                  <a @click="selectIndustry(item.id)"  :class="{select: item.id == params.tradeId}">{{item.tradeName}}</a>
                 </li>
               </ul>
             </el-col>
@@ -35,10 +35,10 @@
             <el-col :span="20">
                <ul class="industry" v-bind:class="{ hidden: isActiveTown}">
                  <li class="industry-list">
-                  <a :class="{select: params.townId === null}" @click="selectTownShip(null)">不限</a>
+                  <a :class="{select: params.townId == null}" @click="selectTownShip(null)">不限</a>
                 </li>
                 <li v-for="item in townShip" :key="item.key" class="industry-list">
-                  <a @click="selectTownShip(item.key)" :class="{select: item.key === params.townId}">{{item.name}}</a>
+                  <a @click="selectTownShip(item.id)" :class="{select: item.id == params.townId}">{{item.name}}</a>
                 </li>
               </ul>
              <!--<transition name="el-zoom-in-top">
@@ -57,10 +57,10 @@
             <el-col :span="20">
               <ul class="industry">
                 <li class="industry-list">
-                  <a :class="{select: params.scaleType === null}" @click="selectScale(null)">不限</a>
+                  <a :class="{select: params.scaleType == null}" @click="selectScale(null)">不限</a>
                 </li>
                  <li v-for="item in scale" :key="item.key" class="industry-list">
-                  <a @click="selectScale(item.key)" :class="{select: item.key === params.scaleType}">{{item.name}}</a>
+                  <a @click="selectScale(item.key)" :class="{select: item.key == params.scaleType}">{{item.name}}</a>
                 </li>
               </ul>
             </el-col>
@@ -154,9 +154,9 @@ export default {
   },
   computed: {
     ...mapState({
-      townShip: state => state.Pub.townShip,
-      scale: state => state.Pub.scale,
-      industry: state => state.Pub.industry
+      townShip: state => state.Lists.AllTownShip,
+      scale: state => state.Lists.scale,
+      industry: state => state.Lists.AllIndustry
     })
   },
   methods: {
@@ -184,6 +184,7 @@ export default {
      */
     selectIndustry(val) {
       this.params.tradeId = val;
+      this.getCompanyInfo();
       console.log(val);
     },
     /* @argument val
@@ -204,10 +205,13 @@ export default {
     * 获取企业信息
     */
     getCompanyInfo() {
-      api.get('admin/company/add', this.params).then((e) => {
-        // console.log("11111");
-      }, response => {
-        // error callback
+      api.get('company/getcompany', this.params).then((e) => {
+        console.log(e);
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
       });
     }
   }
