@@ -3,15 +3,15 @@
     <div id='mapDiv' style=''></div>
     <div class='seach'>
       <!-- <input  type='text'>
-                    <span></span> -->
-      <el-input placeholder='请输入企业名称' v-model='seachInput' class='input-with-select'>
+      <span></span> -->
+      <el-input placeholder='请输入企业名称' v-model='searchParams.value' class='input-with-select'>
         <!-- <el-select v-model='select' slot='prepend' placeholder='请选择'>
-                        <el-option label='企业' value='1'></el-option>
-                        <el-option label='项目' value='2'></el-option>
-                      </el-select> -->
-        <el-button slot='append' style='background:#1c7bef;' icon='el-icon-search' class="searchBtn" @click="searchList"></el-button>
+          <el-option label='企业' value='1'></el-option>
+          <el-option label='项目' value='2'></el-option>
+        </el-select> -->
+        <el-button  slot='append' style='background:#1c7bef;' icon='el-icon-search' class="searchBtn" @click="searchcompany"></el-button>
       </el-input>
-      <ul class="searchList">
+      <ul class="searchList" >
         <li>四喜信息技术有限公司</li>
         <li>四喜信息技术有限公司</li>
         <li class="ellipisice">四喜信息技术四喜信息技术有限公司四喜信息技术有限公司四喜信息技术有限公司有限公司</li>
@@ -23,51 +23,37 @@
         <el-button>
           <i class='el-icon-location' style='color:#1c7bef;'></i>建德市</el-button>
         <el-select class='xz' v-model='select1' slot='prepend' placeholder='乡镇'>
-          <el-option label='餐厅名' value='1'></el-option>
-          <el-option label='订单号' value='2'></el-option>
-          <el-option label='用户电话' value='3'></el-option>
+            <el-option v-for = "item in townShip" :label='item.name' :value='item.key'></el-option>
         </el-select>
         <el-select class='hy' v-model='select2' slot='prepend' placeholder='行业分类'>
-          <el-option label='餐厅名' value='1'></el-option>
-          <el-option label='订单号' value='2'></el-option>
-          <el-option label='用户电话' value='3'></el-option>
+            <el-option v-for = "item in industry" :label='item.name' :value='item.key'></el-option>
         </el-select>
       </div>
     </div>
     <div class='right'>
-      <p class='p' @click='rmShow'>
-        <i class='el-icon-caret-right' style='color:#1c7bef;'></i>
-      </p>
-      <div class='rm'>
-        <p class="rmTitle">
-          <span></span> 热门企业</p>
-        <ul>
-          <li>
-            <p>
-              <img src='./../../assets/img/bgAdminLogin.png' alt=''>
-            </p>
-            <ul>
-              <li class='ellipsis'>企业名称：
-                <a>四喜信息技术有限公司</a>
-              </li>
-              <li class='ellipsis'>所属乡镇：
-                <span>西湖镇</span>
-              </li>
-              <li class='ellipsis'>地　　址：
-                <span>四喜信息技术有限公司四喜信息技术有限公司</span>
-              </li>
-              <li class='ellipsis'>联系方式：
-                <span>1008610010110</span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+        <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
+        <div class='rm'>
+          <p class="rmTitle"><span></span> 热门企业</p>
+          <ul>
+            <li v-for = "item in remenParams">
+              <p>
+                <img :src='item.factoryImageUrl' alt=''>
+              </p>
+              <ul>
+                <li class='ellipsis'>企业名称：<a>{{item.companyName}}</a></li>
+                <li class='ellipsis'>所属乡镇：<span>{{item.townName}}</span></li>
+                <li class='ellipsis'>地　　址：<span>{{item.companyAddress}}</span></li>
+                <li class='ellipsis'>联系方式：<span>{{item.chargePersonTel}}</span></li>
+              </ul>
+            </li>          
+          </ul>
+        </div>
     </div>
   </div>
 </template>
 <script>
 import api from '~/plugins/api';
+// import { mapState } from 'vuex';
 export default {
   async hotCompany({
     params
@@ -82,7 +68,17 @@ export default {
     return {
       seachInput: '',
       select1: '',
-      select2: ''
+      select2: '',
+      remenParams: {
+        img: '',
+        name: '',
+        address: '',
+        phone: ''
+      },
+      searchParams: {
+        type: '1',
+        value: ''
+      }
     };
   },
   head: {
@@ -95,17 +91,7 @@ export default {
     ]
   },
   mounted() {
-    api.get('company/hotcompany')
-      .then(e => {
-        //  this.$router.push({ name: 'custome-list' });
-        console.log(e);
-      })
-      .catch(err => {
-        this.$notify.error({
-          title: '错误',
-          message: err.msg
-        });
-      });
+    this.remen();
     /* 地图实例化 */
     window.$('.ddd').text('aaaa');
     var map;
@@ -249,6 +235,7 @@ export default {
     });
   },
   methods: {
+    // 右边侧边栏
     rmShow() {
       console.log(window.$('.rm').css('width'));
       if (window.$('.rm').css('width') === '0px') {
@@ -269,10 +256,20 @@ export default {
         right: '0'
       });
     },
-    searchList() {
-      window.$('.searchList').css({
-        display: 'block'
-      });
+    searchcompany() {
+      let searchParams = this.searchParams;
+      api.post('company/searchcompany', { searchParams })
+        .then(e => {
+          this.remenParams = e.data;
+          console.log(e);
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err.msg
+          });
+        });
+      window.$('.searchList').css({display: 'block'});
       window.$('.searchList').on('mouseleave', function () {
         window.$('.searchList').css({
           display: 'none'
@@ -283,6 +280,21 @@ export default {
           display: 'none'
         });
       });
+    },
+    // 热门企业
+    remen() {
+      console.log(this.townShip);
+      api.get('company/hotcompany')
+        .then(e => {
+          this.remenParams = e.data;
+          console.log(e);
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err.msg
+          });
+        });
     }
   }
 };

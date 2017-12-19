@@ -4,7 +4,7 @@
     <div class="header">
       <p>
         <img class="frontHeader" src="./../assets/img/frontHeader.png" alt="">
-        <img class="frontHeaderIcon" src="./../assets/img/frontHeaderIcon.png" alt="">
+        <!-- <img class="frontHeaderIcon" src="./../assets/img/frontHeaderIcon.png" alt=""> -->
       </p>
       <div class="nav">
         <p class="navLeft">
