@@ -55,6 +55,7 @@
   </div>
 </template>
 <script>
+import api from '~/plugins/api';
 export default {
   data() {
     return {
@@ -73,6 +74,17 @@ export default {
     ]
   },
   mounted() {
+    api.get('company/hotcompany')
+      .then(e => {
+        //  this.$router.push({ name: 'custome-list' });
+        console.log(e);
+      })
+      .catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
+      });
     /* 地图实例化 */
     window.$('.ddd').text('aaaa');
     var map;
