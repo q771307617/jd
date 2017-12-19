@@ -241,7 +241,7 @@ export default {
       color: #666666;
     }
     .hidden {
-      max-height: 36px;
+      max-height: 34px;
       overflow: hidden;
     }
     .industry {
