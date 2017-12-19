@@ -35,8 +35,8 @@
           </el-form-item>
           <el-form-item label="是否高新技术企业：" prop="isHighTech">
             <el-radio-group v-model="ruleForm.isHighTech" v-if="showInput">
-              <el-radio label="是" value="1"></el-radio>
-              <el-radio label="否" value="2"></el-radio>
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
             </el-radio-group>
             <div v-else>div</div>
           </el-form-item>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import api from './../../../plugins/api.js';
 export default {
   data() {
     return {
@@ -126,7 +127,14 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);
-          alert('submit!');
+          api.post('admin/indicator/add', this.ruleForm).then((e) => {
+            // console.log("11111");
+          }, response => {
+            this.$notify.error({
+              title: '错误',
+              message: response.msg
+            });
+          });
         } else {
           console.log(this.ruleForm);
           console.log('error submit!!');
