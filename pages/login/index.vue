@@ -1,22 +1,33 @@
 <template>
-    <div class="login bg-qian">
-    <div class="container">
+    <div class="login">
+    <div class="container bg-admin">
+      <div class="slogan">
+        <p class="one">建德企业信息管理平台</p>
+        <hr style="margin:26px 0;">
+        <p class="two">以企业为中心,以服务为核心</p>
+      </div>
       <div class="content">
         <p class="text">登录</p>
         <div class="demo-input-size">
-            <el-input  placeholder="管理员账号" v-model="userInfo.username" class="input" autofocus>
-              <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
-            </el-input>
-            <el-input placeholder="密码" type="password" v-model="userInfo.password" class="input">
-              <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
-            </el-input>
-            <div style="position:relative">
-              <el-input placeholder="验证码" v-model="userInfo.code" class="input" style="width: 214px;margin-right:164px; ">
+          <div class="input-warnnp">
+              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @blur="checkName(username)">
+                <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
+              </el-input>
+          </div>
+          <div class="input-warnnp">
+              <el-input placeholder="密码" type="password" v-model="password" class="input">
+                <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
+              </el-input>
+              <!-- <p class="hint" v-if="password === ''">*密码不能为空!</p> -->
+          </div>
+            <div class="input-warnnp">
+              <el-input placeholder="验证码" v-model="code" class="input" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="updateCode"></i>
+              <!-- <p class="hint" v-if="">{{ErrorHint}}</p> -->
             </div>
-          <el-button class="btn" @click="login">登录</el-button>
+          <el-button class="btn" @click="submitLogin">登录</el-button>
         </div>
       </div>
     </div>
@@ -27,29 +38,36 @@
 export default {
   data() {
     return {
-      userInfo: {
-        username: null,
-        password: null,
-        code: null,
-        identity: null
-      }
+      username: '',
+      password: '',
+      type: '',
+      code: ''
     };
   },
   methods: {
-    login() {
-      console.log();
+    submitLogin() {
+    },
+    // 验证码更新
+    updateCode() {
+      console.log('刷新了');
+    },
+    // 验证用户名是否符合规则
+    checkName(username) {
+      let regex = new RegExp('^([\u4E00-\uFA29]|[\uE7C7-\uE7F3]|[a-zA-Z0-9_-]){1,20}$');
+      if (regex.test(username)) {
+        console.log('用户名符合规则!');
+      } else {
+        console.log('用户名不符合规则!');
+      }
     }
   },
   mounted() {
+    this.$nextTick(() => {
+      this.submitLogin();
+      this.checkName(this.username);
+    });
   },
   computed: {
-    // 判断用户类型
-  //   isType() {
-  //     if (this.$route.name === 'login') {
-  //       return false;
-  //     }
-  //     return true;
-  //   }
   }
 };
 </script>
@@ -60,9 +78,24 @@ export default {
   position: relative;
   margin: 0 auto;
 }
-.bg-qian{
+.bg-admin{
   background-image: url(../../assets/img/bgFrontLogin.png);
 }
+  .slogan{
+    position: absolute;
+    top: 235px;
+    left: 350px;
+    z-index: 10;
+  }
+    .one{
+      font-size:48px;
+      color:#ffffff;
+      /* // color:linear-gradient(-180deg, #88FAFF 0%, #69ADFF 97%); */
+    }
+    .two{
+      font-size:18px;
+      color:#ffffff;
+    }
 .login .container .content {
   background: #f7f7f7;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.39);
@@ -87,6 +120,16 @@ export default {
   margin-bottom: 40px;
   font-size: 14px;
   color: #333333;
+}
+.input-warnnp{
+  position: relative;
+}
+.hint{
+  position: absolute;
+  left: 85px;
+  top:45px;
+  font-size: 12px;
+  color: red;
 }
 .el-input__inner{
   padding: 0;
