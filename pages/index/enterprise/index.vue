@@ -16,11 +16,10 @@
             <el-col :span="20">
               <ul class="industry"  v-bind:class="{ hidden: isActiveIndustry}">
                 <li class="industry-list">
-                  <a v-if="params.tradeId===null">不限</a>
-                  <a v-else>不限</a>
+                  <a :class="{select: params.tradeId == null}" @click="selectIndustry(null)">不限</a>
                 </li>
-                <li v-for="item in industry" :key="item.key" class="industry-list">
-                  <a @click="selectIndustry(item.key)">{{item.name}}</a>
+                <li v-for="item in industry" :key="item.id" class="industry-list">
+                  <a @click="selectIndustry(item.id)"  :class="{select: item.id == params.tradeId}">{{item.tradeName}}</a>
                 </li>
               </ul>
             </el-col>
@@ -36,10 +35,10 @@
             <el-col :span="20">
                <ul class="industry" v-bind:class="{ hidden: isActiveTown}">
                  <li class="industry-list">
-                  <a>不限</a>
+                  <a :class="{select: params.townId == null}" @click="selectTownShip(null)">不限</a>
                 </li>
                 <li v-for="item in townShip" :key="item.key" class="industry-list">
-                  <a @click="selectTownShip(item.key)">{{item.name}}</a>
+                  <a @click="selectTownShip(item.id)" :class="{select: item.id == params.townId}">{{item.name}}</a>
                 </li>
               </ul>
              <!--<transition name="el-zoom-in-top">
@@ -57,8 +56,11 @@
             <el-col :span="3" class="tittle">规上/规下：</el-col>
             <el-col :span="20">
               <ul class="industry">
+                <li class="industry-list">
+                  <a :class="{select: params.scaleType == null}" @click="selectScale(null)">不限</a>
+                </li>
                  <li v-for="item in scale" :key="item.key" class="industry-list">
-                  <a @click="selectScale(item.key)">{{item.name}}</a>
+                  <a @click="selectScale(item.key)" :class="{select: item.key == params.scaleType}">{{item.name}}</a>
                 </li>
               </ul>
             </el-col>
@@ -74,15 +76,25 @@
           </el-col>
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content">
-            <el-col :span="6">
-              <div class="imgInfo"><img src="" alt=""></div>
-            </el-col>
-            <el-col :span="15">
-              <el-col :span="8">
-                <ul>
-                  <h1>公司名称</h1>
-                  <li v-for="item in data1" :key="item">{{item}}</li>
-                </ul>
+              <el-col :span="6">
+                <div class="imgInfo"><img src="" alt=""></div>
+              </el-col>
+              <el-col :span="15">
+                <el-col :span="8">
+                  <ul>
+                    <h1>公司名称</h1>
+                    <li v-for="item in data1" :key="item.id">{{item}}</li>
+                  </ul>
+                </el-col>
+                <el-col :span="16">
+                  <ul>
+                    <li>&nbsp</li>
+                    <li>1</li>
+                    <li>1</li>
+                    <li>1</li>
+                    <li>1</li>
+                  </ul>
+                </el-col>
               </el-col>
               <el-col :span="16">
                 <ul>
@@ -118,7 +130,6 @@ import api from './../../../plugins/api.js';
 import {
   mapState
 } from 'vuex';
-// import { pub, time } from '~/plugins/utils/index';
 export default {
   data() {
     return {
@@ -153,9 +164,9 @@ export default {
   },
   computed: {
     ...mapState({
-      townShip: state => state.Pub.townShip,
-      scale: state => state.Pub.scale,
-      industry: state => state.Pub.industry
+      townShip: state => state.Lists.AllTownShip,
+      scale: state => state.Lists.scale,
+      industry: state => state.Lists.AllIndustry
     })
   },
   methods: {
@@ -167,47 +178,50 @@ export default {
       console.log(`当前页: ${val}`);
     },
     showIndustry() {
-      if (this.isActiveIndustry) {
-        this.isActiveIndustry = false;
-      } else {
-        this.isActiveIndustry = true;
-      }
+      this.isActiveIndustry = !this.isActiveIndustry;
     },
     showTownShip() {
-      if (this.isActiveTown) {
-        this.isActiveTown = false;
-      } else {
-        this.isActiveTown = true;
-      }
+      this.isActiveTown = !this.isActiveTown;
     },
     staff() {
-      if (this.params.staffScaleType) {
-        this.params.staffScaleType = 0;
-      } else {
-        this.params.staffScaleType = 1;
-      }
+      this.params.staffScaleType = Number(!this.params.staffScaleType);
     },
     party() {
-      if (this.params.partyMemberNumberType) {
-        this.params.partyMemberNumberType = 0;
-      } else {
-        this.params.partyMemberNumberType = 1;
-      }
+      this.params.partyMemberNumberType = Number(!this.params.partyMemberNumberType);
     },
+    /* @argument val
+     * 选择行业
+     */
     selectIndustry(val) {
+      this.params.tradeId = val;
+      this.getCompanyInfo();
       console.log(val);
     },
+    /* @argument val
+    * 选择乡镇
+    */
     selectTownShip(val) {
+      this.params.townId = val;
       console.log(val);
     },
+    /* @argument val
+    * 选择规模
+    */
     selectScale(val) {
+      this.params.scaleType = val;
       console.log(val);
     },
+    /* @argument val
+    * 获取企业信息
+    */
     getCompanyInfo() {
-      api.post('admin/company/add', this.params).then((e) => {
-        // console.log("11111");
-      }, response => {
-        // error callback
+      api.get('company/getcompany', this.params).then((e) => {
+        console.log(e);
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
       });
     }
   }
@@ -246,9 +260,6 @@ export default {
           color: #f54203;
         }
         a:active {
-          color: #ffbf50;
-        }
-        a:focus {
           color: #ffbf50;
         }
         .select {
@@ -327,8 +338,8 @@ export default {
             overflow: initial;
             position: relative;
           }
-          .selected{
-            color:#1c7bef;
+          .selected {
+            color: #1c7bef;
           }
           .sort-caret {
             margin: -3px 2px;
