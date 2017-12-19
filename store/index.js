@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Pub from './public';
+import Lists from './lists';
 
-// 文件导出内容
 Vue.use(Vuex);
-let Store = () => new Vuex.Store({
-  modules: {
-    Pub
-  }
-});
+let Store = () =>
+  new Vuex.Store({
+    modules: {
+      Pub,
+      Lists
+    }
+  });
 export default Store;
