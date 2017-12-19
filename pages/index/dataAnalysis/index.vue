@@ -56,6 +56,8 @@
 
 <script>
 import pages from '~/components/pages';
+import api from '~/plugins/api';
+// import { mapState } from 'vuex';
 export default {
   components: {
     pages
@@ -63,6 +65,10 @@ export default {
   data() {
     return {
       radio3: '0',
+      dataParams: {
+        sort: 1,
+        type: 1
+      },
       tableData: [{
         date: '2016-05-02',
         name: '滑冰',
@@ -82,6 +88,9 @@ export default {
       }]
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
     handleEdit(index, row) {
       console.log(index, row);
@@ -90,6 +99,20 @@ export default {
 
     },
     handleCurrentChange() {
+    },
+    getData() {
+      let dataParams = this.dataParams;
+      api.get('company/searchindicator', { dataParams })
+        .then(e => {
+          // this.dataParams = e.data;
+          console.log(e);
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err.msg
+          });
+        });
     }
   }
 };
