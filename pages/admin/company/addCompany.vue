@@ -24,9 +24,12 @@
             <div v-else>div</div>
           </el-form-item>
           <el-form-item label="所属乡镇：" prop="townId">
+            <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+            <div v-else>div</div>
+          </el-form-item>
+          <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput">
-              <el-option label="刘庄" value="刘庄"></el-option>
-              <el-option label="李庄" value="李庄"></el-option>
+              <el-option :label="item.name" :value="item.key" v-for="item in townShip" :key="item.key"></el-option>
             </el-select>
             <div v-else>div</div>
           </el-form-item>
@@ -55,12 +58,12 @@
               </el-form-item>
             </el-col>
             <!--
-                                          <el-col :span="8">
-                                            <el-form-item  prop="name">
-                                            纬度
-                                                <el-input v-model="ruleForm.name" class="input-length"></el-input>
-                                              </el-form-item>
-                                          </el-col>-->
+                                              <el-col :span="8">
+                                                <el-form-item  prop="name">
+                                                纬度
+                                                    <el-input v-model="ruleForm.name" class="input-length"></el-input>
+                                                  </el-form-item>
+                                              </el-col>-->
           </el-row>
           <el-form-item label="行业代码：" prop="tradeId">
             <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
@@ -68,8 +71,7 @@
           </el-form-item>
           <el-form-item label="所属行业：" prop="region">
             <el-select v-model="ruleForm.region" placeholder="请选择所属行业" v-if="showInput">
-              <el-option label="java" value="java"></el-option>
-              <el-option label="web" value="web"></el-option>
+              <el-option :label="item.name" :value="item.key" v-for="item in industry" :key="item.key"></el-option>
             </el-select>
             <div v-else>div</div>
           </el-form-item>
@@ -143,6 +145,9 @@
 
 <script>
 import api from './../../../plugins/api.js';
+import {
+  mapState
+} from 'vuex';
 export default {
   data() {
     return {
@@ -200,6 +205,13 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState({
+      townShip: state => state.Pub.townShip,
+      scale: state => state.Pub.scale,
+      industry: state => state.Pub.industry
+    })
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -217,6 +229,9 @@ export default {
           return false;
         }
       });
+    },
+    handleChange(value) {
+      console.log(value);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     change(val) {
+      this.radio = val;
       this.$router.push({
         name: val,
         query: {
