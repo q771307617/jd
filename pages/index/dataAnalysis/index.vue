@@ -41,11 +41,11 @@
           sortable>
         </el-table-column>
         <el-table-column label="操作">
-          <template slot-scope="scope">
+          <div slot-scope="scope">
             <el-button
               size="mini"
               @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-          </template>
+          </div>
         </el-table-column>
       </el-table>
       <pages :count='25' :pageNum='1' :pageSize='5'  @size-change="handleSizeChange" @current-change="handleCurrentChange" />

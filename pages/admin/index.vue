@@ -106,34 +106,22 @@ export default {
       });
     },
     change(val, row) {
-      if (val === 'add') {
-        this.$router.push({
-          name: 'admin-company-addCompany',
-          query: {
-            type: val,
-            companyId: row,
-            showInput: true
-          }
-        });
-      } else if (val === 'view') {
-        this.$router.push({
-          name: 'admin-company-addCompany',
-          query: {
-            type: val,
-            companyId: row.companyId,
-            showInput: false
-          }
-        });
-      } else {
-        this.$router.push({
-          name: 'admin-company-addCompany',
-          query: {
-            type: val,
-            companyId: row.companyId,
-            showInput: true
-          }
-        });
+      let showInput = true;
+      if (val === 'view') {
+        row = row.companyId;
+        showInput = false;
+      } else if (val === 'edit') {
+        row = row.companyId;
+        showInput = true;
       }
+      this.$router.push({
+        name: 'admin-company-addCompany',
+        query: {
+          type: val,
+          companyId: row,
+          showInput: showInput
+        }
+      });
     }
   }
 };
@@ -188,6 +176,7 @@ export default {
     }
   }
 }
+
 
 
 
