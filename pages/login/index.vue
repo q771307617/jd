@@ -10,24 +10,33 @@
         <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
-              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @blur="checkName(username)">
+              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
               </el-input>
+                <transition name="fade">
+                  <p class="hint" v-if="!username">{{UserHint}}</p>
+                </transition>
           </div>
           <div class="input-warnnp">
-              <el-input placeholder="密码" type="password" v-model="password" class="input">
+              <el-input placeholder="密码" type="password" v-model="password" class="input" :maxlength="20">
                 <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
               </el-input>
-              <!-- <p class="hint" v-if="password === ''">*密码不能为空!</p> -->
+                <transition name="fade">
+                  <p class="hint" v-if="!password">{{PasswordHint}}</p>
+                </transition>
           </div>
             <div class="input-warnnp">
-              <el-input placeholder="验证码" v-model="code" class="input" style="width: 214px;margin-right:164px;">
+              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="updateCode"></i>
-              <!-- <p class="hint" v-if="">{{ErrorHint}}</p> -->
+              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="checkCode" alt="" style="width:113px;height:40px"></i>
+                <transition name="fade">
+                  <p class="hint" v-if="!code">{{CodeHint}}</p>
+                </transition>
+                  <p class="hint">{{msg}}</p>
             </div>
           <el-button class="btn" @click="submitLogin">登录</el-button>
+          <img :src="verifycodeUrl" alt="" style="width:113px;height:40px">
         </div>
       </div>
     </div>
@@ -35,36 +44,88 @@
   </div>
 </template>
 <script>
+import api from '~/plugins/api';
+import qs from 'qs';
 export default {
   data() {
     return {
       username: '',
       password: '',
       type: '',
-      code: ''
+      code: '',
+      UserHint: '',
+      PasswordHint: '',
+      CodeHint: '',
+      verifycodeUrl: '',
+      msg: ''
     };
   },
   methods: {
+    // 提交登录
     submitLogin() {
-    },
-    // 验证码更新
-    updateCode() {
-      console.log('刷新了');
+      let userStatus = this.checkName(this.username);
+      let passwordStatus = this.checkPassword(this.password);
+      if (userStatus && passwordStatus) {
+        api.post('user/login', qs.stringify({
+          username: this.username,
+          password: this.password,
+          type: 2
+        })).then((e) => {
+          if (e.status === 200) {
+            this.$router.push({name: 'admin'});
+          } else {
+            this.msg = e.msg;
+          }
+        });
+      }
     },
     // 验证用户名是否符合规则
     checkName(username) {
-      let regex = new RegExp('^([\u4E00-\uFA29]|[\uE7C7-\uE7F3]|[a-zA-Z0-9_-]){1,20}$');
-      if (regex.test(username)) {
-        console.log('用户名符合规则!');
+      if (username === '') {
+        this.UserHint = '*请输入用户名!';
+        return false;
       } else {
-        console.log('用户名不符合规则!');
+        // 验证空格
+        let reg = /(^\s+)|(\s+$)/g;
+        let regex = new RegExp(reg);
+        if (!regex.test(username)) {
+          return true;
+        } else {
+          this.username = '';
+          this.UserHint = '*请输入用户名!';
+          return false;
+        }
       }
+    },
+    // 验证密码是否符合规则
+    checkPassword(password) {
+      if (password === '') {
+        this.PasswordHint = '*请输入密码!';
+        return false;
+      } else {
+        let reg = /(^\s+)|(\s+$)/g;
+        let regex = new RegExp(reg);
+        // 不存在空格且密码长度为6-20位
+        if (!regex.test(password) && password.length > 5) {
+          return true;
+        } else {
+          this.Password = '';
+          this.PasswordHint = '*请输入密码!';
+          return false;
+        }
+      }
+    },
+    // 获取验证码
+    checkCode() {
+      api.get('/user/verifycode').then((e) => {
+        console.log(e);
+        // return e.data;
+      });
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.submitLogin();
-      this.checkName(this.username);
+      this.checkCode();
     });
   },
   computed: {
@@ -72,30 +133,38 @@ export default {
 };
 </script>
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 .login .container {
   width: 1920px;
   height: 1080px;
   position: relative;
   margin: 0 auto;
 }
-.bg-admin{
+.bg-admin {
   background-image: url(../../assets/img/bgFrontLogin.png);
 }
-  .slogan{
-    position: absolute;
-    top: 235px;
-    left: 350px;
-    z-index: 10;
-  }
-    .one{
-      font-size:48px;
-      color:#ffffff;
-      /* // color:linear-gradient(-180deg, #88FAFF 0%, #69ADFF 97%); */
-    }
-    .two{
-      font-size:18px;
-      color:#ffffff;
-    }
+.slogan {
+  position: absolute;
+  top: 235px;
+  left: 350px;
+  z-index: 10;
+}
+.one {
+  font-size: 48px;
+  color: #ffffff;
+  /* // color:linear-gradient(-180deg, #88FAFF 0%, #69ADFF 97%); */
+}
+.two {
+  font-size: 18px;
+  color: #ffffff;
+}
 .login .container .content {
   background: #f7f7f7;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.39);
@@ -121,21 +190,21 @@ export default {
   font-size: 14px;
   color: #333333;
 }
-.input-warnnp{
+.input-warnnp {
   position: relative;
 }
-.hint{
+.hint {
   position: absolute;
   left: 85px;
-  top:45px;
+  top: 45px;
   font-size: 12px;
   color: red;
 }
-.el-input__inner{
+.el-input__inner {
   padding: 0;
   margin-left: 50px;
 }
-.el-input__prefix{
+.el-input__prefix {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -143,18 +212,18 @@ export default {
   background-color: red;
   margin-left: 50px;
 }
-.icon{
+.icon {
   display: block;
   background: url(../../assets/img/iconBackground.png) no-repeat;
-  width:20px;
-  height:20px;
+  width: 20px;
+  height: 20px;
   margin: 10px 15px;
-  font-style: normal
+  font-style: normal;
 }
-.icon::after{
+.icon::after {
   content: "|";
-  width:1px;
-  height:29px;
+  width: 1px;
+  height: 29px;
   margin-left: 38px;
 }
 .login .container .content .btn {
@@ -166,18 +235,18 @@ export default {
   color: #fff;
 }
 .el-input /deep/ .el-input--prefix,
-.el-input /deep/ .el-input__inner{
+.el-input /deep/ .el-input__inner {
   padding-left: 80px;
 }
-.loginCode{
+.loginCode {
   width: 111px;
   height: 40px;
   border: 1px solid #eee;
   position: absolute;
   top: 0;
   left: 312px;
-  }
-.updateCode{
+}
+.updateCode {
   display: inline-block;
   width: 16px;
   height: 16px;

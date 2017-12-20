@@ -4,11 +4,9 @@
       <el-main>
         <el-row>
           <el-col :span="24">
-            <div>
-              <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter="KeySearch(FindCompanyName)">
-                <div slot="append" style="cursor:pointer" @click="Search(FindCompanyName)">搜&nbsp&nbsp索</div>
-              </el-input>
-            </div>
+            <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter.native="Search(FindCompanyName)">
+              <el-button slot="append" class="searchBtn" @click="Search(FindCompanyName)">搜&nbsp索</el-button>
+            </el-input>
           </el-col>
         </el-row>
         <el-row class="search">
@@ -73,7 +71,7 @@
               <div class="personal" @click="party()"><span>党员人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i></span></div>
           </el-row>
           <!-- 企业信息展示 -->
-          <el-col :span="24" class="content" v-for="item in EnterpriseProfile" :key="item.id">
+          <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
               <el-col :span="6">
                 <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
               </el-col>
@@ -112,10 +110,10 @@
             <el-col :span="10">&nbsp</el-col>
             <el-col :span="14">
               <p class="demonstration" style="float:left;margin-top:5px;">共
-              <span class="red">{{EnterpriseProfile.length}}</span>条数据
+              <span class="red">{{pageCount}}</span>条数据
               <span style="margin-left:20px;">每页</span>
               <span class="red">15</span>条</p>
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="EnterpriseProfile.length">
+              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="EnterpriseProfile.length">
               </el-pagination>
             </el-col>
           </el-col>
@@ -127,7 +125,7 @@
 </template>
 
 <script>
-import api from './../../../plugins/api.js';
+import api from '~/plugins/api';
 import {
   mapState
 } from 'vuex';
@@ -137,7 +135,8 @@ export default {
       isActiveIndustry: true,
       isActiveTown: true,
       params: {
-        chargePersonType: null,
+        // 默认必须传1
+        chargePersonType: 1,
         companyName: null,
         pageNum: null,
         pageSize: null,
@@ -149,7 +148,8 @@ export default {
       },
       FindCompanyName: '',
       EnterpriseProfile: {},
-      currentPage4: 4,
+      currentPage: 1,
+      pageCount: null,
       selectType: [{
         index: 1,
         classify: '行业',
@@ -166,11 +166,14 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     // 改变页数时回调
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.params.pageNum = val;
+      this.getCompanyInfo();
+      // console.log(`当前页: ${val}`, this.pageNum);
+      console.log(this.$route.path.slice(1));
     },
     showIndustry() {
       this.isActiveIndustry = !this.isActiveIndustry;
@@ -197,13 +200,9 @@ export default {
         }
       });
     },
-    // 回车搜索
-    KeySearch(val) {
-      console.log(1212);
-      this.Search(val);
-    },
     // 企业名称搜索
     Search(val) {
+      console.log(1212);
       if (val === '') { return; };
       api.get('/company/getcompanybyname', {companyName: val}).then((e) => {
         if (e.status === 200) {
@@ -233,12 +232,22 @@ export default {
       this.params.scaleType = val;
     },
     /* @argument val
+    * 刷新保存
+    */
+    RefreshSave() {
+      this.$router.push({
+        path: this.$route.path.slice(1),
+        query: this.params
+      });
+    },
+    /* @argument val
     * 获取企业信息
     */
     getCompanyInfo() {
       api.get('company/getcompany', this.params).then((e) => {
         if (e.status === 200) {
           this.EnterpriseProfile = e.data.list;
+          this.pageCount = e.data.count;
         };
       }).catch(err => {
         this.$notify.error({
@@ -251,6 +260,7 @@ export default {
   created() {
     this.$nextTick(() => {
       this.getCompanyInfo();
+      this.RefreshSave();
     });
   }
 };
@@ -320,6 +330,17 @@ export default {
   margin: 0 auto;
   .el-main {
     .el-row {
+      .el-col{
+        .searchBtn{
+          background-color:#409eff;
+          width: 217px;
+          height: 40px;
+          border-radius: 0;
+          font-size:16px;
+          color:#ffffff;
+          letter-spacing:9.14px;
+        }
+      }
       .content {
         border-bottom: 1px solid #d4e1ea;
         margin-bottom: 20px;

@@ -156,7 +156,6 @@
             </div>
         </div>
         </div>
-        <!-- </div> -->
       </el-row>
     </el-main>
   </el-container>
@@ -247,8 +246,8 @@ export default {
         }
       }
       .top-picture {
-        width: 600px;
-        height: 400px;
+        max-width: 600px;
+        max-height: 400px;
         margin-left:60px;
         // background-color:red;
       }

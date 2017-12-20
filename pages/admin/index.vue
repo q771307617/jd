@@ -25,7 +25,7 @@
           <template slot-scope="scope">
             <el-button @click="change('view',scope.row)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small" @click="change('edit',scope.row)">编辑</el-button>
-</template>
+          </template>
         </el-table-column>
       </el-table>
       <div class="flex-box block">
