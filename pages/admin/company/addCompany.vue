@@ -24,9 +24,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                    <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-                                                    <div v-else>div</div>
-                                                  </el-form-item>-->
+                                                      <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+                                                      <div v-else>div</div>
+                                                    </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -37,37 +37,37 @@
             <el-select v-model="ruleForm.villageId" placeholder="请选择村（社区）" v-if="showInput">
               <el-option :label="item.name" :value="item.id" v-for="item in village" :key="item.id"></el-option>
             </el-select>
-            <div v-else>{{ruleForm.townName}}</div>
+            <div v-else>{{ruleForm.villageName}}</div>
           </el-form-item>
           <el-form-item label="详细地址：" prop="address">
             <el-input v-model="ruleForm.address" class="input-length" v-if="showInput"></el-input>
-            <div v-else>{{ruleForm.townName}}</div>
+            <div v-else>{{ruleForm.companyProfile}}</div>
           </el-form-item>
           <el-row :gutter="24">
             <el-col :span="8">
               <el-form-item label="经纬度：" prop="lng">
                 经度
                 <el-input v-model="ruleForm.lng" class="input-length" v-if="showInput"></el-input>
-                <span v-else>{{ruleForm.townName}}</span>
+                <span v-else>{{ruleForm.lng}}</span>
               </el-form-item>
               <el-form-item prop="lat">
                 纬度
                 <el-input v-model="ruleForm.lat" class="input-length" v-if="showInput"></el-input>
-                <span v-else>{{ruleForm.townName}}</span>
+                <span v-else>{{ruleForm.lat}}</span>
               </el-form-item>
             </el-col>
             <!--
-                                                    <el-col :span="8">
-                                                      <el-form-item  prop="name">
-                                                      纬度
-                                                          <el-input v-model="ruleForm.name" class="input-length"></el-input>
-                                                        </el-form-item>
-                                                    </el-col>-->
+              <el-col :span="8">
+                <el-form-item  prop="name">
+                纬度
+                    <el-input v-model="ruleForm.name" class="input-length"></el-input>
+                  </el-form-item>
+              </el-col>-->
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-                                              <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-                                              <div v-else>div</div>
-                                            </el-form-item>-->
+                                                <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
+                                                <div v-else>div</div>
+                                              </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -76,37 +76,43 @@
           </el-form-item>
           <el-form-item label="主要核心产品：" prop="productName">
             <el-input v-model="ruleForm.productName" class="input-length" v-if="showInput"></el-input>
-            <div v-else>{{ruleForm.townName}}</div>
+            <div>{{ruleForm['leader']['gmtModified']}}</div>
           </el-form-item>
           <el-form-item label="规上（规下）：" prop="scaleUp">
             <el-radio-group v-model="ruleForm.scaleUp" v-if="showInput">
               <el-radio label="1" value="1">规上</el-radio>
               <el-radio label="2" value="2">规下</el-radio>
             </el-radio-group>
-            <div v-else><p v-if="ruleForm.scaleUp==1">规上</p><p v-else>规下</p></div>
+            <div v-else>
+              <p v-if="ruleForm.scaleUp==1">规上</p>
+              <p v-if="ruleForm.scaleUp==2">规下</p>
+            </div>
           </el-form-item>
-          <!-- <el-form-item label="主要负责人：" prop="corporationName">
+          <el-form-item label="主要负责人：" prop="corporationName">
             <el-input v-model="ruleForm.corporationName" class="input-length" v-if="showInput"></el-input>
-            <div v-else>{{ruleForm.corporation.name}}</div>
+            <div v-else>{{ruleForm.corporationName}}</div>
           </el-form-item>
           <el-form-item label="联系电话：" prop="corporationPhone">
             <el-input v-model="ruleForm.corporationPhone" class="input-length" v-if="showInput"></el-input>
-            <div v-else>{{ruleForm.corporation.phone}}</div>
-          </el-form-item> -->
+            <div v-else>{{ruleForm.corporationPhone}}</div>
+          </el-form-item>
           <el-form-item label="是否“两代表一委员”：" prop="isCommittee">
             <el-radio-group v-model="ruleForm.isCommittee" v-if="showInput">
               <el-radio label="1" value="1">是</el-radio>
               <el-radio label="2" value="2">否</el-radio>
             </el-radio-group>
-            <!-- <div v-else><p v-if="ruleForm.leader.isCommittee==1">是</p><p v-else>否</p></div> -->
+            <div v-else>
+              <p v-if="ruleForm.isCommittee==1">是</p>
+              <p v-if="ruleForm.isCommittee==2">否</p>
+            </div>
           </el-form-item>
           <el-form-item label="具体负责人：" prop="leaderName">
             <el-input v-model="ruleForm.leaderName" class="input-length" v-if="showInput"></el-input>
-            <div v-else>{{ruleForm.leader.name}}</div>
+            <div v-else>{{ruleForm.leaderName}}</div>
           </el-form-item>
           <el-form-item label="联系电话：" prop="leaderPhone">
             <el-input v-model="ruleForm.leaderPhone" class="input-length" v-if="showInput"></el-input>
-            <div v-else>{{ruleForm.leader.phone}}</div>
+            <div v-else>{{ruleForm.leaderPhone}}</div>
           </el-form-item>
           <el-form-item label="企业职工人数： " prop="staffScale">
             <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
@@ -165,6 +171,9 @@ export default {
         imageUrl: '',
         imageUrlId: '',
         isCommittee: '',
+        leader: {
+          gmtModified: 'wsl'
+        },
         lat: null,
         leaderId: '',
         leaderName: '',
@@ -278,6 +287,9 @@ export default {
       api.get('admin/company/detail', { id: this.$route.query.companyId }).then((e) => {
         console.log(e);
         this.ruleForm = e.data;
+        // this.ruleForm.leader = e.data.leader;
+        console.error('111', e.data.leader);
+        // this.ruleForm.isCommittee = e.data.leader.isCommittee;
       }).catch(err => {
         this.$notify.error({
           title: '错误',
