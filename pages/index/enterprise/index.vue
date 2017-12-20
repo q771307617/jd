@@ -5,8 +5,7 @@
         <el-row>
           <el-col :span="24">
             <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="input21">
-              <template slot="append" id="enterprise-index-check">搜&nbsp&nbsp索
-</template>
+              <div slot="append" id="enterprise-index-check">搜&nbsp&nbsp索</div>
             </el-input>
           </el-col>
         </el-row>
@@ -16,11 +15,10 @@
             <el-col :span="20">
               <ul class="industry"  v-bind:class="{ hidden: isActiveIndustry}">
                 <li class="industry-list">
-                  <a v-if="params.tradeId===null">不限</a>
-                  <a v-else>不限</a>
+                  <a :class="{select: params.tradeId == null}" @click="selectIndustry(null)">不限</a>
                 </li>
-                <li v-for="item in industry" :key="item.key" class="industry-list">
-                  <a @click="selectIndustry(item.key)">{{item.name}}</a>
+                <li v-for="item in industry" :key="item.id" class="industry-list">
+                  <a @click="selectIndustry(item.id)"  :class="{select: item.id == params.tradeId}">{{item.tradeName}}</a>
                 </li>
               </ul>
             </el-col>
@@ -36,10 +34,10 @@
             <el-col :span="20">
                <ul class="industry" v-bind:class="{ hidden: isActiveTown}">
                  <li class="industry-list">
-                  <a>不限</a>
+                  <a :class="{select: params.townId == null}" @click="selectTownShip(null)">不限</a>
                 </li>
                 <li v-for="item in townShip" :key="item.key" class="industry-list">
-                  <a @click="selectTownShip(item.key)">{{item.name}}</a>
+                  <a @click="selectTownShip(item.id)" :class="{select: item.id == params.townId}">{{item.name}}</a>
                 </li>
               </ul>
              <!--<transition name="el-zoom-in-top">
@@ -57,8 +55,11 @@
             <el-col :span="3" class="tittle">规上/规下：</el-col>
             <el-col :span="20">
               <ul class="industry">
+                <li class="industry-list">
+                  <a :class="{select: params.scaleType == null}" @click="selectScale(null)">不限</a>
+                </li>
                  <li v-for="item in scale" :key="item.key" class="industry-list">
-                  <a @click="selectScale(item.key)">{{item.name}}</a>
+                  <a @click="selectScale(item.key)" :class="{select: item.key == params.scaleType}">{{item.name}}</a>
                 </li>
               </ul>
             </el-col>
@@ -69,43 +70,39 @@
               <div class="personal" @click="staff()"><span>职工人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.staffScaleType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.staffScaleType }"></i></span></div>
               <div class="personal" @click="party()"><span>党员人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i></span></div>
           </el-row>
-          <el-col :span="24">
-            行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业
-          </el-col>
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content">
               <el-col :span="6">
-                <div class="imgInfo"><img src="" alt=""></div>
+                <div class="imgInfo"><img :src="EnterpriseProfile.list" alt=""></div>
               </el-col>
-              <el-col :span="15">
-                <el-col :span="8">
-                  <ul>
-                    <h1>公司名称</h1>
-                    <li v-for="item in data1" :key="item.id">{{item}}</li>
-                  </ul>
-                </el-col>
-                <el-col :span="16">
-                  <ul>
-                    <li>&nbsp</li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                  </ul>
-                </el-col>
+              <el-col :span="14">
+              <el-col :span="24">
+                <el-col :span="8"><h1>公司名称</h1></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
               </el-col>
-              <el-col :span="16">
-                <ul>
-                  <li>&nbsp</li>
-                  <li>1</li>
-                  <li>1</li>
-                  <li>1</li>
-                  <li>1</li>
-                </ul>
+              <el-col :span="24">
+                <el-col :span="8"><span>所属乡镇/村：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
               </el-col>
-            </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>所属行业：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>主要核心产品：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>地      址：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>联系方式：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              </el-col>
             <el-col :span="3">
-              <el-button type="primary" style="margin-top: 80px">查看企业详情</el-button>
+              <el-button type="primary" style="margin-top: 80px;">查看企业详情</el-button>
             </el-col>
           </el-col>
           <!-- 分页 -->
@@ -128,14 +125,7 @@ import api from './../../../plugins/api.js';
 import {
   mapState
 } from 'vuex';
-import { pub, time } from '~/plugins/utils/index';
-
 export default {
-  computed: {
-    ...mapState({
-      state: state => state.Pub
-    })
-  },
   data() {
     return {
       isActiveIndustry: true,
@@ -152,6 +142,7 @@ export default {
         tradeId: null
       },
       input21: '',
+      EnterpriseProfile: {},
       currentPage4: 4,
       data1: [
         '所属乡镇/村：',
@@ -169,9 +160,9 @@ export default {
   },
   computed: {
     ...mapState({
-      townShip: state => state.Pub.townShip,
-      scale: state => state.Pub.scale,
-      industry: state => state.Pub.industry
+      townShip: state => state.Lists.AllTownShip,
+      scale: state => state.Lists.scale,
+      industry: state => state.Lists.AllIndustry
     })
   },
   methods: {
@@ -183,47 +174,51 @@ export default {
       console.log(`当前页: ${val}`);
     },
     showIndustry() {
-      if (this.isActiveIndustry) {
-        this.isActiveIndustry = false;
-      } else {
-        this.isActiveIndustry = true;
-      }
+      this.isActiveIndustry = !this.isActiveIndustry;
     },
     showTownShip() {
-      if (this.isActiveTown) {
-        this.isActiveTown = false;
-      } else {
-        this.isActiveTown = true;
-      }
+      this.isActiveTown = !this.isActiveTown;
     },
     staff() {
-      if (this.params.staffScaleType) {
-        this.params.staffScaleType = 0;
-      } else {
-        this.params.staffScaleType = 1;
-      }
+      this.params.staffScaleType = Number(!this.params.staffScaleType);
     },
     party() {
-      if (this.params.partyMemberNumberType) {
-        this.params.partyMemberNumberType = 0;
-      } else {
-        this.params.partyMemberNumberType = 1;
-      }
+      this.params.partyMemberNumberType = Number(!this.params.partyMemberNumberType);
     },
+    /* @argument val
+     * 选择行业
+     */
     selectIndustry(val) {
+      this.params.tradeId = val;
+      this.getCompanyInfo();
       console.log(val);
     },
+    /* @argument val
+    * 选择乡镇
+    */
     selectTownShip(val) {
+      this.params.townId = val;
       console.log(val);
     },
+    /* @argument val
+    * 选择规模
+    */
     selectScale(val) {
+      this.params.scaleType = val;
       console.log(val);
     },
+    /* @argument val
+    * 获取企业信息
+    */
     getCompanyInfo() {
-      api.post('admin/company/add', this.params).then((e) => {
-        // console.log("11111");
-      }, response => {
-        // error callback
+      api.get('company/getcompany', this.params).then((e) => {
+        console.log(e);
+        this.EnterpriseProfile = e.data;
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
       });
     }
   }
@@ -243,7 +238,7 @@ export default {
       color: #666666;
     }
     .hidden {
-      max-height: 36px;
+      max-height: 34px;
       overflow: hidden;
     }
     .industry {
@@ -262,9 +257,6 @@ export default {
           color: #f54203;
         }
         a:active {
-          color: #ffbf50;
-        }
-        a:focus {
           color: #ffbf50;
         }
         .select {
@@ -305,11 +297,12 @@ export default {
           font-weight: bold;
           padding-bottom: 11px;
         }
-        li {
+        span {
+          display: inline-block;
           font-size: 14px;
           color: #666666;
           letter-spacing: 5px;
-          padding-bottom: 11px;
+          padding-bottom: 12px;
         }
         .imgInfo {
           width: 264px;
@@ -343,8 +336,8 @@ export default {
             overflow: initial;
             position: relative;
           }
-          .selected{
-            color:#1c7bef;
+          .selected {
+            color: #1c7bef;
           }
           .sort-caret {
             margin: -3px 2px;

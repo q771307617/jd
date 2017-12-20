@@ -29,13 +29,14 @@
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="updateCode"><img :src="verifycodeUrl" alt="" style="width: 113px;height:40px"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="checkCode" alt="" style="width:113px;height:40px"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
                   <p class="hint">{{msg}}</p>
             </div>
           <el-button class="btn" @click="submitLogin">登录</el-button>
+          <img :src="verifycodeUrl" alt="" style="width:113px;height:40px">
         </div>
       </div>
     </div>
@@ -69,18 +70,14 @@ export default {
           username: this.username,
           password: this.password,
           type: 3
-        })).then((response) => {
-          if (response.status === 200) {
+        })).then((e) => {
+          if (e.status === 200) {
             this.$router.push({name: 'admin'});
           } else {
-            this.msg = response.msg;
+            this.msg = e.msg;
           }
         });
       }
-    },
-    // 验证码更新
-    updateCode() {
-      console.log(!null);
     },
     // 验证用户名是否符合规则
     checkName(username) {
@@ -120,18 +117,15 @@ export default {
     },
     // 获取验证码
     checkCode() {
-      api.get('/user/verifycode').then((res) => {
-        console.log(res);
-        this.verifycodeUrl = res;
+      api.get('/user/verifycode').then((e) => {
+        console.log(e);
+        // return e.data;
       });
     }
   },
   mounted() {
     this.$nextTick(() => {
       this.checkCode();
-      // this.username = null;
-      // this.submitLogin();
-      // this.checkName(this.username);
     });
   },
   computed: {
