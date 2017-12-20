@@ -2,6 +2,7 @@
   <el-container>
     <el-main>
       <el-row>
+        <div class="box" style="width:1200px;margin: 0 auto">
       <!-- 企业封面 -->
         <el-col :span="24">
           <div class="top-text"><i style="background-position:-92px -17px"></i>企业封面</div>
@@ -100,7 +101,7 @@
             </div>
         </el-col>
         <!-- 数据指标 -->
-          <el-col :span="24">
+        <el-col :span="24">
             <div class="col">
             <div class="top-text"><i style="background-position: -92px -122px"></i>数据指标</div>
 
@@ -127,11 +128,13 @@
                 <el-col :span="14">{{companyInfo.researchFee}}</el-col>
               </el-col>
             <el-col>
+            </el-col>
+            </el-col>
           <!-- 数据指标右 -->
           <el-col :span="12">
             <el-col :span="24">
-              <el-col :span="10"><span>信息化投入（万元）：</span></el-col>
-              <el-col :span="14"></el-col>
+              <el-col :span="10"><span>主营业务收入：</span></el-col>
+              <el-col :span="14">{{companyInfo.mainBusIncome}}</el-col>
             </el-col>
             <el-col :span="24">
               <el-col :span="10"><span>核定用能（吨标煤）：</span></el-col>
@@ -146,12 +149,9 @@
               <el-col :span="14">{{companyInfo.waterConsume}}</el-col>
             </el-col>
           </el-col>
-
-            </el-col>
-            </el-col>
             </div>
         </el-col>
-
+      </div>
       </el-row>
     </el-main>
   </el-container>
@@ -185,8 +185,8 @@ export default {
 .el-main {
   background-color: #f7f7f7;
   .el-row {
-    width: 1200px;
-    margin: 10px auto;
+    min-width: 100%;
+    // margin: 10px auto;
     .el-col {
       margin: 0 0 16px 0;
       background-color: #fff;
