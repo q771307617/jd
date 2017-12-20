@@ -12,7 +12,7 @@
         <span></span>
         <span></span>
       </p>
-      <el-radio-group v-model="radio" fill="#f2ba55" @change="change">
+      <el-radio-group v-model="radio" fill="#f2ba55" @change="changeRadio">
         <el-radio-button label="admin-company-addCompany">基本信息</el-radio-button>
         <el-radio-button label="admin-company-normData"> 指标数据</el-radio-button>
       </el-radio-group>
@@ -29,10 +29,10 @@ export default {
     };
   },
   methods: {
-    change(val) {
-      this.radio = val;
+    changeRadio(label) {
+      this.radio = label;
       this.$router.push({
-        name: val,
+        name: label,
         query: {
           type: this.$route.query.type,
           companyId: this.$route.query.companyId

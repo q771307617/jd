@@ -15,7 +15,7 @@
               <div class="el-upload__text">将文件拖到此处，或
                 <em>点击上传</em>
               </div>
-              <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
             </el-upload>
             <div v-else>div</div>
           </el-form-item>
@@ -24,19 +24,18 @@
             <div v-else>div</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-            <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-            <div v-else>div</div>
-          </el-form-item>-->
+                                  <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+                                  <div v-else>div</div>
+                                </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
-            <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput">
-              <el-option :label="item.name" :value="item.key" v-for="item in townShip" :key="item.key"></el-option>
+            <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
+              <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
             </el-select>
             <div v-else>div</div>
           </el-form-item>
           <el-form-item label="所属村（社区）：" prop="villageId">
             <el-select v-model="ruleForm.villageId" placeholder="请选择村（社区）" v-if="showInput">
-              <el-option label="古荡" value="古荡"></el-option>
-              <el-option label="三墩" value="三墩"></el-option>
+              <el-option :label="item.name" :value="item.id" v-for="item in village" :key="item.id"></el-option>
             </el-select>
             <div v-else>div</div>
           </el-form-item>
@@ -58,20 +57,20 @@
               </el-form-item>
             </el-col>
             <!--
-                                              <el-col :span="8">
-                                                <el-form-item  prop="name">
-                                                纬度
-                                                    <el-input v-model="ruleForm.name" class="input-length"></el-input>
-                                                  </el-form-item>
-                                              </el-col>-->
+                                  <el-col :span="8">
+                                    <el-form-item  prop="name">
+                                    纬度
+                                        <el-input v-model="ruleForm.name" class="input-length"></el-input>
+                                      </el-form-item>
+                                  </el-col>-->
           </el-row>
-          <el-form-item label="行业代码：" prop="tradeId">
-            <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
-          </el-form-item>
-          <el-form-item label="所属行业：" prop="region">
-            <el-select v-model="ruleForm.region" placeholder="请选择所属行业" v-if="showInput">
-              <el-option :label="item.name" :value="item.key" v-for="item in industry" :key="item.key"></el-option>
+          <!-- <el-form-item label="行业代码：" prop="tradeId">
+                            <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
+                            <div v-else>div</div>
+                          </el-form-item>-->
+          <el-form-item label="所属行业：" prop="tradeId">
+            <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
+              <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
             </el-select>
             <div v-else>div</div>
           </el-form-item>
@@ -81,8 +80,8 @@
           </el-form-item>
           <el-form-item label="规上（规下）：" prop="scaleUp">
             <el-radio-group v-model="ruleForm.scaleUp" v-if="showInput">
-              <el-radio label="规上" value="1"></el-radio>
-              <el-radio label="规下" value="2"></el-radio>
+              <el-radio label="1" value="1">规上</el-radio>
+              <el-radio label="2" value="2">规下</el-radio>
             </el-radio-group>
             <div v-else>div</div>
           </el-form-item>
@@ -96,8 +95,8 @@
           </el-form-item>
           <el-form-item label="是否“两代表一委员”：" prop="isCommittee">
             <el-radio-group v-model="ruleForm.isCommittee" v-if="showInput">
-              <el-radio label="是" value="1"></el-radio>
-              <el-radio label="否" value="2"></el-radio>
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
             </el-radio-group>
             <div v-else>div</div>
           </el-form-item>
@@ -134,7 +133,7 @@
             <div v-else>div</div>
           </el-form-item>
           <el-form-item label="企业简介：" prop="companyProfile">
-            <el-input type="textarea" v-model="ruleForm.companyProfile" class="input-length" v-if="showInput"></el-input>
+            <el-input type="textarea" v-model="ruleForm.companyProfile" style="width:80%" v-if="showInput"></el-input>
             <div v-else>div</div>
           </el-form-item>
         </el-form>
@@ -145,6 +144,7 @@
 
 <script>
 import api from './../../../plugins/api.js';
+import qs from 'qs';
 import {
   mapState
 } from 'vuex';
@@ -153,6 +153,7 @@ export default {
     return {
       showInput: false,
       id: null,
+      village: null,
       ruleForm: {
         address: '',
         averageSalary: '',
@@ -164,11 +165,11 @@ export default {
         imageUrl: '',
         imageUrlId: '',
         isCommittee: '',
-        lat: '',
+        lat: null,
         leaderId: '',
         leaderName: '',
         leaderPhone: '',
-        lng: '',
+        lng: null,
         monthElectricityBill: '',
         monthWaterBill: '',
         name: '',
@@ -184,8 +185,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入企业名称', trigger: 'blur' },
-          { min: 3, max: 9, message: '长度在 3 到 9 个字符', trigger: 'blur' }
+          { required: true, message: '请输入企业名称', trigger: 'blur' }
         ],
         townId: [
           { required: true, message: '请选择所属乡镇', trigger: 'change' }
@@ -201,6 +201,9 @@ export default {
         ],
         lat: [
           { required: true, message: '请输入纬度', trigger: 'blur' }
+        ],
+        tradeId: [
+          { required: true, message: '请选择所属行业', trigger: 'change' }
         ]
       }
     };
@@ -216,18 +219,34 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.ruleForm);
-          api.post('admin/company/add', this.ruleForm).then((e) => {
-            // console.log("11111");
+          api.post('admin/company/add', qs.stringify(this.ruleForm)).then((e) => {
+            this.id = e.data;
+            this.showInput = false;
           }, response => {
-            // error callback
+            this.$notify.error({
+              title: '错误',
+              message: response.msg
+            });
           });
-          alert('submit!');
         } else {
           console.log(this.ruleForm);
           console.log('error submit!!');
           return false;
         }
+      });
+    },
+    // 选择选哪个镇触发
+    selectTownId(val) {
+      console.log(val);
+      api.get('common/getvillage', { townId: val }).then((e) => {
+        console.log(e);
+        this.village = e.data;
+        console.log(this.village);
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
       });
     },
     handleChange(value) {
@@ -239,14 +258,29 @@ export default {
     modify() {
       this.showInput = true;
     },
+    getCompanyDetails() {
+      api.get('admin/company/detail', { id: this.$route.query.companyId }).then((e) => {
+        console.log(e);
+        this.ruleForm = e.data;
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
+      });
+    },
     getCompanyInfo() {
       let type = null;
       this.id = this.$route.query.companyId || null;
       type = this.$route.query.type;
       if (type === 'view') {
         this.showInput = false;
+        this.getCompanyDetails();
+      } else if (type === 'add') {
+        this.showInput = true;
       } else {
         this.showInput = true;
+        this.getCompanyDetails();
       }
     }
   },
