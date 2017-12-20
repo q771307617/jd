@@ -5,8 +5,7 @@
         <el-row>
           <el-col :span="24">
             <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="input21">
-              <template slot="append" id="enterprise-index-check">搜&nbsp&nbsp索
-</template>
+              <div slot="append" id="enterprise-index-check">搜&nbsp&nbsp索</div>
             </el-input>
           </el-col>
         </el-row>
@@ -71,43 +70,39 @@
               <div class="personal" @click="staff()"><span>职工人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.staffScaleType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.staffScaleType }"></i></span></div>
               <div class="personal" @click="party()"><span>党员人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i></span></div>
           </el-row>
-          <el-col :span="24">
-            行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业行业
-          </el-col>
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content">
               <el-col :span="6">
-                <div class="imgInfo"><img src="" alt=""></div>
+                <div class="imgInfo"><img :src="EnterpriseProfile.list" alt=""></div>
               </el-col>
-              <el-col :span="15">
-                <el-col :span="8">
-                  <ul>
-                    <h1>公司名称</h1>
-                    <li v-for="item in data1" :key="item.id">{{item}}</li>
-                  </ul>
-                </el-col>
-                <el-col :span="16">
-                  <ul>
-                    <li>&nbsp</li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                    <li>1</li>
-                  </ul>
-                </el-col>
+              <el-col :span="14">
+              <el-col :span="24">
+                <el-col :span="8"><h1>公司名称</h1></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
               </el-col>
-              <el-col :span="16">
-                <ul>
-                  <li>&nbsp</li>
-                  <li>1</li>
-                  <li>1</li>
-                  <li>1</li>
-                  <li>1</li>
-                </ul>
+              <el-col :span="24">
+                <el-col :span="8"><span>所属乡镇/村：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
               </el-col>
-            </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>所属行业：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>主要核心产品：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>地      址：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              <el-col :span="24">
+                <el-col :span="8"><span>联系方式：</span></el-col>
+                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+              </el-col>
+              </el-col>
             <el-col :span="3">
-              <el-button type="primary" style="margin-top: 80px">查看企业详情</el-button>
+              <el-button type="primary" style="margin-top: 80px;">查看企业详情</el-button>
             </el-col>
           </el-col>
           <!-- 分页 -->
@@ -147,6 +142,7 @@ export default {
         tradeId: null
       },
       input21: '',
+      EnterpriseProfile: {},
       currentPage4: 4,
       data1: [
         '所属乡镇/村：',
@@ -217,6 +213,7 @@ export default {
     getCompanyInfo() {
       api.get('company/getcompany', this.params).then((e) => {
         console.log(e);
+        this.EnterpriseProfile = e.data;
       }).catch(err => {
         this.$notify.error({
           title: '错误',
@@ -300,11 +297,12 @@ export default {
           font-weight: bold;
           padding-bottom: 11px;
         }
-        li {
+        span {
+          display: inline-block;
           font-size: 14px;
           color: #666666;
           letter-spacing: 5px;
-          padding-bottom: 11px;
+          padding-bottom: 12px;
         }
         .imgInfo {
           width: 264px;
