@@ -9,24 +9,19 @@
           <el-option label='企业' value='1'></el-option>
           <el-option label='项目' value='2'></el-option>
         </el-select> -->
-        <el-button  slot='append' style='background:#1c7bef;' icon='el-icon-search' class="searchBtn" @click="searchcompany"></el-button>
+        <el-button  slot='append' style='background:#1c7bef;' icon='el-icon-search' class="searchBtn" @click="searchcompany(1)"></el-button>
       </el-input>
       <ul class="searchList" >
-        <li>四喜信息技术有限公司</li>
-        <li>四喜信息技术有限公司</li>
-        <li class="ellipisice">四喜信息技术四喜信息技术有限公司四喜信息技术有限公司四喜信息技术有限公司有限公司</li>
-        <li>四喜信息技术有限公司</li>
-        <li>四喜信息技术有限公司</li>
-        <li>四喜信息技术有限公司</li>
+        <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
         <el-button>
           <i class='el-icon-location' style='color:#1c7bef;'></i>建德市</el-button>
-        <el-select class='xz' v-model='select1' slot='prepend' placeholder='乡镇'>
-            <el-option v-for = "item in townShip " :key='item' :label='item.name' :value='item.id'></el-option>
+        <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
+            <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
         </el-select>
-        <el-select class='hy' v-model='select2' slot='prepend' placeholder='行业分类'>
-            <el-option v-for = "item in industry" :label='item.tradeName':key='item' :value='item.id'></el-option>
+        <el-select class='hy' v-model='hy' slot='prepend' placeholder='行业分类'>
+            <el-option v-for = "item in industry" :label='item.tradeName':key='item.id' :value='item.id'></el-option>
         </el-select>
       </div>
     </div>
@@ -35,7 +30,7 @@
         <div class='rm'>
           <p class="rmTitle"><span></span> 热门企业</p>
           <ul>
-            <li v-for = "item in remenParams" :key='item'>
+            <li v-for = "item in remenParams" :key='item.companyId'>
               <p>
                 <img :src='item.factoryImageUrl' alt=''>
               </p>
@@ -57,9 +52,12 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
+      map: {},
+      markerO: {},
+      allCompanys: '',
       seachInput: '',
-      select1: '',
-      select2: '',
+      xz: '',
+      hy: '',
       remenParams: {
         img: '',
         name: '',
@@ -69,6 +67,34 @@ export default {
       searchParams: {
         type: '1',
         value: ''
+      },
+      searchxzhyParams: {
+        type: '',
+        value: ''
+      },
+      searchList: [],
+      mapParams: {
+        zoom: '11',
+        lat: '29.470681',
+        lng: '119.286105',
+        markers: [
+          [119.248339, 29.46814],
+          [119.282672, 29.409538],
+          [119.499652, 29.515954],
+          [119.21955, 29.372445],
+          [119.544284, 29.643148],
+          [119.069812, 29.285045],
+          [119.66582, 29.505198],
+          [119.352023, 29.580467],
+          [119.314257, 29.316781],
+          [119.171435, 29.324564],
+          [119.435794, 29.607335],
+          [118.993594, 29.324564],
+          [119.505145, 29.428079],
+          [119.286105, 29.603753],
+          [119.54909, 29.716525],
+          [119.295718, 29.528502]
+        ]
       }
     };
   },
@@ -89,153 +115,22 @@ export default {
     })
   },
   mounted() {
+    /* 热门企业 */
     this.remen();
     /* 地图实例化 */
-    window.$('.ddd').text('aaaa');
-    var map;
-    var zoom = 11;
-    var marker;
-    map = new window.T.Map('mapDiv');
-    map.centerAndZoom(new window.T.LngLat(119.286105, 29.470681), zoom);
-    var bd = new window.T.LngLatBounds(
-      new window.T.LngLat(118.8940912546568, 29.20439576265778),
-      new window.T.LngLat(120.32081607375262, 30.155545642054992)
-    );
-    var img1 = new window.T.ImageOverlay(
-      'http://chuantu.biz/t6/173/1512980653x-1404793565.png',
-      bd, {
-        opacity: '.5',
-        alt: '建德市'
-      }
-    );
-    var img2 = new window.T.ImageOverlay(
-      'http://www.bbvdd.com/d/201712111707229eg.png',
-      bd, {
-        opacity: '.5',
-        alt: '建德市'
-      }
-    );
-    var img3 = new window.T.ImageOverlay(
-      'http://www.bbvdd.com/d/20171211171824rag.png',
-      bd, {
-        opacity: '.5',
-        alt: '建德市'
-      }
-    );
-    var img4 = new window.T.ImageOverlay(
-      'http://1.img.dianjiangla.com/jdAssets/jdQh.png',
-      bd, {
-        opacity: '.5',
-        alt: '建德市'
-      }
-    );
-    /* 不同图层加载不同的底图 */
-    map.addOverLay(img1);
-    map.addEventListener('zoomend', function (e) {
-      console.log(map.getZoom());
-      map.removeOverLay(img1);
-      var zoom = map.getZoom();
-      if (zoom < 12) {
-        map.addOverLay(img1);
-        map.removeOverLay(img2, img3, img4);
-      } else if (zoom === 12) {
-        map.addOverLay(img2);
-        map.removeOverLay(img1, img3, img4);
-      } else if (zoom > 12 && zoom < 15) {
-        map.addOverLay(img3);
-        map.removeOverLay(img2, img1, img4);
-      } else if (zoom >= 15) {
-        map.addOverLay(img4);
-        map.removeOverLay(img2, img3, img1);
-      }
-    });
-    /** 企业标注 **/
-    var markers = [
-      [119.280698, 29.474716],
-      [119.280597, 29.471716],
-      [119.286696, 29.474716],
-      [119.281695, 29.478716],
-      [119.286105, 29.470681],
-      [119.226103, 29.420683],
-      [119.296102, 29.410682],
-      [119.226103, 29.420683],
-      [119.047696, 29.320256],
-      [119.041697, 29.330257],
-      [119.048698, 29.330258],
-      [119.042698, 29.330258],
-      [119.307696, 29.320256],
-      [119.221697, 29.490257],
-      [119.048698, 29.310258],
-      [119.242698, 29.370258]
-    ];
-    var icon = new window.T.Icon({
-      iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
-      iconSize: new window.T.Point(20, 25),
-      iconAnchor: new window.T.Point(10, 25)
-    });
-    // var infoWin1 = new window.T.InfoWindow();
-    for (let i = 0; i < markers.length; i++) {
-      marker = new window.T.Marker(
-        new window.T.LngLat(markers[i][0], markers[i][1]), {
-          icon: icon
-        }
-      );
-      map.addOverLay(marker);
-      /** 信息窗体 **/
-      var content = '<h2>我是标题</h2>我是第' + i + '个信息窗体的内容';
-      addClickHandler(content, marker);
+    this.getMap();
+  },
+  watch: {
+    xz(val, old) {
+      this.searchXzHy(2, val);
+    },
+    hy(val, old) {
+      this.searchXzHy(3, val);
     }
-    function addClickHandler(content, marker) {
-      marker.addEventListener('mousemove', function (e) {
-        openInfo(content, e);
-      });
-      // marker.addEventListener('mouseout', function (e) {
-      //   map.closeInfoWindow();
-      // });
-    }
-    function openInfo(content, e) {
-      var point = e.lnglat;
-      marker = new window.T.Marker(point); // 创建标注
-      var markerInfoWin = new window.T.InfoWindow(content, {
-        offset: new window.T.Point(0, -20),
-        autoPan: true,
-        closeOnClick: true
-      }); // 创建信息窗口对象
-      map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
-    }
-    /** 乡划 **/
-    var point = [];
-    for (var i = 0; i < markers.length; i++) {
-      point.push(new window.T.LngLat(markers[i][0], markers[i][1]));
-    }
-    var polygon = new window.T.Polygon(point, {
-      color: '#FFFFFF',
-      weight: 3,
-      opacity: 0.1,
-      fillColor: '#FFFFFF',
-      fillOpacity: 0.1
-    });
-    // 鼠标点击选点
-    map.addOverLay(polygon);
-    polygon.addEventListener('mousemove', function (e) {
-      polygon.setColor('red');
-      // polygon.setOpacity({opacity: 0.3});
-      // polygon.setFillOpacity({fillOpacity: 0.3});
-      polygon.setFillColor('#000');
-      console.log(polygon.getOpacity());
-    });
-    polygon.addEventListener('mouseout', function (e) {
-      polygon.setColor('#FFFFFF');
-      // polygon.setOpacity({opacity: 0.3});
-      // polygon.setFillOpacity({fillOpacity: 0.3});
-      polygon.setFillColor('#FFFFFF');
-      console.log(polygon.getOpacity());
-    });
   },
   methods: {
     // 右边侧边栏
     rmShow() {
-      console.log(window.$('.rm').css('width'));
       if (window.$('.rm').css('width') === '0px') {
         window.$('.rm').animate({
           width: '413'
@@ -254,12 +149,11 @@ export default {
         right: '0'
       });
     },
-    searchcompany() {
+    searchcompany(type) {
       let searchParams = this.searchParams;
-      api.get('company/searchcompany', { searchParams })
+      api.get('company/searchcompany', searchParams)
         .then(e => {
-          this.remenParams = e.data;
-          console.log(e);
+          this.searchList = e.data.list.slice(0, 6);
         })
         .catch(err => {
           this.$notify.error({
@@ -269,23 +163,74 @@ export default {
         });
       window.$('.searchList').css({display: 'block'});
       window.$('.searchList').on('mouseleave', function () {
-        window.$('.searchList').css({
-          display: 'none'
-        });
+        window.$('.searchList').css({display: 'none'});
       });
-      window.$('.searchList li').on('click', function () {
-        window.$('.searchList').css({
-          display: 'none'
-        });
-      });
+      // window.$('.searchList li').on('click', function (e) {
+      //   window.$('.searchList').css({display: 'none'});
+      //   console.log(e, this);
+      // });
     },
-    // 热门企业
-    remen() {
-      console.log(this.townShip);
-      api.get('company/hotcompany')
+    // 乡镇行业搜索
+    searchXzHy(type, val) {
+      this.searchxzhyParams.value = val;
+      this.searchxzhyParams.type = type;
+      api.get('company/searchcompany', this.searchxzhyParams)
         .then(e => {
-          this.remenParams = e.data;
-          console.log(e);
+          for (var i in e.data.list) {
+            this.markers.push([e.data.list[i].lng, e.data.list[i].lat]);
+            this.mapParams.markers = this.markers;
+            var icon = new window.T.Icon({
+              iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
+              iconSize: new window.T.Point(20, 25),
+              iconAnchor: new window.T.Point(10, 25)
+            });
+            // var infoWin1 = new window.T.InfoWindow();
+            for (let i = 0; i < this.markers.length; i++) {
+              var marker = new window.T.Marker(
+                new window.T.LngLat(this.markers[i][0], this.markers[i][1]), {
+                  icon: icon
+                }
+              );
+              // map.removeOverLay(marker);
+              this.map.addOverLay(marker);
+              /** 信息窗体 **/
+              var content = '<h2>' + this.markers[i].name + '</h2>' + this.markers[i].chargePersonTel + '';
+              this.addClickHandler(content, marker);
+            };
+            this.markerO = marker;
+          }
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: '错误',
+            message: error.msg
+          });
+        });
+    },
+    addClickHandler(content, marker) {
+      marker.addEventListener('mousemove', function (e) {
+        this.openInfo(content, e);
+      });
+      // marker.addEventListener('mouseout', function (e) {
+      //   map.closeInfoWindow();
+      // });
+    },
+    openInfo(content, e) {
+      var point = e.lnglat;
+      // var marker = new window.T.Marker(point); // 创建标注
+      var markerInfoWin = new window.T.InfoWindow(content, {
+        offset: new window.T.Point(0, -20),
+        autoPan: true,
+        closeOnClick: true
+      }); // 创建信息窗口对象
+      this.map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
+    },
+    // 所有企业
+    allCompany() {
+      api.get('company/getallcompany')
+        .then(e => {
+          this.allCompanys = e.data;
+          console.log(this.allCompanys);
         })
         .catch(err => {
           this.$notify.error({
@@ -293,6 +238,225 @@ export default {
             message: err.msg
           });
         });
+    },
+    // 企业搜索
+    searchItem(id, data) {
+      this.searchParams.value = data.name;
+      this.mapParams.zoom = '18';
+      this.mapParams.lat = data.lat;
+      this.mapParams.lng = data.lng;
+      this.mapParams.markers = [[data.lng, data.lat]];
+      // this.marker.setLngLat(this.mapParams.markers);
+      this.markers(this.map);
+      // console.log(this.map, this.markerO.getLngLat());
+      // this.getMap();
+      this.fetchMap();
+    },
+    // 热门企业
+    remen() {
+      api.get('company/hotcompany')
+        .then(e => {
+          this.remenParams = e.data;
+        })
+        .catch(error => {
+          console.log(error);
+          this.$notify.error({
+            title: '错误',
+            message: error.msg
+          });
+        });
+    },
+    // 更新地图
+    fetchMap() {
+      this.map.setZoom(this.mapParams.zoom);
+      // console.log(this.mapParams.lng, this.mapParams.lat);
+      this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 14);
+    },
+    getMap() {
+      this.allCompany();
+      var zoom = this.mapParams.zoom;
+      var lng = this.mapParams.lng;
+      var lat = this.mapParams.lat;
+      var map = new window.T.Map('mapDiv');
+      // 移动到指定点
+      map.centerAndZoom(new window.T.LngLat(lng, lat), zoom);
+      map.enableDrag();
+      /* 不同图层加载不同的底图 */
+      this.imgOverLay(map);
+      /** 企业标注 **/
+      this.markers(map);
+      /** 乡划 **/
+      this.polygon(map);
+      this.map = map;
+    },
+    imgOverLay(map) {
+      var bd = new window.T.LngLatBounds(
+        new window.T.LngLat(118.8940912546568, 29.20439576265778),
+        new window.T.LngLat(120.32081607375262, 30.155545642054992)
+      );
+      var img1 = new window.T.ImageOverlay(
+        'http://chuantu.biz/t6/173/1512980653x-1404793565.png',
+        bd, {
+          opacity: '.7',
+          alt: '建德市'
+        }
+      );
+      var img2 = new window.T.ImageOverlay(
+        'http://www.bbvdd.com/d/201712111707229eg.png',
+        bd, {
+          opacity: '.7',
+          alt: '建德市'
+        }
+      );
+      var img3 = new window.T.ImageOverlay(
+        'http://www.bbvdd.com/d/20171211171824rag.png',
+        bd, {
+          opacity: '.7',
+          alt: '建德市'
+        }
+      );
+      var img4 = new window.T.ImageOverlay(
+        'http://1.img.dianjiangla.com/jdAssets/jdQh.png',
+        bd, {
+          opacity: '.7',
+          alt: '建德市'
+        }
+      );
+      map.addOverLay(img1);
+      map.addEventListener('zoomend', function (e) {
+        // console.log(map.getZoom(), map.isDrag());
+        map.removeOverLay(img1);
+        var zoom = map.getZoom();
+        if (zoom < 12) {
+          map.addOverLay(img1);
+          map.removeOverLay(img2, img3, img4);
+        } else if (zoom === 12) {
+          map.addOverLay(img2);
+          map.removeOverLay(img1, img3, img4);
+        } else if (zoom > 12 && zoom < 15) {
+          map.addOverLay(img3);
+          map.removeOverLay(img2, img1, img4);
+        } else if (zoom >= 15) {
+          map.addOverLay(img4);
+          map.removeOverLay(img2, img3, img1);
+        }
+      });
+    },
+    markers(map) {
+      var markers = [];
+      api.get('company/getallcompany')
+        .then(e => {
+          this.allCompanys = e.data;
+          for (var i in this.allCompanys) {
+            markers.push([this.allCompanys[i].lng, this.allCompanys[i].lat]);
+          }
+          var icon = new window.T.Icon({
+            iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
+            iconSize: new window.T.Point(20, 25),
+            iconAnchor: new window.T.Point(10, 25)
+          });
+          // var infoWin1 = new window.T.InfoWindow();
+          for (let i = 0; i < markers.length; i++) {
+            var marker = new window.T.Marker(
+              new window.T.LngLat(markers[i][0], markers[i][1]), {
+                icon: icon
+              }
+            );
+            // map.removeOverLay(marker);
+            map.addOverLay(marker);
+            /** 信息窗体 **/
+            var content = '<h2>' + this.allCompanys[i].name + '</h2>' + this.allCompanys[i].chargePersonTel + '';
+            addClickHandler(content, marker);
+          }
+          function addClickHandler(content, marker) {
+            marker.addEventListener('mousemove', function (e) {
+              openInfo(content, e);
+            });
+            // marker.addEventListener('mouseout', function (e) {
+            //   map.closeInfoWindow();
+            // });
+          }
+          function openInfo(content, e) {
+            var point = e.lnglat;
+            marker = new window.T.Marker(point); // 创建标注
+            var markerInfoWin = new window.T.InfoWindow(content, {
+              offset: new window.T.Point(0, -20),
+              autoPan: true,
+              closeOnClick: true
+            }); // 创建信息窗口对象
+            map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
+          };
+          this.markerO = marker;
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err.msg
+          });
+        });
+      // var markers = this.mapParams.markers;
+    },
+    polygon(map) {
+      // 鼠标点击选点
+      let polygonList = [
+        [119.248339, 29.46814],
+        [119.282672, 29.409538],
+        [119.499652, 29.515954],
+        [119.21955, 29.372445],
+        [119.544284, 29.643148],
+        [119.069812, 29.285045],
+        [119.66582, 29.505198],
+        [119.352023, 29.580467],
+        [119.314257, 29.316781],
+        [119.171435, 29.324564],
+        [119.435794, 29.607335],
+        [118.993594, 29.324564],
+        [119.505145, 29.428079],
+        [119.286105, 29.603753],
+        [119.54909, 29.716525],
+        [119.295718, 29.528502]
+      ];
+      for (var item in polygonList) {
+        window.$.ajax({
+          url: 'http://172.30.34.63:6080/arcgis/rest/services/JDLand_XZM/MapServer/identify',
+          data: 'f=json&tolerance=5&returnGeometry=true&imageDisplay=1398%2C210%2C96&geometry=%7B"x"%3A' + polygonList[item][0] + '%2C"y"%3A' + polygonList[item][1] + '%7D&geometryType=esriGeometryPoint&sr=4326&mapExtent=118.94165999313367%2C29.6123519861085%2C119.90159041305554%2C29.756547542749125&layers=top',
+          success: function (data) {
+            var a = JSON.parse(data).results[0].geometry.rings[0];
+            var point = [];
+            for (var i = 0; i < a.length; i++) {
+              point.push(new window.T.LngLat(a[i][0], a[i][1]));
+            }
+            var polygon = new window.T.Polygon(point, {color: '#537fb9', weight: 2, opacity: '.6', fillColor: '#FFF', fillOpacity: 0});
+            // 鼠标滑过
+            polygon.addEventListener('mouseover', function (e) {
+              polygon.setColor('#537fb9');
+              polygon.setOpacity({opacity: '0.6'});
+              polygon.setFillOpacity('0.3');
+              polygon.setFillColor('#488EF9');
+            });
+            polygon.addEventListener('mouseout', function (e) {
+              polygon.setColor('#537fb9');
+              polygon.setOpacity({opacity: '0'});
+              polygon.setFillOpacity('0');
+              polygon.setFillColor('#FFFFFF');
+            });
+            map.addOverLay(polygon);
+          },
+          error: function (error) {
+            this.$notify.error({
+              title: '错误',
+              message: error.msg
+            });
+          }
+        });
+      }
+      // map.on('mousemove', function (e) {
+      //   // 经度 纬度
+      //   var x = e.lnglat.getLng();
+      //   var y = e.lnglat.getLat();
+      //   if (y > 29.205656 && y < 29.774429 && x > 118.896922 && x < 119.765112) {
+      //   }
+      // });
     }
   }
 };
@@ -418,12 +582,14 @@ body #mapDiv {
           width: 121px;
           height: 79px;
           margin-right: 10px;
+          float: left;
           img {
             max-width: 119px;
             margin: 0 auto;
           }
         }
         ul {
+          float: right;
           width: 277px;
           display: inline-block;
           li {
