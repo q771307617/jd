@@ -3,12 +3,14 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-button class=" button one">数据导入</el-button>
+        <el-upload class="upload" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :show-file-list="false" :on-remove="handleRemove" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList">
+          <el-button class=" button one">数据导入</el-button>
+        </el-upload>
         <el-button class=" button two" @click="change('add','0')">新增企业</el-button>
       </div>
     </div>
     <div class="company-table">
-      <el-table :data="tableData" height="500" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%">
+      <el-table :data="tableData" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%">
         <el-table-column prop="createCompanyTime" label="上传时间" width="180">
         </el-table-column>
         <el-table-column prop="companyName" label="企业名称" width="230">
@@ -16,24 +18,27 @@
         <el-table-column prop="tradeName" width="80" label="企业类型">
         </el-table-column>
         <el-table-column prop="townshipCommunity" label="所属乡镇村社">
+          <div slot-scope="scope">
+            {{scope.row.townName}}>{{scope.row.villageName}}
+          </div>
         </el-table-column>
         <el-table-column prop="chargePersonName" label="主要负责人">
         </el-table-column>
-        <el-table-column prop="chargePersonTelephone" label="联系电话">
+        <el-table-column prop="chargePersonTel" label="联系电话">
         </el-table-column>
         <el-table-column prop="address" label="操作">
-          <template slot-scope="scope">
+          <div slot-scope="scope">
             <el-button @click="change('view',scope.row)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small" @click="change('edit',scope.row)">编辑</el-button>
-          </template>
+          </div>
         </el-table-column>
       </el-table>
       <div class="flex-box block">
         <p class="demonstration">共
-          <span class="red">3256</span>条数据
+          <span class="red">{{params.count}}</span>条数据
           <span style="margin-left:20px;">每页</span>
-          <span class="red">20</span>条</p>
-        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="currentPage" :page-size="20" layout="prev, pager, next, jumper" :total="1000">
+          <span class="red">{{params.pageSize}}</span>条</p>
+        <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
         </el-pagination>
       </div>
     </div>
@@ -41,58 +46,34 @@
 </template>
 
 <script>
+import api from './../../plugins/api.js';
+import moment from 'moment';
 export default {
   data() {
     return {
-      currentPage: 5,
-      tableData: [{
-        chargePersonName: '王二虎', // 负责人名字
-        chargePersonTelephone: '18818881888', // 负责人联系电话
-        companyAddress: '', // 企业详细地址
-        companyId: '111', // 企业id
-        companyName: '建德长风机械有限公司', // 企业名称
-        createCompanyTime: '2016-05-04 15:25', // 企业的录入时间
-        factoryImageUrl: '', // 企业图片的url
-        mainProductName: '', // 主要产品
-        townshipCommunity: '乾潭镇>莲花村>玉皇山社区', // 企业的乡镇社区
-        tradeName: '机械' // 行业分类
-      }, {
-        chargePersonName: '王二虎', // 负责人名字
-        chargePersonTelephone: '18818881888', // 负责人联系电话
-        companyAddress: '222', // 企业详细地址
-        companyId: '222', // 企业id
-        companyName: '建德长风机械有限公司', // 企业名称
-        createCompanyTime: '2016-05-04 15:25', // 企业的录入时间
-        factoryImageUrl: '', // 企业图片的url
-        mainProductName: '', // 主要产品
-        townshipCommunity: '乾潭镇>莲花村>玉皇山社区', // 企业的乡镇社区
-        tradeName: '机械' // 行业分类
-      }, {
-        chargePersonName: '王二虎', // 负责人名字
-        chargePersonTelephone: '18818881888', // 负责人联系电话
-        companyAddress: '', // 企业详细地址
-        companyId: '333', // 企业id
-        companyName: '建德长风机械有限公司', // 企业名称
-        createCompanyTime: '2016-05-04 15:25', // 企业的录入时间
-        factoryImageUrl: '', // 企业图片的url
-        mainProductName: '', // 主要产品
-        townshipCommunity: '乾潭镇>莲花村>玉皇山社区', // 企业的乡镇社区
-        tradeName: '机械' // 行业分类
-      }, {
-        chargePersonName: '王二虎', // 负责人名字
-        chargePersonTelephone: '18818881888', // 负责人联系电话
-        companyAddress: '', // 企业详细地址
-        companyId: '444', // 企业id
-        companyName: '建德长风机械有限公司', // 企业名称
-        createCompanyTime: '2016-05-04 15:25', // 企业的录入时间
-        factoryImageUrl: '', // 企业图片的url
-        mainProductName: '', // 主要产品
-        townshipCommunity: '乾潭镇>莲花村>玉皇山社区', // 企业的乡镇社区
-        tradeName: '机械' // 行业分类
-      }]
+      fileList: [],
+      params: {
+        pageNum: 1,
+        chargePersonType: 1,
+        pageSize: 20,
+        count: null
+      },
+      tableData: []
     };
   },
+  mounted() {
+    this.getcompanyInfo();
+  },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，请选择1个文件`);
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex % 2 !== 0) {
         return 'warning-row';
@@ -103,8 +84,26 @@ export default {
       return 'warning-row';
     },
     handleSizeChange() { //  每页条数
+      this.getcompanyInfo();
     },
     handleCurrentChange() { // 改变当前页码
+      this.getcompanyInfo();
+    },
+    getcompanyInfo() {
+      api.get('company/getcompany', this.params).then((e) => {
+        if (e.status === 200) {
+          this.tableData = e.data.list;
+          this.params.count = e.data.count;
+          this.tableData.map((i) => {
+            i.createCompanyTime = moment(i.createCompanyTime).format('YYYY-MM-DD HH:mm');
+          });
+        }
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
+      });
     },
     change(val, row) {
       if (val === 'add') {
@@ -112,7 +111,17 @@ export default {
           name: 'admin-company-addCompany',
           query: {
             type: val,
-            companyId: row
+            companyId: row,
+            showInput: true
+          }
+        });
+      } else if (val === 'view') {
+        this.$router.push({
+          name: 'admin-company-addCompany',
+          query: {
+            type: val,
+            companyId: row.companyId,
+            showInput: false
           }
         });
       } else {
@@ -120,7 +129,8 @@ export default {
           name: 'admin-company-addCompany',
           query: {
             type: val,
-            companyId: row.companyId
+            companyId: row.companyId,
+            showInput: true
           }
         });
       }
@@ -154,19 +164,16 @@ export default {
       border: 1px solid #dcdfe6;
       margin-top: 22px;
     }
+    .upload {
+      display: inline;
+    }
     .one {
       background: #1c7bef;
       margin-right: 10px;
-       :hover {
-        background: #1373ea;
-      }
     }
     .two {
       background: #27bc8d;
       margin-right: 30px;
-       :hover {
-        background: #22b284;
-      }
     }
   }
   .company-table {
@@ -181,6 +188,18 @@ export default {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -11,66 +11,69 @@
         <el-form :model="ruleForm" ref="ruleForm" label-width="350px" class="demo-ruleForm" label-position="left">
           <el-form-item label="厂房建筑面积（㎡）：" prop="facBuildingArea">
             <el-input v-model="ruleForm.facBuildingArea" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.facBuildingArea}}</div>
           </el-form-item>
           <el-form-item label="实际用地面积（亩）：" prop="actualLandArea">
             <el-input v-model="ruleForm.actualLandArea" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.actualLandArea}}</div>
           </el-form-item>
           <el-form-item label="存量厂房面积（米2）：" prop="stockWorkArea">
             <el-input v-model="ruleForm.stockWorkArea" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.stockWorkArea}}</div>
           </el-form-item>
           <el-form-item label="入库税收（万元）：" prop="tax">
             <el-input v-model="ruleForm.tax" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.tax}}</div>
           </el-form-item>
           <el-form-item label="R＆D经费投入（万元）：" prop="researchFee">
             <el-input v-model="ruleForm.researchFee" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.researchFee}}</div>
           </el-form-item>
-          <el-form-item label="信息化投入（万元）：" prop="corporationPhone">
-            <el-input v-model="ruleForm.corporationPhone" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+          <el-form-item label="主营业务收入（万元）：" prop="mainBusIncome">
+            <el-input v-model="ruleForm.mainBusIncome" class="input-length" v-if="showInput"></el-input>
+            <div v-else>{{ruleForm.mainBusIncome}}</div>
           </el-form-item>
           <el-form-item label="是否高新技术企业：" prop="isHighTech">
             <el-radio-group v-model="ruleForm.isHighTech" v-if="showInput">
               <el-radio label="1" value="1">是</el-radio>
               <el-radio label="2" value="2">否</el-radio>
             </el-radio-group>
-            <div v-else>div</div>
+            <div v-else>
+              <p v-if="ruleForm.isHighTech==1">是</p>
+              <p v-if="ruleForm.isHighTech==2">否</p>
+            </div>
           </el-form-item>
           <el-form-item label="发明专利量：" prop="patentNumber">
             <el-input v-model="ruleForm.patentNumber" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
-          <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
-          </el-form-item>
+          <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
+                      <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
+                      <div v-else>div</div>
+                    </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.ratifiedCoal}}</div>
           </el-form-item>
           <el-form-item label="实际等价值能耗（吨标煤）：" prop="energyConsume">
             <el-input v-model="ruleForm.energyConsume" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.energyConsume}}</div>
           </el-form-item>
           <el-form-item label="水耗（吨）或天然气（万立方米）" prop="waterConsume">
             <el-input v-model="ruleForm.waterConsume" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.waterConsume}}</div>
           </el-form-item>
           <el-form-item label="电耗（万千瓦时）" prop="elecConsume">
             <el-input v-model="ruleForm.elecConsume" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.elecConsume}}</div>
           </el-form-item>
           <el-form-item label="煤耗（吨标煤）" prop="coalConsume">
             <el-input v-model="ruleForm.coalConsume" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.coalConsume}}</div>
           </el-form-item>
           <el-form-item label="增加值能耗（吨标煤/万元）" prop="addedEnergyConsume">
             <el-input v-model="ruleForm.addedEnergyConsume" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
+            <div v-else>{{ruleForm.addedEnergyConsume}}</div>
           </el-form-item>
           <el-form-item label="申报时间" required>
             <el-col :span="5" v-if="showInput">
@@ -95,6 +98,7 @@
 
 <script>
 import api from './../../../plugins/api.js';
+import qs from 'qs';
 export default {
   data() {
     return {
@@ -127,8 +131,17 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);
-          api.post('admin/indicator/add', this.ruleForm).then((e) => {
-            // console.log("11111");
+          api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
+            if (e.status === 200) {
+              this.showInput = false;
+              this.$router.push({
+                name: 'admin-company-normData',
+                query: {
+                  type: this.$route.query.type,
+                  companyId: e.data
+                }
+              });
+            }
           }, response => {
             this.$notify.error({
               title: '错误',
@@ -148,14 +161,31 @@ export default {
     modify() {
       this.showInput = true;
     },
+    getCompanyDetails() {
+      api.get('admin/indicator/detail', { companyId: this.$route.query.companyId }).then((e) => {
+        if (e.status === 200) {
+          console.log(e);
+          this.ruleForm = e.data;
+        }
+      }).catch(err => {
+        this.$notify.error({
+          title: '错误',
+          message: err.msg
+        });
+      });
+    },
     getCompanyInfo() {
       let type = null;
       this.companyId = this.$route.query.companyId || null;
       type = this.$route.query.type;
       if (type === 'view') {
         this.showInput = false;
+        this.getCompanyDetails();
+      } else if (type === 'add') {
+        this.showInput = true;
       } else {
         this.showInput = true;
+        this.getCompanyDetails();
       }
     }
   },
