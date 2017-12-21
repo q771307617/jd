@@ -4,8 +4,8 @@
       <el-main>
         <el-row>
           <el-col :span="24">
-            <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="input21">
-              <div slot="append" id="enterprise-index-check">搜&nbsp&nbsp索</div>
+            <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter.native="Search(FindCompanyName)">
+              <el-button slot="append" class="searchBtn" @click="Search(FindCompanyName)">搜&nbsp索</el-button>
             </el-input>
           </el-col>
         </el-row>
@@ -71,45 +71,49 @@
               <div class="personal" @click="party()"><span>党员人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i></span></div>
           </el-row>
           <!-- 企业信息展示 -->
-          <el-col :span="24" class="content">
+          <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
               <el-col :span="6">
-                <div class="imgInfo"><img :src="EnterpriseProfile.list" alt=""></div>
+                <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
               </el-col>
               <el-col :span="14">
               <el-col :span="24">
                 <el-col :span="8"><h1>公司名称</h1></el-col>
-                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+                <el-col :span="16">{{item.companyName}}</el-col>
               </el-col>
               <el-col :span="24">
                 <el-col :span="8"><span>所属乡镇/村：</span></el-col>
-                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+                <el-col :span="16">{{item.townName}}</el-col>
               </el-col>
               <el-col :span="24">
                 <el-col :span="8"><span>所属行业：</span></el-col>
-                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+                <el-col :span="16"><i>{{item.tradeName}}</i></el-col>
               </el-col>
               <el-col :span="24">
                 <el-col :span="8"><span>主要核心产品：</span></el-col>
-                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+                <el-col :span="16">{{item.productMainName}}</el-col>
               </el-col>
               <el-col :span="24">
                 <el-col :span="8"><span>地      址：</span></el-col>
-                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+                <el-col :span="16">{{item.companyAddress}}</el-col>
               </el-col>
               <el-col :span="24">
                 <el-col :span="8"><span>联系方式：</span></el-col>
-                <el-col :span="16">{{EnterpriseProfile.list}}</el-col>
+                <el-col :span="16">{{item.chargePersonTel}}</el-col>
               </el-col>
               </el-col>
             <el-col :span="3">
-              <el-button type="primary" style="margin-top: 80px;">查看企业详情</el-button>
+              <el-button type="primary" style="margin-top: 80px;" @click="ViewDetails(item.companyId)">查看企业详情</el-button>
             </el-col>
           </el-col>
           <!-- 分页 -->
           <el-col :span="24">
             <el-col :span="10">&nbsp</el-col>
             <el-col :span="14">
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[100, 200, 300, 400]" :page-size="10" background prev-text="上一页" next-text="下一页" layout="total, prev, pager, next, jumper" :total="400">
+              <p class="demonstration" style="float:left;margin-top:5px;">共
+              <span class="red">{{pageCount}}</span>条数据
+              <span style="margin-left:20px;">每页</span>
+              <span class="red">15</span>条</p>
+              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="EnterpriseProfile.length">
               </el-pagination>
             </el-col>
           </el-col>
@@ -121,7 +125,7 @@
 </template>
 
 <script>
-import api from './../../../plugins/api.js';
+import api from '~/plugins/api';
 import {
   mapState
 } from 'vuex';
@@ -131,7 +135,8 @@ export default {
       isActiveIndustry: true,
       isActiveTown: true,
       params: {
-        chargePersonType: null,
+        // 默认必须传1
+        chargePersonType: 1,
         companyName: null,
         pageNum: null,
         pageSize: null,
@@ -141,16 +146,10 @@ export default {
         townId: null,
         tradeId: null
       },
-      input21: '',
+      FindCompanyName: '',
       EnterpriseProfile: {},
-      currentPage4: 4,
-      data1: [
-        '所属乡镇/村：',
-        '所属行业：',
-        '主要核心产品：',
-        '地      址：',
-        '联系方式：'
-      ],
+      currentPage: 1,
+      pageCount: null,
       selectType: [{
         index: 1,
         classify: '行业',
@@ -167,11 +166,14 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     // 改变页数时回调
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.params.pageNum = val;
+      this.getCompanyInfo();
+      // console.log(`当前页: ${val}`, this.pageNum);
+      console.log(this.$route.path.slice(1));
     },
     showIndustry() {
       this.isActiveIndustry = !this.isActiveIndustry;
@@ -179,11 +181,34 @@ export default {
     showTownShip() {
       this.isActiveTown = !this.isActiveTown;
     },
+    // 职工人数排序
     staff() {
       this.params.staffScaleType = Number(!this.params.staffScaleType);
+      this.getCompanyInfo();
     },
+    // 党员人数排序
     party() {
       this.params.partyMemberNumberType = Number(!this.params.partyMemberNumberType);
+      this.getCompanyInfo();
+    },
+    // 查看企业详情
+    ViewDetails(id) {
+      this.$router.push({
+        name: 'index-enterprise-detail',
+        query: {
+          id: id
+        }
+      });
+    },
+    // 企业名称搜索
+    Search(val) {
+      console.log(1212);
+      if (val === '') { return; };
+      api.get('/company/getcompanybyname', {companyName: val}).then((e) => {
+        if (e.status === 200) {
+          this.EnterpriseProfile = e.data.list;
+        }
+      });
     },
     /* @argument val
      * 选择行业
@@ -191,29 +216,39 @@ export default {
     selectIndustry(val) {
       this.params.tradeId = val;
       this.getCompanyInfo();
-      console.log(val);
     },
     /* @argument val
     * 选择乡镇
     */
     selectTownShip(val) {
       this.params.townId = val;
-      console.log(val);
+      this.getCompanyInfo();
     },
     /* @argument val
     * 选择规模
     */
     selectScale(val) {
+      this.getCompanyInfo();
       this.params.scaleType = val;
-      console.log(val);
+    },
+    /* @argument val
+    * 刷新保存
+    */
+    RefreshSave() {
+      this.$router.push({
+        path: this.$route.path.slice(1),
+        query: this.params
+      });
     },
     /* @argument val
     * 获取企业信息
     */
     getCompanyInfo() {
       api.get('company/getcompany', this.params).then((e) => {
-        console.log(e);
-        this.EnterpriseProfile = e.data;
+        if (e.status === 200) {
+          this.EnterpriseProfile = e.data.list;
+          this.pageCount = e.data.count;
+        };
       }).catch(err => {
         this.$notify.error({
           title: '错误',
@@ -221,6 +256,12 @@ export default {
         });
       });
     }
+  },
+  created() {
+    this.$nextTick(() => {
+      this.getCompanyInfo();
+      this.RefreshSave();
+    });
   }
 };
 </script>
@@ -289,6 +330,17 @@ export default {
   margin: 0 auto;
   .el-main {
     .el-row {
+      .el-col{
+        .searchBtn{
+          background-color:#409eff;
+          width: 217px;
+          height: 40px;
+          border-radius: 0;
+          font-size:16px;
+          color:#ffffff;
+          letter-spacing:9.14px;
+        }
+      }
       .content {
         border-bottom: 1px solid #d4e1ea;
         margin-bottom: 20px;
@@ -304,10 +356,21 @@ export default {
           letter-spacing: 5px;
           padding-bottom: 12px;
         }
+        i{
+          display: inline-block;
+          background:#fafdff;
+          border:1px solid #2e86b9;
+          border-radius:1px;
+          padding: 0 4px;
+          height:20px;
+          font-style: normal;
+          font-size:14px;
+          color:#2e86b9;
+          text-align: center;
+        }
         .imgInfo {
           width: 264px;
           height: 176px;
-          background-color: greenyellow;
           margin-bottom: 20px;
         }
       }
