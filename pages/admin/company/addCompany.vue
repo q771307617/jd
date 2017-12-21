@@ -10,11 +10,8 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
-            <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple v-if="showInput">
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text">将文件拖到此处，或
-                <em>点击上传</em>
-              </div>
+            <el-upload action="https://172.30.34.41:8081/upload/companyimg" :on-success="handleSuccess" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
+              <i class="el-icon-plus"></i>
               <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
             </el-upload>
             <div v-else>div</div>
@@ -24,9 +21,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                      <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-                                                      <div v-else>div</div>
-                                                    </el-form-item>-->
+                <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+                <div v-else>div</div>
+              </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -57,17 +54,17 @@
               </el-form-item>
             </el-col>
             <!--
-              <el-col :span="8">
-                <el-form-item  prop="name">
-                纬度
-                    <el-input v-model="ruleForm.name" class="input-length"></el-input>
-                  </el-form-item>
-              </el-col>-->
+                        <el-col :span="8">
+                          <el-form-item  prop="name">
+                          纬度
+                              <el-input v-model="ruleForm.name" class="input-length"></el-input>
+                            </el-form-item>
+                        </el-col>-->
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-                                                <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-                                                <div v-else>div</div>
-                                              </el-form-item>-->
+                                                          <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
+                                                          <div v-else>div</div>
+                                                        </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -76,7 +73,7 @@
           </el-form-item>
           <el-form-item label="主要核心产品：" prop="productName">
             <el-input v-model="ruleForm.productName" class="input-length" v-if="showInput"></el-input>
-            <div>{{ruleForm['leader']['gmtModified']}}</div>
+            <div>{{ruleForm}}</div>
           </el-form-item>
           <el-form-item label="规上（规下）：" prop="scaleUp">
             <el-radio-group v-model="ruleForm.scaleUp" v-if="showInput">
@@ -225,6 +222,15 @@ export default {
     })
   },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.ruleForm.imageUrl = file.url;
+    },
+    handleSuccess(response, file, fileList) {
+      console.log(response, file, fileList);
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -310,6 +316,18 @@ export default {
   },
   mounted() {
     this.getCompanyInfo();
+  },
+  watch: {
+    'showInput'() {
+      this.$router.push({
+        name: 'admin-company-addCompany',
+        query: {
+          type: this.$route.query.type,
+          companyId: this.$route.query.companyId,
+          showInput: this.$route.query.showInput
+        }
+      });
+    }
   }
 };
 </script>

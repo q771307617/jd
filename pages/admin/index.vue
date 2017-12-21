@@ -3,7 +3,7 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-upload class="upload" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :show-file-list="false" :on-remove="handleRemove" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList">
+        <el-upload class="upload" action="http://localhost:3000/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess" >
           <el-button class=" button one">数据导入</el-button>
         </el-upload>
         <el-button class=" button two" @click="change('add','0')">新增企业</el-button>
@@ -42,6 +42,18 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog :visible.sync="data" width="640px" center>
+      <div style="text-align:center;">
+        <i class="el-icon-success" style="text-align:center;color:#01d928;font-size:66px;" v-if="fileStatus"></i>
+        <i class="el-icon-warning" style="text-align:center;color:#ff3f20;font-size:66px;" v-else></i>
+      </div>
+      <div style="text-align:center;">
+        <h1 style="font-size:24px;margin-top:21px;" v-if="fileStatus">企业信息数据导入成功！</h1>
+        <h1 style="font-size:24px;margin-top:21px;" v-else>企业信息数据导入失败，请重新导入！</h1>
+      </div>
+      <span slot="footer" class="dialog-footer">
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -51,7 +63,8 @@ import moment from 'moment';
 export default {
   data() {
     return {
-      fileList: [],
+      data: false,
+      fileStatus: true,
       params: {
         pageNum: 1,
         chargePersonType: 1,
@@ -67,6 +80,15 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       console.log(file, fileList);
+    },
+    handleSuccess() {
+      this.data = true;
+      this.fileStatus = true;
+      this.getcompanyInfo();
+    },
+    handleError() {
+      this.data = true;
+      this.fileStatus = false;
     },
     handlePreview(file) {
       console.log(file);
@@ -176,6 +198,15 @@ export default {
     }
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 

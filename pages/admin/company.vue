@@ -39,7 +39,8 @@ export default {
         name: label,
         query: {
           type: this.$route.query.type,
-          companyId: this.$route.query.companyId
+          companyId: this.$route.query.companyId,
+          showInput: this.$route.query.showInput
         }
       });
     },
