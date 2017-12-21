@@ -11,22 +11,22 @@
       <!-- 侧边栏 -->
       <div class="sidebar">
         <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" text-color="#fff" background-color="#354f8a" active-text-color="#ffd04b" unique-opened @select="selectMenu">
-          <template v-for="item in menus">
-            <template v-if="item.subs">
-              <el-submenu :index="item.index">
-                <template slot="title">
+          <div v-for="item in menus" :key="item.index">
+            <div v-if="item.subs">
+              <el-submenu :index="item.index" :key="item.index">
+                <div slot="title">
                   <i :class="item.icon"></i>{{ item.title }}
-                </template>
+                </div>
                 <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
                 </el-menu-item>
               </el-submenu>
-            </template>
-            <template v-else>
-              <el-menu-item :index="item.index">
+            </div>
+            <div v-else>
+              <el-menu-item :index="item.index" :key="item.index">
                 <i :class="item.icon"></i>{{ item.title }}
               </el-menu-item>
-            </template>
-          </template>
+            </div>
+          </div>
         </el-menu>
       </div>
     </div>
