@@ -15,7 +15,7 @@
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
-        <el-button>
+        <el-button @click="initMap">
           <i class='el-icon-location' style='color:#1c7bef;'></i>建德市</el-button>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
@@ -123,6 +123,7 @@ export default {
   watch: {
     xz(val, old) {
       this.searchXzHy(2, val);
+      this.map.panTo(new window.T.LngLat(this.mapParams.markers[val - 1][0], this.mapParams.markers[val - 1][1]), 13);
     },
     hy(val, old) {
       this.searchXzHy(3, val);
@@ -131,22 +132,28 @@ export default {
   methods: {
     // 右边侧边栏
     rmShow() {
-      if (window.$('.rm').css('width') === '0px') {
+      if (window.$('.right').css('width') === '20px') {
+        window.$('.right').animate({
+          width: '443px'
+        });
         window.$('.rm').animate({
-          width: '413'
+          width: '413px'
         });
         window.$('.p i').removeClass('el-icon-caret-left').addClass('el-icon-caret-right');
         window.$('.p').animate({
-          right: '423px'
+          right: '423px', top: '50%'
         });
         return;
       }
+      window.$('.right').animate({
+        width: '20px'
+      });
       window.$('.rm').animate({
         width: '0px'
       });
       window.$('.p i').removeClass('el-icon-caret-right').addClass('el-icon-caret-left');
       window.$('.p').animate({
-        right: '0'
+        right: '0px', top: '50%'
       });
     },
     searchcompany(type) {
@@ -171,15 +178,36 @@ export default {
     },
     // 乡镇行业搜索
     searchXzHy(type, val) {
-      this.searchxzhyParams.value = val;
-      this.searchxzhyParams.type = type;
-      api.get('company/searchcompany', this.searchxzhyParams)
+      // this.searchxzhyParams.value = val;
+      // this.searchxzhyParams.type = type;
+      api.get('/company/getcompanybytownid', {townId: this.xz, tradeId: this.hy})
         .then(e => {
-          console.log(e.data);
-          this.allCompanys = e.data.list;
+          this.allCompanys = e.data;
           this.map.clearOverLays();
           this.imgOverLay(this.map);
           this.polygon(this.map);
+          this.markers(this.map);
+          // this.map.setZoom(15);
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: '错误',
+            message: error.msg
+          });
+        });
+    },
+    // 建德市企业
+    initMap() {
+      this.map.centerAndZoom(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
+      this.map.clearOverLays();
+      // this.imgOverLay(this.map);
+      // this.polygon(this.map);
+      api.get('company/getallcompany')
+        .then(e => {
+          this.map.clearOverLays();
+          this.imgOverLay(this.map);
+          this.polygon(this.map);
+          this.allCompanys = e.data;
           this.markers(this.map);
         })
         .catch(error => {
@@ -205,7 +233,6 @@ export default {
     },
     // 企业搜索
     searchItem(id, data) {
-      console.log(data);
       this.searchParams.value = data.name;
       this.mapParams.zoom = '18';
       this.mapParams.lat = data.lat;
@@ -234,7 +261,7 @@ export default {
     },
     // 更新地图
     fetchMap() {
-      this.map.setZoom(this.mapParams.zoom);
+      // this.map.setZoom(this.mapParams.zoom);
       // console.log(this.mapParams.lng, this.mapParams.lat);
       this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 14);
     },
@@ -260,28 +287,28 @@ export default {
         new window.T.LngLat(120.32081607375262, 30.155545642054992)
       );
       var img1 = new window.T.ImageOverlay(
-        'http://chuantu.biz/t6/173/1512980653x-1404793565.png',
+        'http://1.img.dianjiangla.com/jdAssets/JD1.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
         }
       );
       var img2 = new window.T.ImageOverlay(
-        'http://www.bbvdd.com/d/201712111707229eg.png',
+        'http://1.img.dianjiangla.com/jdAssets/JD2.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
         }
       );
       var img3 = new window.T.ImageOverlay(
-        'http://www.bbvdd.com/d/20171211171824rag.png',
+        'http://1.img.dianjiangla.com/jdAssets/JD3.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
         }
       );
       var img4 = new window.T.ImageOverlay(
-        'http://1.img.dianjiangla.com/jdAssets/jdQh.png',
+        'http://1.img.dianjiangla.com/jdAssets/JD4.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
@@ -307,11 +334,7 @@ export default {
       });
     },
     markers(map) {
-      console.log('1111', this.allCompanys);
       var markers = [];
-      // api.get('company/getallcompany')
-      //   .then(e => {
-      //   this.allCompanys = e.data;
       for (var i in this.allCompanys) {
         markers.push([this.allCompanys[i].lng, this.allCompanys[i].lat]);
       }
@@ -336,16 +359,10 @@ export default {
         addClickHandler(content, marker);
       }
       this.markerO = marker;
-      // map.removeOverLay(marker);
-      // marker.setLngLat({lng: 119.282672, lat: 29.409538});
-      // map.removeOverLay(marker);
       function addClickHandler(content, marker) {
         marker.addEventListener('mousemove', function (e) {
           openInfo(content, e);
         });
-        // marker.addEventListener('mouseout', function (e) {
-        //   map.closeInfoWindow();
-        // });
       }
       function openInfo(content, e) {
         var point = e.lnglat;
@@ -357,15 +374,6 @@ export default {
         }); // 创建信息窗口对象
         map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
       };
-      // this.markerO = marker;
-      // })
-      // .catch(err => {
-      //   this.$notify.error({
-      //     title: '错误',
-      //     message: err.msg
-      //   });
-      // });
-      // var markers = this.mapParams.markers;
     },
     polygon(map) {
       // 鼠标点击选点
@@ -501,12 +509,13 @@ body #mapDiv {
   width: 443px;
   min-height: 600px;
   .p {
+    z-index: 999;
     position: absolute;
     display: inline-block;
     height: 40px;
     width: 18px;
+    top: 50%;
     background: #f2f8ff;
-    margin-top: 100%;
     border-radius: 5px 0 0 5px;
     border: 1px solid #e0e0e0;
     border-right: none;
