@@ -54,7 +54,7 @@ export default {
     return {
       map: {},
       markerO: {},
-      allCompanys: '',
+      allCompanys: { },
       seachInput: '',
       xz: '',
       hy: '',
@@ -118,7 +118,7 @@ export default {
     /* 热门企业 */
     this.remen();
     /* 地图实例化 */
-    this.getMap();
+    this.allCompany();
   },
   watch: {
     xz(val, old) {
@@ -167,7 +167,6 @@ export default {
       });
       // window.$('.searchList li').on('click', function (e) {
       //   window.$('.searchList').css({display: 'none'});
-      //   console.log(e, this);
       // });
     },
     // 乡镇行业搜索
@@ -176,29 +175,12 @@ export default {
       this.searchxzhyParams.type = type;
       api.get('company/searchcompany', this.searchxzhyParams)
         .then(e => {
-          for (var i in e.data.list) {
-            this.markers.push([e.data.list[i].lng, e.data.list[i].lat]);
-            this.mapParams.markers = this.markers;
-            var icon = new window.T.Icon({
-              iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
-              iconSize: new window.T.Point(20, 25),
-              iconAnchor: new window.T.Point(10, 25)
-            });
-            // var infoWin1 = new window.T.InfoWindow();
-            for (let i = 0; i < this.markers.length; i++) {
-              var marker = new window.T.Marker(
-                new window.T.LngLat(this.markers[i][0], this.markers[i][1]), {
-                  icon: icon
-                }
-              );
-              // map.removeOverLay(marker);
-              this.map.addOverLay(marker);
-              /** 信息窗体 **/
-              var content = '<h2>' + this.markers[i].name + '</h2>' + this.markers[i].chargePersonTel + '';
-              this.addClickHandler(content, marker);
-            };
-            this.markerO = marker;
-          }
+          console.log(e.data);
+          this.allCompanys = e.data.list;
+          this.map.clearOverLays();
+          this.imgOverLay(this.map);
+          this.polygon(this.map);
+          this.markers(this.map);
         })
         .catch(error => {
           this.$notify.error({
@@ -207,30 +189,12 @@ export default {
           });
         });
     },
-    addClickHandler(content, marker) {
-      marker.addEventListener('mousemove', function (e) {
-        this.openInfo(content, e);
-      });
-      // marker.addEventListener('mouseout', function (e) {
-      //   map.closeInfoWindow();
-      // });
-    },
-    openInfo(content, e) {
-      var point = e.lnglat;
-      // var marker = new window.T.Marker(point); // 创建标注
-      var markerInfoWin = new window.T.InfoWindow(content, {
-        offset: new window.T.Point(0, -20),
-        autoPan: true,
-        closeOnClick: true
-      }); // 创建信息窗口对象
-      this.map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
-    },
     // 所有企业
     allCompany() {
       api.get('company/getallcompany')
         .then(e => {
           this.allCompanys = e.data;
-          console.log(this.allCompanys);
+          this.getMap();
         })
         .catch(err => {
           this.$notify.error({
@@ -241,14 +205,17 @@ export default {
     },
     // 企业搜索
     searchItem(id, data) {
+      console.log(data);
       this.searchParams.value = data.name;
       this.mapParams.zoom = '18';
       this.mapParams.lat = data.lat;
       this.mapParams.lng = data.lng;
-      this.mapParams.markers = [[data.lng, data.lat]];
-      // this.marker.setLngLat(this.mapParams.markers);
+      this.allCompanys = [data];
+      this.map.clearOverLays();
+      this.imgOverLay(this.map);
+      this.polygon(this.map);
+      // this.markerO.setLngLat({lng: 119.282672, lat: 29.409538});
       this.markers(this.map);
-      // console.log(this.map, this.markerO.getLngLat());
       // this.getMap();
       this.fetchMap();
     },
@@ -259,7 +226,6 @@ export default {
           this.remenParams = e.data;
         })
         .catch(error => {
-          console.log(error);
           this.$notify.error({
             title: '错误',
             message: error.msg
@@ -273,7 +239,6 @@ export default {
       this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 14);
     },
     getMap() {
-      this.allCompany();
       var zoom = this.mapParams.zoom;
       var lng = this.mapParams.lng;
       var lat = this.mapParams.lat;
@@ -324,7 +289,6 @@ export default {
       );
       map.addOverLay(img1);
       map.addEventListener('zoomend', function (e) {
-        // console.log(map.getZoom(), map.isDrag());
         map.removeOverLay(img1);
         var zoom = map.getZoom();
         if (zoom < 12) {
@@ -343,57 +307,64 @@ export default {
       });
     },
     markers(map) {
+      console.log('1111', this.allCompanys);
       var markers = [];
-      api.get('company/getallcompany')
-        .then(e => {
-          this.allCompanys = e.data;
-          for (var i in this.allCompanys) {
-            markers.push([this.allCompanys[i].lng, this.allCompanys[i].lat]);
+      // api.get('company/getallcompany')
+      //   .then(e => {
+      //   this.allCompanys = e.data;
+      for (var i in this.allCompanys) {
+        markers.push([this.allCompanys[i].lng, this.allCompanys[i].lat]);
+      }
+      var icon = new window.T.Icon({
+        iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
+        iconSize: new window.T.Point(20, 25),
+        iconAnchor: new window.T.Point(10, 25)
+      });
+      // var infoWin1 = new window.T.InfoWindow();
+      for (let i = 0; i < markers.length; i++) {
+        var marker = new window.T.Marker(
+          new window.T.LngLat(markers[i][0], markers[i][1]), {
+            icon: icon
           }
-          var icon = new window.T.Icon({
-            iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
-            iconSize: new window.T.Point(20, 25),
-            iconAnchor: new window.T.Point(10, 25)
-          });
-          // var infoWin1 = new window.T.InfoWindow();
-          for (let i = 0; i < markers.length; i++) {
-            var marker = new window.T.Marker(
-              new window.T.LngLat(markers[i][0], markers[i][1]), {
-                icon: icon
-              }
-            );
-            // map.removeOverLay(marker);
-            map.addOverLay(marker);
-            /** 信息窗体 **/
-            var content = '<h2>' + this.allCompanys[i].name + '</h2>' + this.allCompanys[i].chargePersonTel + '';
-            addClickHandler(content, marker);
-          }
-          function addClickHandler(content, marker) {
-            marker.addEventListener('mousemove', function (e) {
-              openInfo(content, e);
-            });
-            // marker.addEventListener('mouseout', function (e) {
-            //   map.closeInfoWindow();
-            // });
-          }
-          function openInfo(content, e) {
-            var point = e.lnglat;
-            marker = new window.T.Marker(point); // 创建标注
-            var markerInfoWin = new window.T.InfoWindow(content, {
-              offset: new window.T.Point(0, -20),
-              autoPan: true,
-              closeOnClick: true
-            }); // 创建信息窗口对象
-            map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
-          };
-          this.markerO = marker;
-        })
-        .catch(err => {
-          this.$notify.error({
-            title: '错误',
-            message: err.msg
-          });
+        );
+        map.addOverLay(marker);
+        // map.removeOverLay(marker);
+        /** 信息窗体 **/
+        var content = '';
+        content = '<h2>' + this.allCompanys[i].name + '</h2>' + this.allCompanys[i].chargePersonTel + '';
+
+        addClickHandler(content, marker);
+      }
+      this.markerO = marker;
+      // map.removeOverLay(marker);
+      // marker.setLngLat({lng: 119.282672, lat: 29.409538});
+      // map.removeOverLay(marker);
+      function addClickHandler(content, marker) {
+        marker.addEventListener('mousemove', function (e) {
+          openInfo(content, e);
         });
+        // marker.addEventListener('mouseout', function (e) {
+        //   map.closeInfoWindow();
+        // });
+      }
+      function openInfo(content, e) {
+        var point = e.lnglat;
+        // marker = new window.T.Marker(point); // 创建标注
+        var markerInfoWin = new window.T.InfoWindow(content, {
+          offset: new window.T.Point(0, -20),
+          autoPan: true,
+          closeOnClick: true
+        }); // 创建信息窗口对象
+        map.openInfoWindow(markerInfoWin, point); // 开启信息窗口
+      };
+      // this.markerO = marker;
+      // })
+      // .catch(err => {
+      //   this.$notify.error({
+      //     title: '错误',
+      //     message: err.msg
+      //   });
+      // });
       // var markers = this.mapParams.markers;
     },
     polygon(map) {
@@ -577,6 +548,7 @@ body #mapDiv {
       padding: 5px 0;
       li {
         overflow: hidden;
+        clear: both;
         p {
           display: inline-block;
           width: 121px;
