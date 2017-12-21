@@ -1,5 +1,10 @@
 <template>
   <div class='normdata'>
+    <el-radio-group v-model="radio" fill="#f2ba55" @change="changePage()">
+      <el-radio-button label='1' v-if="this.$route.query.type=='add'&&this.$route.query.companyId!=0" disabled>基本信息</el-radio-button>
+      <el-radio-button label='1' v-else>基本信息</el-radio-button>
+      <el-radio-button label='2'> 指标数据</el-radio-button>
+    </el-radio-group>
     <el-row :gutter="24">
       <el-col :span="4" :offset="20">
         <el-button type="primary" class="save" v-if="showInput" @click="submitForm('ruleForm')">保存</el-button>
@@ -48,9 +53,9 @@
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                      <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
-                      <div v-else>div</div>
-                    </el-form-item> -->
+                                            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
+                                            <div v-else>div</div>
+                                          </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
@@ -77,18 +82,18 @@
           </el-form-item>
           <el-form-item label="申报时间" required>
             <el-col :span="5" v-if="showInput">
-              <el-form-item prop="year" class="input-length">
-                <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.year" style="width: 100%;"></el-date-picker>
+              <el-form-item prop="declareStartTime" class="input-length">
+                <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
-            <span v-else>div-</span>
+            <span v-else>{{declareStartTime}}-</span>
             <el-col class="line" :span="1" v-if="showInput">&nbsp——</el-col>
             <el-col :span="11" v-if="showInput">
-              <el-form-item prop="year" class="input-length">
-                <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.year" style="width: 100%;"></el-date-picker>
+              <el-form-item prop="declareEndTime" class="input-length">
+                <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
-            <span v-else>div</span>
+            <span v-else>{{declareEndTime}}</span>
           </el-form-item>`
         </el-form>
       </el-col>
@@ -99,16 +104,21 @@
 <script>
 import api from './../../../plugins/api.js';
 import qs from 'qs';
+import moment from 'moment';
 export default {
   data() {
     return {
+      radio: '2',
       showInput: false,
-      companyId: '',
+      declareStartTime: null,
+      declareEndTime: null,
       ruleForm: {
         actualLandArea: '',
         addedEnergyConsume: '',
         coalConsume: '',
         companyId: '',
+        declareStartTime: null,
+        declareEndTime: null,
         elecConsume: '',
         energyConsume: '',
         facBuildingArea: '',
@@ -130,27 +140,42 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.ruleForm);
-          api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
-            if (e.status === 200) {
-              this.showInput = false;
-              this.$router.push({
-                name: 'admin-company-normData',
-                query: {
-                  type: this.$route.query.type,
-                  companyId: e.data
-                }
-              });
-            }
-          }, response => {
-            this.$notify.error({
-              title: '错误',
-              message: response.msg
+          if (this.ruleForm.declareStartTime) {
+            this.ruleForm.declareStartTime = moment(this.ruleForm.declareStartTime).format('x');
+            this.declareStartTime = moment(this.ruleForm.declareStartTime).format('YYYY-MM-DD');
+          }
+          if (this.ruleForm.declareEndTime) {
+            this.ruleForm.declareEndTime = moment(this.ruleForm.declareEndTime).format('x');
+            this.declareEndTime = moment(this.ruleForm.declareEndTime).format('YYYY-MM-DD');
+          }
+          this.ruleForm.companyId = this.$route.query.companyId;
+          if (this.$route.query.type === 'add') {
+            api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
+              if (e.status === 200) {
+                this.id = e.data;
+                this.showInput = false;
+                this.$router.push({
+                  name: 'admin'
+                });
+              }
             });
-          });
+          } else {
+            api.post('admin/indicator/update', qs.stringify(this.ruleForm)).then((e) => {
+              if (e.status === 200) {
+                this.id = e.data;
+                this.showInput = false;
+                this.$router.push({
+                  name: 'admin-company-normData',
+                  query: {
+                    type: this.$route.query.type,
+                    companyId: this.$route.query.companyId,
+                    showInput: false
+                  }
+                });
+              }
+            });
+          }
         } else {
-          console.log(this.ruleForm);
-          console.log('error submit!!');
           return false;
         }
       });
@@ -161,30 +186,32 @@ export default {
     modify() {
       this.showInput = true;
     },
+    changePage() {
+      this.$router.push({
+        name: 'admin-company-addCompany',
+        query: {
+          type: this.$route.query.type,
+          companyId: this.$route.query.companyId,
+          showInput: this.$route.query.showInput
+        }
+      });
+    },
     getCompanyDetails() {
       api.get('admin/indicator/detail', { companyId: this.$route.query.companyId }).then((e) => {
         if (e.status === 200) {
-          console.log(e);
           this.ruleForm = e.data;
+          this.declareStartTime = moment(e.data.declareStartTime).format('YYYY-MM-DD');
+          this.declareEndTime = moment(e.data.declareEndTime).format('YYYY-MM-DD');
         }
-      }).catch(err => {
-        this.$notify.error({
-          title: '错误',
-          message: err.msg
-        });
       });
     },
     getCompanyInfo() {
       let type = null;
-      this.companyId = this.$route.query.companyId || null;
+      this.showInput = this.$route.query.showInput;
+      console.log(this.showInput);
       type = this.$route.query.type;
-      if (type === 'view') {
-        this.showInput = false;
-        this.getCompanyDetails();
-      } else if (type === 'add') {
-        this.showInput = true;
+      if (type === 'add') {
       } else {
-        this.showInput = true;
         this.getCompanyDetails();
       }
     }

@@ -3,7 +3,7 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-upload class="upload" action="http://localhost:3000/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess" >
+        <el-upload class="upload" action="http://localhost:3000/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
           <el-button class=" button one">数据导入</el-button>
         </el-upload>
         <el-button class=" button two" @click="change('add','0')">新增企业</el-button>
@@ -198,6 +198,7 @@ export default {
     }
   }
 }
+
 
 
 
