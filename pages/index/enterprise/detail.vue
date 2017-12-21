@@ -2,16 +2,18 @@
   <el-container>
     <el-main>
       <el-row>
-        <div class="box" style="width:1200px;margin: 0 auto">
       <!-- 企业封面 -->
-        <el-col :span="24">
-          <div class="top-text"><i style="background-position:-92px -17px"></i>企业封面</div>
+        <div class="scope">
+            <div class="el-col" style="width:1200px;margin:0 auto">
+          <div class="top-text" style="padding-top:25px;"><i style="background-position:-92px -17px;top:25px;"></i>企业封面</div>
           <div class="top-picture">
-            <img :src="companyInfo.factoryImage" alt="">
+            <img :src="factoryImage.imageUrl">
           </div>
-        </el-col>
+          </div>
+        </div>
         <!-- 企业概述 -->
-        <el-col :span="24">
+          <div class="scope">
+          <div class="el-col" style="width:1200px;margin:0 auto">
           <div class="col">
             <div class="top-text"><i style="background-position: -92px -70px"></i>企业概述</div>
             <el-col :span="24">
@@ -41,12 +43,12 @@
 
             <el-col :span="24">
             <el-col :span="5"><span>所    属   行   业：</span></el-col>
-            <el-col :span="18">{{companyInfo.tradeName}}</el-col>
+            <el-col :span="18"><i class="type">{{companyInfo.tradeName}}</i></el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>主要核心产品：</span></el-col>
-            <el-col :span="18">{{companyInfo.product}}</el-col>
+            <el-col :span="18">{{product.productName}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -56,27 +58,27 @@
 
             <el-col :span="24">
             <el-col :span="5"><span>主要负责人：</span></el-col>
-            <el-col :span="18">{{companyInfo.corporation}}</el-col>
+            <el-col :span="18">{{corporation.name}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>联    系   电   话：</span></el-col>
-            <el-col :span="18">{{companyInfo.corporation}}</el-col>
+            <el-col :span="18">{{corporation.phone}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>是否“两代表一委员”：</span></el-col>
-            <el-col :span="18">{{companyInfo.corporation}}</el-col>
+            <el-col :span="18">{{corporation.isCommittee}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>具体负责人：</span></el-col>
-            <el-col :span="18">{{companyInfo.leader}}</el-col>
+            <el-col :span="18">{{leader.name}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>联    系   电   话：</span></el-col>
-            <el-col :span="18">{{companyInfo.leader}}</el-col>
+            <el-col :span="18">{{leader.phone}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -99,9 +101,11 @@
             <el-col :span="18">{{companyInfo.companyProfile}}</el-col>
             </el-col>
             </div>
-        </el-col>
+        </div>
+        </div>
         <!-- 数据指标 -->
-        <el-col :span="24">
+        <div class="scope">
+          <div class="el-col" style="width:1200px;margin:0 auto">
             <div class="col">
             <div class="top-text"><i style="background-position: -92px -122px"></i>数据指标</div>
 
@@ -150,8 +154,8 @@
             </el-col>
           </el-col>
             </div>
-        </el-col>
-      </div>
+        </div>
+        </div>
       </el-row>
     </el-main>
   </el-container>
@@ -162,21 +166,28 @@ import api from '~/plugins/api';
 export default {
   data() {
     return {
+      corporation: '',
+      factoryImage: '',
+      leader: '',
+      product: '',
       companyInfo: {}
     };
   },
   methods: {
     getCompanyInfo() {
-      api.get('/company/detail?id=1').then((e) => {
-        console.log(e.data.corporation);
-        this.companyInfo = e.data;
+      api.get('/company/detail', { id: this.$route.query.id }).then((e) => {
+        if (e.status === 200) {
+          this.companyInfo = e.data;
+          this.factoryImage = e.data.factoryImage;
+          this.corporation = e.data.corporation;
+          this.leader = e.data.leader;
+          this.product = e.data.product;
+        }
       });
     }
   },
-  created() {
-    this.$nextTick(() => {
-      this.getCompanyInfo();
-    });
+  mounted() {
+    this.getCompanyInfo();
   }
 };
 </script>
@@ -185,16 +196,28 @@ export default {
 .el-main {
   background-color: #f7f7f7;
   .el-row {
+    background-color: #f7f7f7;
     min-width: 100%;
-    // margin: 10px auto;
     .el-col {
       margin: 0 0 16px 0;
       background-color: #fff;
-      .col{
+      .col {
         overflow: hidden;
-        margin-bottom: 30px;
-        span{
+        margin-bottom: 16px;
+        span {
           margin-left: 60px;
+        }
+        .type{
+          display: inline-block;
+          background:#fafdff;
+          border:1px solid #2e86b9;
+          border-radius:1px;
+          padding: 0 4px;
+          height:20px;
+          font-style: normal;
+          font-size:14px;
+          color:#2e86b9;
+          text-align: center;
         }
       }
       .top-text {
@@ -223,11 +246,17 @@ export default {
         }
       }
       .top-picture {
-        width: 600px;
-        height: 400px;
-        // background-color: red;
-        margin: 0 0 30px 60px;
+        max-width: 600px;
+        max-height: 400px;
+        margin-left:60px;
+        // background-color:red;
       }
+    }
+    .scope{
+      width: 100%;
+      background-color:#fff;
+      margin-bottom: 16px;
+      padding-bottom: 30px;
     }
   }
 }
