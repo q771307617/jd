@@ -2,45 +2,52 @@
   <div class='hello'>
     <div class="mainNav">
      <div class="mainNavs">
-        <el-radio-group v-model="radio3" fill="#f2ba55">
-          <el-radio-button label="0">厂房建筑面积</el-radio-button>
-          <el-radio-button label="1">实际用地面积</el-radio-button>
-          <el-radio-button label="2">存量厂房面积</el-radio-button>
-          <el-radio-button label="3">入库税收</el-radio-button>
-          <el-radio-button label="4">R&D经费投入</el-radio-button>
-          <el-radio-button label="5">信息化投入</el-radio-button>
-          <el-radio-button label="6">高新技术企业</el-radio-button>
-          <el-radio-button label="7">发明专利量</el-radio-button>
-          <el-radio-button label="8">核定用能</el-radio-button>
+        <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
+          <el-radio-button label="1" class="redio">厂房建筑面积</el-radio-button>
+          <el-radio-button label="2" class="redio">实际用地面积</el-radio-button>
+          <el-radio-button label="3" class="redio">存量厂房面积</el-radio-button>
+          <el-radio-button label="4" class="redio">入库税收</el-radio-button>
+          <el-radio-button label="5" class="redio">R&D经费投入</el-radio-button>
+          <el-radio-button label="6" class="redio">信息化投入</el-radio-button>
+          <el-radio-button label="7" class="redio">高新技术企业</el-radio-button>
+          <el-radio-button label="8" class="redio">发明专利量</el-radio-button>
+          <el-radio-button label="9" class="redio">核定用能</el-radio-button>
         </el-radio-group>
      </div>
     </div>
     <div class="mainContent">
       <el-table
-        :data="tableData"
+        :data="companyInfo"
         stripe
-        style="width: 100%">
-        <el-table-column
-          prop="date"
-          label="企业名称"
-          width="180">
-        </el-table-column>
+        border
+        style="width: 100%;text-align:center">
         <el-table-column
           prop="name"
+          label="企业名称"
+          min-width="180"
+          header-align="center">
+        </el-table-column>
+        <el-table-column
+          prop="town"
           label="所属乡镇"
-          width="180">
+          min-width="180"
+          header-align="center">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="所属村(社区)">
+          prop="village"
+          label="所属村(社区)"
+          min-width="180"
+          header-align="center">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="facBuildingArea"
           label="厂房建筑面积"
-          width="180"
-          sortable>
+          min-width="180"
+          sortable
+          header-align="center"
+          @sort-change="sortType(order)">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" header-align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -49,7 +56,7 @@
         </el-table-column>
       </el-table>
       <pages :count='25' :pageNum='1' :pageSize='5'  @size-change="handleSizeChange" @current-change="handleCurrentChange" />
-    </div>  
+    </div>
     <nuxt-child/>
   </div>
 </template>
@@ -57,34 +64,30 @@
 <script>
 import pages from '~/components/pages';
 import api from '~/plugins/api';
-// import { mapState } from 'vuex';
 export default {
   components: {
     pages
   },
   data() {
     return {
-      radio3: '0',
+      radio: '1',
       dataParams: {
         sort: 1,
         type: 1
       },
-      tableData: [{
-        date: '2016-05-02',
-        name: '滑冰',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '画饼',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '话柄',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '花柄',
-        address: '上海市普陀区金沙江路 1516 弄'
+      companyInfo: [{
+        actualLandArea: null,
+        facBuildingArea: null,
+        id: null,
+        isHighTech: null,
+        name: null,
+        patentNumber: null,
+        ratifiedCoal: null,
+        researchFee: null,
+        stockWorkArea: null,
+        tax: null,
+        town: null,
+        village: null
       }]
     };
   },
@@ -93,19 +96,31 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
+      this.$router.push({
+        name: 'index-enterprise-detail',
+        query: {
+          id: row.id
+        }
+      });
     },
     handleSizeChange() {
 
     },
     handleCurrentChange() {
     },
+    // 选择具体信息
+    selecType(val) {
+      this.dataParams.type = val;
+      console.log(this.dataParams.type);
+      this.getData();
+    },
     getData() {
       let dataParams = this.dataParams;
       api.get('company/searchindicator', { dataParams })
-        .then(e => {
-          // this.dataParams = e.data;
-          console.log(e);
+        .then((e) => {
+          this.companyInfo = e.data.list;
+          // console.log(e);
         })
         .catch(err => {
           this.$notify.error({
@@ -127,11 +142,10 @@ export default {
     width:100%;
     height:48px;
     el-radio-group,.mainNavs{
-      
       width:1200px;
       margin: 9px auto 0;
       el-radio-button{
-          background:#f7f7f7;
+        background:#f7f7f7;
       }
     }
     }
@@ -139,15 +153,18 @@ export default {
       width:1200px;
       margin: 0 auto;
   }
+.el-radio-button /deep/ .el-radio-button__inner{
+  width: 150px;
+}
 }
 
 </style>
 <style scoped lang="scss">
 .mainContent{
-    .el-pagination{
-        width:420px;
-        float: right;
-        margin-top:10px;
-    }
+      .el-pagination{
+          width:420px;
+          float: right;
+          margin-top:10px;
+      }
 }
 </style>

@@ -120,15 +120,15 @@ a {
       text-align: center;
     }
     span {
-      background: -moz-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0267ca), color-stop(100%, #072fa0));
-      background: -webkit-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-      background: -o-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-      background: -ms-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-      background: linear-gradient(to bottom, #0267ca 0%, #072fa0 100%);
+      background: -moz-linear-gradient(top, #072fa0 0%, #0267ca 50%, #072fa0 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #072fa0), color-stop(50%, #0267ca), color-stop(100%, #072fa0));
+      background: -webkit-linear-gradient(top, #072fa0 0%, #0267ca 50%, #072fa0 100%);
+      background: -o-linear-gradient(top, #072fa0 0%, #0267ca 50%, #072fa0 100%);
+      background: -ms-linear-gradient(top, #072fa0 0%, #0267ca 50%, #072fa0 100%);
+      background: linear-gradient(to bottom, #072fa0 0%, #0267ca 50%, #072fa0 100%);
       display: inline-block;
       border-radius: 5px;
-      width: 3px;
+      width: 1px;
       height: 38px;
       margin-bottom: -15px;
     }
