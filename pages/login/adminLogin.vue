@@ -29,7 +29,7 @@
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="checkCode" alt="" style="width:113px;height:40px"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="'/api/user/verifycode?t='+random" alt="" style="width:113px;height:40px"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
@@ -57,7 +57,8 @@ export default {
       PasswordHint: '',
       CodeHint: '',
       verifycodeUrl: '',
-      msg: ''
+      msg: '',
+      random: new Date().getTime()
     };
   },
   methods: {
@@ -117,10 +118,8 @@ export default {
     },
     // 获取验证码
     checkCode() {
-      api.get('/user/verifycode').then((e) => {
-        console.log(e);
-        // return e.data;
-      });
+      this.random = new Date().getTime();
+      console.log(this.random);
     }
   },
   mounted() {

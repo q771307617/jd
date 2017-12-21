@@ -26,6 +26,9 @@
   overflow: hidden !important;
   border-right:1px solid #c3c9cd;
 }
+.el-table__body-wrapper{
+  overflow: visible !important;
+}
 
 
 

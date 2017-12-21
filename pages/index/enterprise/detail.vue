@@ -7,7 +7,8 @@
             <div class="el-col" style="width:1200px;margin:0 auto">
           <div class="top-text" style="padding-top:25px;"><i style="background-position:-92px -17px;top:25px;"></i>企业封面</div>
           <div class="top-picture">
-            <img :src="factoryImage.imageUrl">
+            <img :src="factoryImage.imageUrl" v-if="factoryImage.imageUrl">
+            <!-- <img v-else src="../../../assets/img/600x400.png"> -->
           </div>
           </div>
         </div>
@@ -48,7 +49,7 @@
 
             <el-col :span="24">
             <el-col :span="5"><span>主要核心产品：</span></el-col>
-            <el-col :span="18">{{product.productName}}</el-col>
+            <el-col :span="18">{{companyInfo.productName}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -58,27 +59,27 @@
 
             <el-col :span="24">
             <el-col :span="5"><span>主要负责人：</span></el-col>
-            <el-col :span="18">{{corporation.name}}</el-col>
+            <el-col :span="18">{{companyInfo.corporationName}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>联    系   电   话：</span></el-col>
-            <el-col :span="18">{{corporation.phone}}</el-col>
+            <el-col :span="18">{{companyInfo.corporationPhone}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>是否“两代表一委员”：</span></el-col>
-            <el-col :span="18">{{corporation.isCommittee}}</el-col>
+            <el-col :span="18">{{companyInfo.isCommittee}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>具体负责人：</span></el-col>
-            <el-col :span="18">{{leader.name}}</el-col>
+            <el-col :span="18">{{companyInfo.leaderName}}</el-col>
               </el-col>
 
             <el-col :span="24">
             <el-col :span="5"><span>联    系   电   话：</span></el-col>
-            <el-col :span="18">{{leader.phone}}</el-col>
+            <el-col :span="18">{{companyInfo.leaderPhone}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -178,10 +179,10 @@ export default {
       api.get('/company/detail', { id: this.$route.query.id }).then((e) => {
         if (e.status === 200) {
           this.companyInfo = e.data;
-          this.factoryImage = e.data.factoryImage;
-          this.corporation = e.data.corporation;
-          this.leader = e.data.leader;
-          this.product = e.data.product;
+          // this.factoryImage = e.data.factoryImage;
+          // this.corporation = e.data.corporation;
+          // this.leader = e.data.leader;
+          // this.product = e.data.product;
         }
       });
     }

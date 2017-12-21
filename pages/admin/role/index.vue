@@ -2,25 +2,26 @@
 <div class="role">
   <el-col :span="24" class="top-title">
     <span class="top-type">账号管理</span>
-    <el-button type="primary" class="top-btn" @click="addAccount = true">新增账号</el-button>
+    <el-button type="primary" class="top-btn" @click="AccountoPeration(null)">新增账号</el-button>
   </el-col>
   <el-col :span="24" style="text-align:center">
-    <el-table :data="tableData" stripe border style="max-width: 100%;">
-      <el-table-column prop="date" label="角色名称" min-width="150" header-align="center"></el-table-column>
-      <el-table-column prop="name" label="用户名" min-width="150" header-align="center"></el-table-column>
+    <el-table :data="PermissionList" stripe border style="max-width: 100%;">
+      <el-table-column prop="name" label="账号名称" min-width="150" header-align="center"></el-table-column>
+      <el-table-column prop="username" label="用户名" min-width="150" header-align="center"></el-table-column>
+      <el-table-column prop="type" label="权限" min-width="150" header-align="center"></el-table-column>
       <el-table-column label="账号状态" min-width="150" header-align="center">
           <div slot-scope="scope">
-            <el-switch v-model="value3"></el-switch>
+            <el-switch v-model="scope.row.status" active-value="1" inactive-value="0" @change="SwitchStatus(scope.row)"></el-switch>
         </div>
       </el-table-column>
       <el-table-column label="操作" min-width="100" header-align="center">
         <div slot-scope="scope">
-          <el-button type="text" @click="addAccount = true" size="small" value="修改">修改</el-button>
-          <el-button type="text" @click="deleteAccount = true" size="small" value="删除">删除</el-button>
+          <el-button type="text" size="small" value="修改" @click.stop="AccountoPeration(scope.row)">修改</el-button>
+          <el-button type="text" size="small" value="删除" @click.stop="deleteAccount(scope.row)">删除</el-button>
         </div>
       </el-table-column>
     </el-table>
-    <div class="footer-page">
+    <!-- <div class="footer-page">
       <el-col :span="14">&nbsp</el-col>
       <el-col :span="10">
       <el-pagination
@@ -36,102 +37,121 @@
         :total="400">
       </el-pagination>
       </el-col>
-      <!-- <el-col :span="1"><el-button size="mini"  type="primary" @click="handleCurrentChange(currentPage4)">确定</el-button></el-col> -->
-    </div>
+      <el-col :span="1"><el-button size="mini"  type="primary" @click="handleCurrentChange(currentPage4)">确定</el-button></el-col>
+    </div> -->
   </el-col>
 
-  <!-- 新增、修改账号弹出框 -->
+  <!-- 新增、修改账号 -->
   <el-dialog class="dialog"
-    title="新增账号"
-    :visible.sync="addAccount"
+    :visible.sync="SelectStatus"
     width="640px"
     center>
+    <h1 slot="title" style="font-size:24px;color:#333333;margin-top:20px">{{title}}</h1>
+    <!-- <h1 slot="title" v-if="AccountoPeration">修改账号</h1> -->
       <el-form :label-position="labelPosition">
-        <el-form-item label="角色名称">
-          <el-input v-model="user" placeholder="请输入新增角色名称，可为汉字、数字、英文大小写、特殊字符"></el-input>
+        <el-form-item label="账号名称">
+          <el-input v-model="UserInfo.roleName" placeholder="请输入新增角色名称，可为汉字、数字、英文大小写、特殊字符" @click="checkName(UserInfo.roleName)"></el-input>
         </el-form-item>
+        <div class="bottomaera">
+          <transition name="fade">
+            <!-- <p class="hint">*请输入正确的 账号名称</p> -->
+          </transition>
+        </div>
         <el-form-item label="用户名">
-          <el-input v-model="user" placeholder="请输入用户名，可为数字、英文大小写、特殊字符"></el-input>
+          <el-input v-model="UserInfo.username" placeholder="请输入用户名，可为数字、英文大小写、特殊字符"></el-input>
         </el-form-item>
+        <div class="bottomaera">
+          <transition name="fade">
+            <!-- <p class="hint">*请输入正确的 用户名称</p> -->
+          </transition>
+        </div>
         <el-form-item label="密码">
-          <el-input v-model="user" type="password" placeholder="请输入6-20位数字、大小写英文、特殊字符"></el-input>
+          <el-input v-model="UserInfo.password" placeholder="请输入6-20位数字、大小写英文、特殊字符" :maxlength="20"></el-input>
         </el-form-item>
+        <div class="bottomaera">
+          <transition name="fade">
+            <!-- <p class="hint">*请输入正确的 密码</p> -->
+          </transition>
+        </div>
         <el-form-item>
           <h1>登录权限</h1>
-            <el-radio-group v-model="radio2">
-              <el-radio :label="3">不限</el-radio>
-              <el-radio :label="6">前台</el-radio>
-              <el-radio :label="9">后台</el-radio>
+            <el-radio-group v-model="UserInfo.type">
+              <el-radio :label="1">不限</el-radio>
+              <el-radio :label="2">前台</el-radio>
+              <el-radio :label="3">后台</el-radio>
             </el-radio-group>
         </el-form-item>
       </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="addAccount = false">取 消</el-button>
-      <el-button type="primary" @click="addAccount = false">确 定</el-button>
+      <el-button @click="SelectStatus = false" class="btn">取 消</el-button>
+      <el-button @click="ConfirmPeration" type="primary" class="btn">确 定</el-button>
     </span>
   </el-dialog>
+  <!-- 删除账号 -->
   <el-dialog
-    :visible.sync="deleteAccount"
+    :visible.sync="Delete.deleteStatus"
     width="640px"
     center>
     <span style="position: absolute;left:20px;top:10px">删除账号</span>
     <div style="text-align:center">
-       <h1 style="font-size:24px">是否继续删除<span>***</span>角色账号？</h1>
-      <span style="color:#999999">温馨提示：账号删除后无法恢复，请谨慎操作！</span>
+       <h1 style="font-size:24px;font-weight:500;margin-bottom:20px;">是否继续删除<span>{{Delete.userTitle}}</span>角色账号？</h1>
+      <span style="color:#999999;">温馨提示：账号删除后无法恢复，请谨慎操作！</span>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="deleteAccount = false">取 消</el-button>
-      <el-button type="primary" @click="deleteAccount = false">确 定</el-button>
+      <el-button @click="Delete.deleteStatus = false" class="btn">取 消</el-button>
+      <el-button type="primary" @click="ConfirmDelete" class="btn">确 定</el-button>
     </span>
   </el-dialog>
 </div>
 </template>
 
 <script>
+import api from '~/plugins/api';
+import qs from 'qs';
 export default {
   data() {
     return {
-      tableData: [{
-        date: '科长',
-        name: '张三',
-        address: ''
+      // 账户列表
+      PermissionList: [{
+        deleted: null,
+        gmtCreate: null,
+        id: null,
+        name: null,
+        roleId: null,
+        status: null,
+        title: null,
+        type: null,
+        username: null
       }],
-      currentPage4: 4,
-      value3: true,
+      // 添加账户信息
+      UserInfo: {
+        password: null,
+        roleName: null,
+        type: null,
+        username: null
+      },
+      // 删除账号
+      Delete: {
+        deleteStatus: false,
+        deleteID: null,
+        userTitle: null,
+        roleId: null
+      },
+      // 修改账号
+      alterList: {
+        id: null,
+        password: null,
+        roleId: null,
+        roleName: null,
+        type: null,
+        username: null
+      },
+      title: null,
       labelPosition: 'top',
-      radio2: 3,
-      addAccount: false,
-      updateAccount: false,
-      deleteAccount: false,
-      formLabelAlign: '',
-      user: '',
-      operationType: [
-        {
-          type: 'add',
-          title: '新增账号',
-          addAccount: true,
-          roleName: '',
-          username: '',
-          password: ''
-        },
-        {
-          type: 'update',
-          title: '修改账号',
-          addAccount: true,
-          roleName: '',
-          username: '',
-          password: ''
-        },
-        {
-          type: 'delete',
-          title: '删除账号',
-          addAccount: true,
-          roleName: '',
-          username: '',
-          password: ''
-        }
-      ],
-      centerDialogVisible: false
+      message: '',
+      // 选择类型
+      SelectStatus: false,
+      activeType: null
     };
   },
   methods: {
@@ -140,13 +160,170 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    // 账号列表
+    getCompanyList() {
+      api.get('/admin/user/list').then((e) => {
+        if (e.status === 200) {
+          this.PermissionList = e.data;
+        }
+      });
+    },
+    // 禁用账号
+    SwitchStatus(val) {
+      console.log(val);
+      api.post('/admin/user/status', qs.stringify({
+        id: val.id,
+        status: val.status
+      })).then((e) => {
+        if (e.status === 200) {
+          console.log('操作成功!');
+        }
+      });
+    },
+    // 验证用户名是否符合规则
+    checkName(username) {
+      if (username === '') {
+        this.UserHint = '*请输入用户名!';
+        return false;
+      } else {
+        // 验证空格
+        let reg = /(^\s+)|(\s+$)/g;
+        let regex = new RegExp(reg);
+        if (!regex.test(username)) {
+          return true;
+        } else {
+          this.username = '';
+          this.UserHint = '*请输入用户名!';
+          return false;
+        }
+      }
+    },
+    // 验证密码是否符合规则
+    checkPassword(password) {
+      if (password === '') {
+        this.PasswordHint = '*请输入密码!';
+        return false;
+      } else {
+        let reg = /(^\s+)|(\s+$)/g;
+        let regex = new RegExp(reg);
+        // 不存在空格且密码长度为6-20位
+        if (!regex.test(password) && password.length > 5) {
+          return true;
+        } else {
+          this.Password = '';
+          this.PasswordHint = '*请输入密码!';
+          return false;
+        }
+      }
+    },
+    // 验证密码是否符合规则
+    checkUser(password) {
+      if (password === '') {
+        this.PasswordHint = '*请输入密码!';
+        return false;
+      } else {
+        let reg = /(^\s+)|(\s+$)/g;
+        let regex = new RegExp(reg);
+        // 不存在空格且密码长度为6-20位
+        if (!regex.test(password) && password.length > 5) {
+          return true;
+        } else {
+          this.Password = '';
+          this.PasswordHint = '*请输入密码!';
+          return false;
+        }
+      }
+    },
+    // 添加,修改账号
+    AccountoPeration(val) {
+      if (val === null) {
+        this.title = '新增账号';
+        this.UserInfo.password = null;
+        this.UserInfo.roleName = null;
+        this.UserInfo.type = null;
+        this.UserInfo.username = null;
+        this.activeType = 1;
+      } else {
+        this.title = '修改账号';
+        this.UserInfo.roleName = val.name;
+        this.UserInfo.username = val.username;
+        this.UserInfo.type = val.type;
+        this.UserInfo.password = null;
+        this.activeType = 2;
+        this.alterList.id = val.id;
+      }
+      this.SelectStatus = true;
+    },
+    ConfirmPeration() {
+      let UserInfo = this.UserInfo;
+      if (this.activeType === 1) {
+        api.post('/admin/user/add', qs.stringify({
+          password: UserInfo.password,
+          roleName: UserInfo.roleName,
+          type: UserInfo.type,
+          username: UserInfo.username
+        })).then((e) => {
+          if (e.status === 200) {
+            console.log('添加成功');
+            this.getCompanyList();
+          };
+        });
+      } else {
+        api.post('/admin/user/update', qs.stringify({
+          id: this.alterList.id,
+          password: UserInfo.password,
+          roleId: 1,
+          roleName: UserInfo.roleName,
+          type: UserInfo.type,
+          username: UserInfo.username
+        })).then((e) => {
+          if (e.status === 200) {
+            console.log('修改成功!');
+            this.getCompanyList();
+          }
+        });
+      }
+      this.SelectStatus = false;
+      console.log(545445);
+    },
+    // 删除账号
+    deleteAccount(val) {
+      this.Delete.deleteStatus = true;
+      this.Delete.deleteID = val.id;
+      this.Delete.userTitle = val.name;
+      this.Delete.roleId = val.roleId;
+    },
+    ConfirmDelete() {
+      api.post('/admin/user/delete', qs.stringify({
+        id: this.Delete.deleteID,
+        roleId: this.Delete.roleId,
+        deleted: 1
+      })).then((e) => {
+        if (e.status === 200) {
+          console.log('删除成功!');
+          this.getCompanyList();
+        } else {
+          console.log('删除失败!');
+        };
+      });
+      this.Delete.deleteStatus = false;
     }
-    // 弹出框
-
+  },
+  created() {
+    this.getCompanyList();
   }
 };
 </script>
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 .footer-page {
   margin-top: 30px;
 }
@@ -175,8 +352,22 @@ export default {
   border-radius:3px;
   width:518px;
 }
+.btn{
+  width:150px;
+  height:44px;
+  margin-right: 10px;
+}
 .el-form-item{
   margin: 0 0 0 33px;
+}
+.hint{
+  margin-left: 33px;
+  font-size: 12px;
+  color: red;
+  display: inline-block;
+}
+.bottomaera{
+  height: 10px;
 }
 /* 深度击穿 */
 .el-table /deep/ .el-table__body-wrapper{

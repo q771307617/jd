@@ -135,8 +135,6 @@ export default {
       isActiveIndustry: true,
       isActiveTown: true,
       params: {
-        // 默认必须传1
-        chargePersonType: 1,
         companyName: null,
         pageNum: null,
         pageSize: null,
@@ -202,13 +200,10 @@ export default {
     },
     // 企业名称搜索
     Search(val) {
-      console.log(1212);
       if (val === '') { return; };
-      api.get('/company/getcompanybyname', {companyName: val}).then((e) => {
-        if (e.status === 200) {
-          this.EnterpriseProfile = e.data.list;
-        }
-      });
+      this.params.companyName = val;
+      console.log(this.params.companyName);
+      this.getCompanyInfo();
     },
     /* @argument val
      * 选择行业
