@@ -179,10 +179,6 @@ export default {
       api.get('/company/detail', { id: this.$route.query.id }).then((e) => {
         if (e.status === 200) {
           this.companyInfo = e.data;
-          // this.factoryImage = e.data.factoryImage;
-          // this.corporation = e.data.corporation;
-          // this.leader = e.data.leader;
-          // this.product = e.data.product;
         }
       });
     }

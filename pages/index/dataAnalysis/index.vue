@@ -141,7 +141,6 @@ export default {
         .then((e) => {
           this.companyInfo = e.data.list;
           this.pageCount = e.data.count;
-          console.log(e);
         })
         .catch(err => {
           this.$notify.error({

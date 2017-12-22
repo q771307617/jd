@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 // import Router from 'vue-router';
 
 // let baseURL = ;
@@ -62,7 +63,7 @@ api.request = function () {
     url,
     responseType: 'json'
   };
-  config[isPost ? 'data' : 'params'] = data;
+  config[isPost ? 'data' : 'params'] = qs.stringify(data);
   return new Promise(function (resolve, reject) {
     instance.request(config).then(result => {
       resolve(result.data);

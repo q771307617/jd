@@ -8,7 +8,11 @@
     <el-table :data="PermissionList" stripe border style="max-width: 100%;">
       <el-table-column prop="name" label="账号名称" min-width="150" header-align="center"></el-table-column>
       <el-table-column prop="username" label="用户名" min-width="150" header-align="center"></el-table-column>
-      <el-table-column prop="type" label="权限" min-width="150" header-align="center"></el-table-column>
+      <el-table-column prop="type" label="权限" min-width="150" header-align="center">
+         <div slot-scope="scope">
+            {{loginSype[scope.row.type]}}
+        </div>
+      </el-table-column>
       <el-table-column label="账号状态" min-width="150" header-align="center">
           <div slot-scope="scope">
             <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="SwitchStatus(scope.row)"></el-switch>
@@ -112,10 +116,11 @@
 
 <script>
 import api from '~/plugins/api';
-import qs from 'qs';
 export default {
   data() {
     return {
+      status: 0,
+      loginSype: ['', '不限', '前端', '后台'],
       // 账户列表
       PermissionList: [
         {
@@ -136,7 +141,8 @@ export default {
         roleName: '',
         type: '',
         username: '',
-        roleId: ''
+        roleId: '',
+        id: ''
       },
       // 删除账号
       Delete: {
@@ -146,7 +152,7 @@ export default {
         roleId: null
       },
       // 修改账号
-      alterList: {
+      User: {
         id: null,
         password: null,
         roleId: null,
@@ -168,16 +174,21 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
     },
     // 账号列表
     getCompanyList() {
       api.get('/admin/user/list').then(e => {
         if (e.status === 200) {
           this.PermissionList = e.data;
+          if (e.data) {
+            e.data.map(x => {
+              x.status = (x.status).toString();
+            });
+          }
         }
       });
     },
@@ -185,14 +196,10 @@ export default {
     SwitchStatus(val) {
       console.log(val);
       api
-        .post(
-          '/admin/user/status',
-          qs.stringify({
-            id: val.id,
-            status: val.status,
-            roleId: val.roleId
-          })
-        )
+        .post('/admin/user/status', {
+          id: val.id,
+          status: val.status
+        })
         .then(e => {
           if (e.status === 200) {
             console.log('操作成功!');
@@ -259,7 +266,7 @@ export default {
         this.UserInfo.type = val.type;
         this.UserInfo.password = '';
         this.activeType = 2;
-        this.alterList.id = val.id;
+        this.UserInfo.id = val.id;
         this.UserInfo.roleId = val.roleId;
       }
       this.SelectStatus = true;
@@ -271,15 +278,7 @@ export default {
         let UserInfo = this.UserInfo;
         if (this.activeType === 1) {
           api
-            .post(
-              '/admin/user/add',
-              qs.stringify({
-                password: UserInfo.password,
-                roleName: UserInfo.roleName,
-                type: UserInfo.type,
-                username: UserInfo.username
-              })
-            )
+            .post('/admin/user/add', UserInfo)
             .then(e => {
               if (e.status === 200) {
                 this.getCompanyList();
@@ -293,17 +292,7 @@ export default {
             });
         } else {
           api
-            .post(
-              '/admin/user/update',
-              qs.stringify({
-                id: this.alterList.id,
-                password: UserInfo.password,
-                roleId: UserInfo.roleId,
-                roleName: UserInfo.roleName,
-                type: UserInfo.type,
-                username: UserInfo.username
-              })
-            )
+            .post('/admin/user/update', UserInfo)
             .then(e => {
               if (e.status === 200) {
                 this.$message({
@@ -328,14 +317,11 @@ export default {
     },
     ConfirmDelete() {
       api
-        .post(
-          '/admin/user/delete',
-          qs.stringify({
-            id: this.Delete.deleteID,
-            roleId: this.Delete.roleId,
-            deleted: 1
-          })
-        )
+        .post('/admin/user/delete', {
+          id: this.Delete.deleteID,
+          roleId: this.Delete.roleId,
+          deleted: 1
+        })
         .then(e => {
           if (e.status === 200) {
             this.$message({

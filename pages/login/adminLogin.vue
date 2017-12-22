@@ -10,19 +10,19 @@
         <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
-              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
+              <el-input  placeholder="管理员账号" v-model="loginIfon.username" class="input" autofocus @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
               </el-input>
                 <transition name="fade">
-                  <p class="hint" v-if="!username">{{UserHint}}</p>
+                  <p class="hint" v-if="!loginIfon.username">{{UserHint}}</p>
                 </transition>
           </div>
           <div class="input-warnnp">
-              <el-input placeholder="密码" type="password" v-model="password" class="input" :maxlength="20">
+              <el-input placeholder="密码" type="password" v-model="loginIfon.password" class="input" :maxlength="20">
                 <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
               </el-input>
                 <transition name="fade">
-                  <p class="hint" v-if="!password">{{PasswordHint}}</p>
+                  <p class="hint" v-if="!loginIfon.password">{{PasswordHint}}</p>
                 </transition>
           </div>
             <div class="input-warnnp">
@@ -44,13 +44,15 @@
 </template>
 <script>
 import api from '~/plugins/api';
-import qs from 'qs';
+// import qs from 'qs';
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      type: '',
+      loginIfon: {
+        username: '',
+        password: '',
+        type: 1
+      },
       code: '',
       UserHint: '',
       PasswordHint: '',
@@ -63,28 +65,19 @@ export default {
   methods: {
     // 登录操作
     loginFun() {
-      api
-        .post(
-          'user/login',
-          qs.stringify({
-            username: this.username,
-            password: this.password,
-            type: 1
-          })
-        )
-        .then(e => {
-          if (e.status === 200) {
-            this.$router.push({ name: 'index' });
-          } else {
-            this.msg = e.msg;
-            this.getCode();
-          }
-        });
+      api.post('user/login', this.loginIfon).then(e => {
+        if (e.status === 200) {
+          this.$router.push({ name: 'admin' });
+        } else {
+          this.msg = e.msg;
+          this.getCode();
+        }
+      });
     },
     // 提交登录
     submitLogin() {
-      let userStatus = this.checkName(this.username);
-      let passwordStatus = this.checkPassword(this.password);
+      let userStatus = this.checkName(this.loginIfon.username);
+      let passwordStatus = this.checkPassword(this.loginIfon.password);
       if (userStatus && passwordStatus) {
         this.checkCode(this.code, this.loginFun);
       }
@@ -101,7 +94,7 @@ export default {
         if (!regex.test(username)) {
           return true;
         } else {
-          this.username = '';
+          this.loginIfon.username = '';
           this.UserHint = '*请输入用户名!';
           return false;
         }
@@ -119,42 +112,32 @@ export default {
         if (!regex.test(password) && password.length > 5) {
           return true;
         } else {
-          this.Password = '';
+          this.loginIfon.Password = '';
           this.PasswordHint = '*请输入密码!';
           return false;
         }
       }
     },
     checkCode(val, cb) {
-      console.log(val);
       if (val === '') {
         this.CodeHint = '*请输入验证码!';
         return false;
       } else {
-        api
-          .post(
-            '/user/verify',
-            qs.stringify({
-              code: val
-            })
-          )
-          .then(e => {
-            console.log('123123121231');
-            if (e.status === 200) {
-              this.statusCheckCode = true;
-              cb();
-            } else {
-              this.code = '';
-              this.CodeHint = '*验证码错误!';
-              this.statusCheckCode = false;
-            }
-          });
+        api.post('/user/verify', { code: val }).then(e => {
+          if (e.status === 200) {
+            this.statusCheckCode = true;
+            cb();
+          } else {
+            this.code = '';
+            this.CodeHint = '*验证码错误!';
+            this.statusCheckCode = false;
+          }
+        });
         return this.statusCheckCode;
       }
     },
     // 获取验证码
     getCode() {
-      console.log(121);
       this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     }
   },

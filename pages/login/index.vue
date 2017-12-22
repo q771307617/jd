@@ -44,7 +44,6 @@
 </template>
 <script>
 import api from '~/plugins/api';
-import qs from 'qs';
 export default {
   data() {
     return {
@@ -66,15 +65,15 @@ export default {
       api
         .post(
           'user/login',
-          qs.stringify({
+          {
             username: this.username,
             password: this.password,
             type: 2
-          })
+          }
         )
         .then(e => {
           if (e.status === 200) {
-            this.$router.push({ name: 'admin' });
+            this.$router.push({ name: 'index' });
           } else {
             this.msg = e.msg;
             this.getCode();
@@ -133,9 +132,9 @@ export default {
         api
           .post(
             '/user/verify',
-            qs.stringify({
+            {
               code: val
-            })
+            }
           )
           .then(e => {
             if (e.status === 200) {
