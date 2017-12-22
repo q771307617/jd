@@ -111,6 +111,9 @@ export default {
     window.localStorage.setItem('loginType', 'admin');
     // this.islogin();
     this.LIST_GET();
+    this.$router.push({
+      name: 'admin'
+    });
   },
   methods: {
     ...mapActions(['LIST_GET']),

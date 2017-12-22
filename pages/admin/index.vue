@@ -3,10 +3,10 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-upload class="upload" action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :show-file-list="false" :on-remove="handleRemove" multiple :limit="1" :on-exceed="handleExceed" :file-list="fileList">
+        <el-upload class="upload" action="http://localhost:3000/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
           <el-button class=" button one">数据导入</el-button>
         </el-upload>
-        <el-button class=" button two" @click="change('add','0')">新增企业</el-button>
+        <el-button class=" button two" @click="change('add','null')">新增企业</el-button>
       </div>
     </div>
     <div class="company-table">
@@ -30,6 +30,7 @@
           <div slot-scope="scope">
             <el-button @click="change('view',scope.row)" type="text" size="small">查看</el-button>
             <el-button type="text" size="small" @click="change('edit',scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="deleteCompany(scope.row)" style="color:red;">删除</el-button>
           </div>
         </el-table-column>
       </el-table>
@@ -42,6 +43,30 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog :visible.sync="data" width="640px" center>
+      <div style="text-align:center;">
+        <i class="el-icon-success" style="text-align:center;color:#01d928;font-size:66px;" v-if="fileStatus"></i>
+        <i class="el-icon-warning" style="text-align:center;color:#ff3f20;font-size:66px;" v-else></i>
+      </div>
+      <div style="text-align:center;">
+        <h1 style="font-size:24px;margin-top:21px;" v-if="fileStatus">企业信息数据导入成功！</h1>
+        <h1 style="font-size:24px;margin-top:21px;" v-else>企业信息数据导入失败，请重新导入！</h1>
+      </div>
+      <span slot="footer" class="dialog-footer">
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="deleteCom" width="640px" center>
+      <div style="text-align:center;">
+        <h1 style="font-size:24px;margin-top:21px;">是否继续删除{{company.companyName}}企业信息？</h1>
+      </div>
+      <div style="text-align:center;color:#999999;margin-top:20px;">
+        <p>温馨提示：企业信息删除后无法恢复，请谨慎操作！</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deleteCom = false" style="background:#fff;border-radius:3px;width:150px;height:44px;">取 消</el-button>
+        <el-button type="primary" @click="deleteSure" style="background:#1c7bef;border-radius:3px;width:150px;height:44px;">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -51,7 +76,10 @@ import moment from 'moment';
 export default {
   data() {
     return {
-      fileList: [],
+      data: false,
+      fileStatus: true,
+      deleteCom: false,
+      company: {},
       params: {
         pageNum: 1,
         chargePersonType: 1,
@@ -67,6 +95,15 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       console.log(file, fileList);
+    },
+    handleSuccess() {
+      this.data = true;
+      this.fileStatus = true;
+      this.getcompanyInfo();
+    },
+    handleError() {
+      this.data = true;
+      this.fileStatus = false;
     },
     handlePreview(file) {
       console.log(file);
@@ -100,7 +137,7 @@ export default {
         }
       }).catch(err => {
         this.$notify.error({
-          title: '错误',
+          title: '获取企业信息失败',
           message: err.msg
         });
       });
@@ -120,6 +157,31 @@ export default {
           type: val,
           companyId: row,
           showInput: showInput
+        }
+      });
+    },
+    deleteCompany(val) {
+      this.deleteCom = true;
+      this.Company = val;
+      console.log(val);
+      this.$router.push({
+        name: 'admin',
+        query: {
+          companyId: val.companyId
+        }
+      });
+    },
+    deleteSure() {
+      this.deleteCom = false;
+      console.log(this.company);
+      api.post('admin/company/delete', { deleted: 1, id: this.$route.query.companyId }).then((e) => {
+        if (e.status === 200) {
+          this.$message({
+            message: '删除企业成功',
+            type: 'success'
+          });
+        } else {
+          this.$message.error(e.msg);
         }
       });
     }
@@ -176,6 +238,21 @@ export default {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

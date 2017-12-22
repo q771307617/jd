@@ -2,10 +2,9 @@
   <div id="main" class="main">
 
     <div class="header">
-      <p>
-        <img class="frontHeader" src="./../assets/img/frontHeader.png" alt="">
-        <!-- <img class="frontHeaderIcon" src="./../assets/img/frontHeaderIcon.png" alt=""> -->
-      </p>
+      <div class="topbackground">
+        <img class="frontHeader" src="./../assets/img/frontHeaderIcon.png" alt="">
+      </div>
       <div class="nav">
         <p class="navLeft">
           <nuxt-link :to="{name:'index'}">首页</nuxt-link>
@@ -61,9 +60,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// .nuxt-link-active {
-//   color: #f54203;
-// }
+
 a {
   color: #fff;
 }
@@ -90,31 +87,24 @@ a {
 
 .header {
   width: 100%;
-  min-width: 1200px;
+  min-width: 1400px;
   background: -moz-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0267ca), color-stop(100%, #072fa0));
   background: -webkit-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -o-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -ms-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: linear-gradient(to bottom, #0267ca 0%, #072fa0 100%);
-}
-
-.header p {
-  height: 100px;
-  .frontHeader {
-    width: 100%;
-    min-width: 1200px;
-    height: 101px;
-    margin: 0 auto;
-  }
-  .frontHeaderIcon {
-    position: absolute;
-    top: 0px;
-    left: 22px;
-    height: 101px;
+  .topbackground{
+    background:url(./../assets/img/frontHeaderBg.png)no-repeat; 
+    padding-left: 356px; 
+    width:100%;  
+    height:100px;  
+    background-size:100% 100%;  
+    .frontHeader{
+      margin-top: 10px;
+    }
   }
 }
-
 .nav {
   width: 1200px;
   height: 40px;
