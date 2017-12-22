@@ -4,7 +4,6 @@ import Vue from 'vue';
 import Element from 'element-ui';
 Vue.use(Element);
 // let baseURL = ;
-
 // if (process.server) {
 //   baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}` + '/api';
 // }
