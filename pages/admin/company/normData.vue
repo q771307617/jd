@@ -204,14 +204,14 @@ export default {
             this.declareEndTime = moment(this.ruleForm.declareEndTime).format('YYYY-MM-DD');
             this.ruleForm.declareEndTime = moment(this.ruleForm.declareEndTime).format('x');
           }
-          let name = null;
+          let name = 'admin-company-normData';
           if (this.$route.query.type === 'add') {
             name = 'admin';
           } else {
             this.ruleForm.companyId = this.$route.query.companyId;
             name = 'admin-company-normData';
           }
-          api.post('admin/indicator/add', this.ruleForm).then((e) => {
+          api.post('admin/indicator/update', this.ruleForm).then((e) => {
             if (e.status === 200) {
               this.showInput = false;
               this.$router.push({
@@ -266,7 +266,6 @@ export default {
     getCompanyInfo() {
       let type = null;
       this.showInput = this.$route.query.showInput;
-      console.log(this.showInput);
       type = this.$route.query.type;
       if (type === 'add') {
       } else {

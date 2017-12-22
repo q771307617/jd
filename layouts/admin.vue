@@ -4,8 +4,8 @@
       <!-- 顶部 -->
       <div class="header">
         <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
-        <div class="user-info">{{role}}{{name}}
-          <a style="margin:0 30px;">退出</a>
+        <div class="user-info">{{info.name}}{{info.username}}
+          <a style="margin:0 30px;cursor:pointer" @click="exitUser">退出</a>
         </div>
       </div>
       <!-- 侧边栏 -->
@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -102,21 +102,21 @@ export default {
     };
   },
   computed: {
-    username() {
-      // let username = localStorage.getItem('ms_username');
-      // return username ? username : this.name;
-    }
+    ...mapState({
+      info: state => state.user.info
+    })
   },
   mounted() {
     window.localStorage.setItem('loginType', 'admin');
     // this.islogin();
+    this.fetchUserData();
     this.LIST_GET();
     this.$router.push({
       name: 'admin'
     });
   },
   methods: {
-    ...mapActions(['LIST_GET']),
+    ...mapActions(['LIST_GET', 'exitUser', 'fetchUserData']),
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
