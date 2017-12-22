@@ -8,7 +8,7 @@
           <el-radio-button label="3" class="redio">存量厂房面积</el-radio-button>
           <el-radio-button label="4" class="redio">入库税收</el-radio-button>
           <el-radio-button label="5" class="redio">R&D经费投入</el-radio-button>
-          <el-radio-button label="6" class="redio">信息化投入</el-radio-button>
+          <el-radio-button label="6" class="redio">主营业务收入</el-radio-button>
           <el-radio-button label="7" class="redio">高新技术企业</el-radio-button>
           <el-radio-button label="8" class="redio">发明专利量</el-radio-button>
           <el-radio-button label="9" class="redio">核定用能</el-radio-button>
@@ -55,7 +55,20 @@
           </div>
         </el-table-column>
       </el-table>
-      <pages :count='25' :pageNum='1' :pageSize='5'  @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <!-- <pages :count='25' :pageNum='1' :pageSize='5'  @size-change="handleSizeChange" @current-change="handleCurrentChange" /> -->
+      <div class="page">
+        <el-row>
+        <el-col :span="9">&nbsp</el-col>
+        <el-col :span="15">
+        <p class="demonstration" style="float:left;margin-top:5px;">共
+        <span class="red">{{pageCount}}</span>条数据
+        <span style="margin-left:20px;">每页</span>
+        <span class="red">15</span>条</p>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="4"  background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="companyInfo.length">
+        </el-pagination>
+        </el-col>
+        </el-row>
+      </div>
     </div>
     <nuxt-child/>
   </div>
@@ -74,8 +87,12 @@ export default {
       radio: '1',
       dataParams: {
         sort: 1,
-        type: 1
+        type: 1,
+        pageSize: 15,
+        pageNum: 1
       },
+      currentPage: 1,
+      pageCount: '',
       companyInfo: [{
         actualLandArea: null,
         facBuildingArea: null,
@@ -108,20 +125,23 @@ export default {
     handleSizeChange() {
 
     },
-    handleCurrentChange() {
+    // 改变页数时回调
+    handleCurrentChange(val) {
+      this.dataParams.pageNum = val;
+      this.getData();
+      console.log(val);
     },
     // 选择具体信息
     selecType(val) {
       this.dataParams.type = val;
-      console.log(this.dataParams.type);
       this.getData();
     },
     getData() {
-      let dataParams = this.dataParams;
-      api.get('company/searchindicator', { dataParams })
+      api.get('company/searchindicator', this.dataParams)
         .then((e) => {
           this.companyInfo = e.data.list;
-          // console.log(e);
+          this.pageCount = e.data.count;
+          console.log(e);
         })
         .catch(err => {
           this.$notify.error({
@@ -151,21 +171,15 @@ export default {
     }
     }
   .mainContent{
-      width:1200px;
-      margin: 0 auto;
+    width:1200px;
+    margin: 0 auto;
+  }
+  .page{
+    margin: 20px 0;
   }
 .el-radio-button /deep/ .el-radio-button__inner{
   width: 150px;
 }
 }
 
-</style>
-<style scoped lang="scss">
-.mainContent{
-      .el-pagination{
-          width:420px;
-          float: right;
-          margin-top:10px;
-      }
-}
 </style>

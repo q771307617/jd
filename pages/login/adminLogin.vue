@@ -29,14 +29,13 @@
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="'/api/user/verifycode?t='+random" alt="" style="width:113px;height:40px"></i>
+              <div class="loginCode" @click="checkCode"></div><i class="updateCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
                   <p class="hint">{{msg}}</p>
             </div>
           <el-button class="btn" @click="submitLogin">登录</el-button>
-          <img :src="verifycodeUrl" alt="" style="width:113px;height:40px">
         </div>
       </div>
     </div>
@@ -56,9 +55,8 @@ export default {
       UserHint: '',
       PasswordHint: '',
       CodeHint: '',
-      verifycodeUrl: '',
       msg: '',
-      random: new Date().getTime()
+      verifycodeUrl: ''
     };
   },
   methods: {
@@ -79,6 +77,7 @@ export default {
           }
         });
       }
+      this.checkCode();
     },
     // 验证用户名是否符合规则
     checkName(username) {
@@ -118,8 +117,7 @@ export default {
     },
     // 获取验证码
     checkCode() {
-      this.random = new Date().getTime();
-      console.log(this.random);
+      this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     }
   },
   mounted() {
@@ -255,6 +253,14 @@ export default {
   left: 443px;
   cursor: pointer;
   background: url(../../assets/img/iconFront.png) no-repeat -10px -123px;
+}
+.updateCode img{
+    display: inline-block;
+    position: absolute;
+    right: 34px;
+    top: -11px;
+    width:113px;
+    height:40px;
 }
 </style>
 

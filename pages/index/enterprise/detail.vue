@@ -8,7 +8,7 @@
           <div class="top-text" style="padding-top:25px;"><i style="background-position:-92px -17px;top:25px;"></i>企业封面</div>
           <div class="top-picture">
             <img :src="factoryImage.imageUrl" v-if="factoryImage.imageUrl">
-            <!-- <img v-else src="../../../assets/img/600x400.png"> -->
+            <!-- <img v-else src="../../../assets/img/"> -->
           </div>
           </div>
         </div>
@@ -247,9 +247,13 @@ export default {
         }
       }
       .top-picture {
+        margin-left:60px;
         max-width: 600px;
         max-height: 400px;
-        margin-left:60px;
+        background: red;
+        img{
+          background-size: 600px 400px;
+        }
         // background-color:red;
       }
     }

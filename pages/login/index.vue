@@ -29,14 +29,13 @@
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="checkCode" alt="" style="width:113px;height:40px"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
                   <p class="hint">{{msg}}</p>
             </div>
           <el-button class="btn" @click="submitLogin">登录</el-button>
-          <img :src="verifycodeUrl" alt="" style="width:113px;height:40px">
         </div>
       </div>
     </div>
@@ -65,19 +64,28 @@ export default {
     submitLogin() {
       let userStatus = this.checkName(this.username);
       let passwordStatus = this.checkPassword(this.password);
-      if (userStatus && passwordStatus) {
-        api.post('user/login', qs.stringify({
-          username: this.username,
-          password: this.password,
-          type: 2
-        })).then((e) => {
-          if (e.status === 200) {
-            this.$router.push({name: 'admin'});
-          } else {
-            this.msg = e.msg;
-          }
-        });
+      let codeStatus = this.checkCode(this.code);
+      console.log('2222', codeStatus, this.checkCode(this.code), this.code);
+      if (userStatus && passwordStatus && codeStatus) {
+        api
+          .post(
+            'user/login',
+            qs.stringify({
+              username: this.username,
+              password: this.password,
+              type: 2
+            })
+          )
+          .then(e => {
+            if (e.status === 200) {
+              console.log('SSS');
+              this.$router.push({ name: 'admin' });
+            } else {
+              this.msg = e.msg;
+            }
+          });
       }
+      this.getCode();
     },
     // 验证用户名是否符合规则
     checkName(username) {
@@ -115,21 +123,45 @@ export default {
         }
       }
     },
+    checkCode(val) {
+      console.log(val);
+      var statusCheckCode = false;
+      if (val === '') {
+        this.CodeHint = '*请输入验证码!';
+        return false;
+      } else {
+        api
+          .post(
+            '/user/verify',
+            qs.stringify({
+              code: val
+            })
+          )
+          .then(e => {
+            if (e.status === 200) {
+              debugger;
+              statusCheckCode = true;
+            } else {
+              this.code = '';
+              this.CodeHint = '*验证码错误!';
+              statusCheckCode = false;
+            }
+          });
+        return statusCheckCode;
+      }
+    },
     // 获取验证码
-    checkCode() {
-      api.get('/user/verifycode').then((e) => {
-        console.log(e);
-        // return e.data;
-      });
+    getCode() {
+      console.log(121);
+      this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.checkCode();
+      this.getCode();
     });
   },
-  computed: {
-  }
+  computed: {}
 };
 </script>
 <style scoped>
@@ -221,7 +253,7 @@ export default {
   font-style: normal;
 }
 .icon::after {
-  content: "|";
+  content: '|';
   width: 1px;
   height: 29px;
   margin-left: 38px;
@@ -256,6 +288,14 @@ export default {
   left: 443px;
   cursor: pointer;
   background: url(../../assets/img/iconFront.png) no-repeat -10px -123px;
+}
+.updateCode img {
+  display: inline-block;
+  position: absolute;
+  right: 34px;
+  top: -11px;
+  width: 113px;
+  height: 40px;
 }
 </style>
 
