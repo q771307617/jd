@@ -171,7 +171,7 @@ export default {
       this.params.pageNum = val;
       this.getCompanyInfo();
       // console.log(`当前页: ${val}`, this.pageNum);
-      console.log(this.$route.path.slice(1));
+      // console.log(this.$route.path.slice(1));
     },
     showIndustry() {
       this.isActiveIndustry = !this.isActiveIndustry;
@@ -229,12 +229,12 @@ export default {
     /* @argument val
     * 刷新保存
     */
-    RefreshSave() {
-      this.$router.push({
-        path: this.$route.path.slice(1),
-        query: this.params
-      });
-    },
+    // RefreshSave() {
+    //   this.$router.push({
+    //     path: this.$route.path.slice(1),
+    //     query: this.params
+    //   });
+    // },
     /* @argument val
     * 获取企业信息
     */
@@ -255,7 +255,7 @@ export default {
   created() {
     this.$nextTick(() => {
       this.getCompanyInfo();
-      this.RefreshSave();
+      // this.RefreshSave();
     });
   }
 };
@@ -364,9 +364,12 @@ export default {
           text-align: center;
         }
         .imgInfo {
-          width: 264px;
-          height: 176px;
           margin-bottom: 20px;
+          max-width: 264px;
+          max-height: 176px;
+          img{
+            background-size: 264px 176px;
+          }
         }
       }
       .selecteType {

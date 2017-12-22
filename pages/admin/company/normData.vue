@@ -98,7 +98,6 @@
 
 <script>
 import api from './../../../plugins/api.js';
-import qs from 'qs';
 export default {
   data() {
     return {
@@ -131,7 +130,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log(this.ruleForm);
-          api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
+          api.post('admin/indicator/add', this.ruleForm).then((e) => {
             if (e.status === 200) {
               this.showInput = false;
               this.$router.push({

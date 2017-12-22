@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 import Vue from 'vue';
 import Element from 'element-ui';
 import qs from 'qs';
