@@ -18,7 +18,7 @@
                 </transition>
           </div>
           <div class="input-warnnp">
-              <el-input placeholder="密码" type="password" v-model="password" class="input" :maxlength="20">
+              <el-input placeholder="密码" type="password" v-model="password" class="input" :maxlength="20" @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
               </el-input>
                 <transition name="fade">
@@ -26,7 +26,7 @@
                 </transition>
           </div>
             <div class="input-warnnp">
-              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
+              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;" @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
               <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
@@ -63,14 +63,11 @@ export default {
     // 登录操作
     loginFun() {
       api
-        .post(
-          'user/login',
-          {
-            username: this.username,
-            password: this.password,
-            type: 2
-          }
-        )
+        .post('user/login', {
+          username: this.username,
+          password: this.password,
+          type: 2
+        })
         .then(e => {
           if (e.status === 200) {
             this.$router.push({ name: 'index' });
@@ -130,19 +127,17 @@ export default {
         return false;
       } else {
         api
-          .post(
-            '/user/verify',
-            {
-              code: val
-            }
-          )
+          .post('/user/verify', {
+            code: val
+          })
           .then(e => {
             if (e.status === 200) {
               this.statusCheckCode = true;
               cb();
             } else {
               this.code = '';
-              this.CodeHint = '*验证码错误!';
+              this.getCode();
+              this.msg = e.msg;
               this.statusCheckCode = false;
             }
           });
