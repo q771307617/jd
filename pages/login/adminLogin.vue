@@ -7,7 +7,7 @@
         <p class="two">以企业为中心,以服务为核心</p>
       </div>
       <div class="content">
-        <p class="text">管理员登录</p>
+        <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
               <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
@@ -29,7 +29,7 @@
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode" @click="checkCode"></div><i class="updateCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
@@ -55,29 +55,39 @@ export default {
       UserHint: '',
       PasswordHint: '',
       CodeHint: '',
+      verifycodeUrl: '',
       msg: '',
-      verifycodeUrl: ''
+      statusCheckCode: false
     };
   },
   methods: {
+    // 登录操作
+    loginFun() {
+      api
+        .post(
+          'user/login',
+          qs.stringify({
+            username: this.username,
+            password: this.password,
+            type: 1
+          })
+        )
+        .then(e => {
+          if (e.status === 200) {
+            this.$router.push({ name: 'index' });
+          } else {
+            this.msg = e.msg;
+            this.getCode();
+          }
+        });
+    },
     // 提交登录
     submitLogin() {
       let userStatus = this.checkName(this.username);
       let passwordStatus = this.checkPassword(this.password);
       if (userStatus && passwordStatus) {
-        api.post('user/login', qs.stringify({
-          username: this.username,
-          password: this.password,
-          type: 3
-        })).then((e) => {
-          if (e.status === 200) {
-            this.$router.push({name: 'admin'});
-          } else {
-            this.msg = e.msg;
-          }
-        });
+        this.checkCode(this.code, this.loginFun);
       }
-      this.checkCode();
     },
     // 验证用户名是否符合规则
     checkName(username) {
@@ -115,18 +125,45 @@ export default {
         }
       }
     },
+    checkCode(val, cb) {
+      console.log(val);
+      if (val === '') {
+        this.CodeHint = '*请输入验证码!';
+        return false;
+      } else {
+        api
+          .post(
+            '/user/verify',
+            qs.stringify({
+              code: val
+            })
+          )
+          .then(e => {
+            console.log('123123121231');
+            if (e.status === 200) {
+              this.statusCheckCode = true;
+              cb();
+            } else {
+              this.code = '';
+              this.CodeHint = '*验证码错误!';
+              this.statusCheckCode = false;
+            }
+          });
+        return this.statusCheckCode;
+      }
+    },
     // 获取验证码
-    checkCode() {
+    getCode() {
+      console.log(121);
       this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.checkCode();
+      this.getCode();
     });
   },
-  computed: {
-  }
+  computed: {}
 };
 </script>
 <style scoped>
@@ -218,7 +255,7 @@ export default {
   font-style: normal;
 }
 .icon::after {
-  content: "|";
+  content: '|';
   width: 1px;
   height: 29px;
   margin-left: 38px;
@@ -254,13 +291,13 @@ export default {
   cursor: pointer;
   background: url(../../assets/img/iconFront.png) no-repeat -10px -123px;
 }
-.updateCode img{
-    display: inline-block;
-    position: absolute;
-    right: 34px;
-    top: -11px;
-    width:113px;
-    height:40px;
+.updateCode img {
+  display: inline-block;
+  position: absolute;
+  right: 34px;
+  top: -11px;
+  width: 113px;
+  height: 40px;
 }
 </style>
 

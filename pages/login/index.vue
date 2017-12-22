@@ -56,36 +56,38 @@ export default {
       PasswordHint: '',
       CodeHint: '',
       verifycodeUrl: '',
-      msg: ''
+      msg: '',
+      statusCheckCode: false
     };
   },
   methods: {
+    // 登录操作
+    loginFun() {
+      api
+        .post(
+          'user/login',
+          qs.stringify({
+            username: this.username,
+            password: this.password,
+            type: 2
+          })
+        )
+        .then(e => {
+          if (e.status === 200) {
+            this.$router.push({ name: 'admin' });
+          } else {
+            this.msg = e.msg;
+            this.getCode();
+          }
+        });
+    },
     // 提交登录
     submitLogin() {
       let userStatus = this.checkName(this.username);
       let passwordStatus = this.checkPassword(this.password);
-      let codeStatus = this.checkCode(this.code);
-      console.log('2222', codeStatus, this.checkCode(this.code), this.code);
-      if (userStatus && passwordStatus && codeStatus) {
-        api
-          .post(
-            'user/login',
-            qs.stringify({
-              username: this.username,
-              password: this.password,
-              type: 2
-            })
-          )
-          .then(e => {
-            if (e.status === 200) {
-              console.log('SSS');
-              this.$router.push({ name: 'admin' });
-            } else {
-              this.msg = e.msg;
-            }
-          });
+      if (userStatus && passwordStatus) {
+        this.checkCode(this.code, this.loginFun);
       }
-      this.getCode();
     },
     // 验证用户名是否符合规则
     checkName(username) {
@@ -123,9 +125,7 @@ export default {
         }
       }
     },
-    checkCode(val) {
-      console.log(val);
-      var statusCheckCode = false;
+    checkCode(val, cb) {
       if (val === '') {
         this.CodeHint = '*请输入验证码!';
         return false;
@@ -139,20 +139,19 @@ export default {
           )
           .then(e => {
             if (e.status === 200) {
-              debugger;
-              statusCheckCode = true;
+              this.statusCheckCode = true;
+              cb();
             } else {
               this.code = '';
               this.CodeHint = '*验证码错误!';
-              statusCheckCode = false;
+              this.statusCheckCode = false;
             }
           });
-        return statusCheckCode;
+        return this.statusCheckCode;
       }
     },
     // 获取验证码
     getCode() {
-      console.log(121);
       this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     }
   },
