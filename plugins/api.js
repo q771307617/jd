@@ -43,9 +43,7 @@ instance.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
   var loginType = localStorage.getItem('loginType');
-  console.log(loginType === 'index', res.data);
   if (res.data && res.data.status === 401) {
-    console.log(loginType);
     if (loginType === 'admin') {
       goLogin();
       setTimeout(location.href = '/login/adminLogin', 2000);
@@ -79,7 +77,7 @@ api.request = function () {
     url,
     responseType: 'json'
   };
-  config[isPost ? 'data' : 'params'] = qs.stringify(data);
+  config[isPost ? 'data' : 'params'] = isPost ? qs.stringify(data) : data;
   return new Promise(function (resolve, reject) {
     instance.request(config).then(result => {
       resolve(result.data);

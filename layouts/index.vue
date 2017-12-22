@@ -14,7 +14,7 @@
           <span></span>
           <nuxt-link :to="{name:'index-enterprise'}">企业管理</nuxt-link>
         </p>
-        <p class="navRight">
+        <p class="navRight" @click="loginOut">
           <nuxt-link :to="{name:'login'}">
             <i class="el-icon-remove-outline"></i> 退出</nuxt-link>
         </p>
@@ -30,6 +30,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import api from '~/plugins/api';
 export default {
   methods: {
     ...mapActions(['LIST_GET']),
@@ -38,6 +39,17 @@ export default {
     },
     shouye() {
       this.$router.push('/');
+    },
+    loginOut() {
+      api.post('/user/logout')
+        .then(e => {
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: '错误',
+            message: error.msg
+          });
+        });
     }
   },
   mounted() {

@@ -315,29 +315,18 @@ export default {
         }
       );
       map.addOverLay(img1);
-      map.addOverLay(img1);
-      map.addOverLay(img1);
-      map.addOverLay(img1);
       map.addEventListener('zoomend', function (e) {
-        console.log(map.getLayers());
         var zoom = map.getZoom();
-        // map.removeOverLay(img1, img2, img3, img4);
-        img1.hide();
-        img2.hide();
-        img3.hide();
-        img4.hide();
+        map.removeOverLay(img1, img2, img3, img4);
         if (zoom < 12) {
-          // map.addOverLay(img1);
-          img1.show();
+          map.removeOverLay(img1);
+          map.addOverLay(img1);
         } else if (zoom === 12) {
-          // map.addOverLay(img2);
-          img2.show();
+          map.addOverLay(img2);
         } else if (zoom > 12 && zoom < 15) {
-          img3.show();
-          // map.addOverLay(img3);
+          map.addOverLay(img3);
         } else if (zoom >= 15) {
-          img4.show();
-          // map.addOverLay(img4);
+          map.addOverLay(img4);
         }
       });
     },
