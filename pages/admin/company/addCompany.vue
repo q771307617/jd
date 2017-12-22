@@ -15,11 +15,11 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
-            <el-upload action="/upload/companyimg" :on-success="handleSuccess" list-type="picture-card" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
+            <el-upload action="/upload/companyimg" :on-success="handleSuccess" :limit="1" list-type="picture-card" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
               <i class="el-icon-plus"></i>
               <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
             </el-upload>
-            <div v-else>div</div>
+            <div v-else><img :src="ruleForm.imageUrl" ></div>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
             <el-input v-model="ruleForm.name" class="input-length" v-if="showInput"></el-input>

@@ -5,7 +5,7 @@
       <div class="header">
         <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
         <div class="user-info">{{info.name}}{{info.username}}
-          <a style="margin:0 30px;cursor:pointer" @click="exitUser">退出</a>
+          <a style="margin:0 30px;cursor:pointer" @click="exitAdmin">退出</a>
         </div>
       </div>
       <!-- 侧边栏 -->
@@ -116,7 +116,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions(['LIST_GET', 'exitUser', 'fetchUserData']),
+    ...mapActions(['LIST_GET', 'exitAdmin', 'fetchUserData']),
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },

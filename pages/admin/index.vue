@@ -3,7 +3,7 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-upload class="upload" action="http://localhost:3000/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
+        <el-upload class="upload" action="/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
           <el-button class=" button one">数据导入</el-button>
         </el-upload>
         <el-button class=" button two" @click="change('add','null')">新增企业</el-button>
@@ -99,10 +99,15 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    handleSuccess() {
-      this.data = true;
-      this.fileStatus = true;
-      this.getcompanyInfo();
+    handleSuccess(res) {
+      if (res.status === 200) {
+        this.data = true;
+        this.fileStatus = true;
+        this.getcompanyInfo();
+      } else {
+        this.handleError();
+        this.$message.error(res.msg);
+      }
     },
     handleError() {
       this.data = true;
@@ -175,6 +180,7 @@ export default {
             message: '删除企业成功',
             type: 'success'
           });
+          this.getcompanyInfo();
         } else {
           this.$message.error(e.msg);
         }
@@ -233,6 +239,8 @@ export default {
     }
   }
 }
+
+
 
 
 
