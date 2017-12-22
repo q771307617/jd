@@ -1,13 +1,13 @@
 import axios from 'axios';
 import qs from 'qs';
-// import Router from 'vue-router';
-
+import Vue from 'vue';
+import Element from 'element-ui';
+Vue.use(Element);
 // let baseURL = ;
 
 // if (process.server) {
 //   baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}` + '/api';
 // }
-
 var instance = axios.create({
   baseURL: '/api',
   timeout: 5000,
@@ -16,40 +16,50 @@ var instance = axios.create({
   }
 });
 
-// instance.baseURL = '/api';
+instance.baseURL = '/api';
 
-// let goLogin = () => {
-//   // MessageBox('提示','您还没有登录，请先登录');
-//   // let router = new Router();
-//   // router.push({name: 'login'});
-//   location.href = '/';
-// };
-// // 添加一个请求拦截器
-// instance.interceptors.request.use(function (config) {
-//   // Do something before request is sent
-//   return config;
-// }, function (error) {
-//   // Do something with request error
-//   return Promise.reject(error);
-// });
+let goLogin = () => {
+  // let router = new Router();
+  // router.push({name: 'login'});
+  Vue.prototype.$alert('当前账号已登出，请重新登录', '错误', {
+    confirmButtonText: '确定',
+    callback: action => {
+      this.$message({
+        type: 'info',
+        message: `action: $ { action }`
+      });
+    }
+  });
+};
+// 添加一个请求拦截器
+instance.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
 
-// // 添加一个响应拦截器
-// instance.interceptors.response.use(function (res) {
-//   // console.log(res);
+// 添加一个响应拦截器
+instance.interceptors.response.use(function (res) {
+  if (res.data && res.data.status === 401) {
+    goLogin();
+    location.href = '/login';
+  }
+  if (res.data && res.data.status === 402) {
+    goLogin();
+    location.href = 'login/adminLogin';
+  }
+  if (res && res.data && res.data.status !== 200) {
+    res.data.data = {
 
-//   if (res.data && res.data.status === 401) {
-//     goLogin();
-//   }
-//   if (res && res.data && res.data.status !== 200) {
-//     res.data.data = {
-
-//     };
-//   }
-//   return res;
-// }, function (error) {
-//   // Do something with response error
-//   return Promise.reject(error);
-// });
+    };
+  }
+  return res;
+}, function (error) {
+  // Do something with response error
+  return Promise.reject(error);
+});
 
 let api = {};
 
