@@ -103,6 +103,7 @@
 
 <script>
 import api from './../../../plugins/api.js';
+import moment from 'moment';
 export default {
   data() {
     var checkNumber = (rule, value, callback) => {

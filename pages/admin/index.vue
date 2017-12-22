@@ -164,20 +164,17 @@ export default {
       this.deleteCom = true;
       this.Company = val;
       console.log(val);
-      // this.$alert('这是一段内容', '标题名称', {
-      //   confirmButtonText: '确定',
-      //   callback: action => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: `action: ${action}`
-      //     });
-      //   }
-      // });
+      this.$router.push({
+        name: 'admin',
+        query: {
+          companyId: val.companyId
+        }
+      });
     },
     deleteSure() {
       this.deleteCom = false;
       console.log(this.company);
-      api.get('admin/company/delete', { deleted: 1, id: this.company.companyId }).then((e) => {
+      api.post('admin/company/delete', { deleted: 1, id: this.$route.query.companyId }).then((e) => {
         if (e.status === 200) {
           this.$message({
             message: '删除企业成功',
@@ -241,6 +238,7 @@ export default {
     }
   }
 }
+
 
 
 

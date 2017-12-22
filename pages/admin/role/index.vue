@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       status: 0,
-      loginSype: ['', '不限', '前端', '后台'],
+      loginSype: ['', '不限', '前台', '后台'],
       // 账户列表
       PermissionList: [
         {
