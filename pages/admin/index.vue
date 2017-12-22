@@ -79,7 +79,10 @@ export default {
       data: false,
       fileStatus: true,
       deleteCom: false,
-      company: {},
+      company: {
+        companyId: null,
+        companyName: ''
+      },
       params: {
         pageNum: 1,
         chargePersonType: 1,
@@ -162,19 +165,11 @@ export default {
     },
     deleteCompany(val) {
       this.deleteCom = true;
-      this.Company = val;
-      console.log(val);
-      this.$router.push({
-        name: 'admin',
-        query: {
-          companyId: val.companyId
-        }
-      });
+      this.company = val;
     },
     deleteSure() {
       this.deleteCom = false;
-      console.log(this.company);
-      api.post('admin/company/delete', { deleted: 1, id: this.$route.query.companyId }).then((e) => {
+      api.post('admin/company/delete', { deleted: 1, id: this.company.companyId }).then((e) => {
         if (e.status === 200) {
           this.$message({
             message: '删除企业成功',
@@ -238,6 +233,7 @@ export default {
     }
   }
 }
+
 
 
 
