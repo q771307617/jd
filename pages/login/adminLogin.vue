@@ -7,36 +7,35 @@
         <p class="two">以企业为中心,以服务为核心</p>
       </div>
       <div class="content">
-        <p class="text">管理员登录</p>
+        <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
-              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
+              <el-input  placeholder="管理员账号" v-model="loginIfon.username" class="input" autofocus @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
               </el-input>
                 <transition name="fade">
-                  <p class="hint" v-if="!username">{{UserHint}}</p>
+                  <p class="hint" v-if="!loginIfon.username">{{UserHint}}</p>
                 </transition>
           </div>
           <div class="input-warnnp">
-              <el-input placeholder="密码" type="password" v-model="password" class="input" :maxlength="20">
+              <el-input placeholder="密码" type="password" v-model="loginIfon.password" class="input" :maxlength="20">
                 <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
               </el-input>
                 <transition name="fade">
-                  <p class="hint" v-if="!password">{{PasswordHint}}</p>
+                  <p class="hint" v-if="!loginIfon.password">{{PasswordHint}}</p>
                 </transition>
           </div>
             <div class="input-warnnp">
               <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
-              <div class="loginCode"></div><i class="updateCode" @click="checkCode"><img :src="'/api/user/verifycode?t='+random" alt="" style="width:113px;height:40px"></i>
+              <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
                 <transition name="fade">
                   <p class="hint" v-if="!code">{{CodeHint}}</p>
                 </transition>
                   <p class="hint">{{msg}}</p>
             </div>
           <el-button class="btn" @click="submitLogin">登录</el-button>
-          <img :src="verifycodeUrl" alt="" style="width:113px;height:40px">
         </div>
       </div>
     </div>
@@ -45,39 +44,42 @@
 </template>
 <script>
 import api from '~/plugins/api';
-import qs from 'qs';
+// import qs from 'qs';
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      type: '',
+      loginIfon: {
+        username: '',
+        password: '',
+        type: 1
+      },
       code: '',
       UserHint: '',
       PasswordHint: '',
       CodeHint: '',
       verifycodeUrl: '',
       msg: '',
-      random: new Date().getTime()
+      statusCheckCode: false
     };
   },
   methods: {
+    // 登录操作
+    loginFun() {
+      api.post('user/login', this.loginIfon).then(e => {
+        if (e.status === 200) {
+          this.$router.push({ name: 'admin' });
+        } else {
+          this.msg = e.msg;
+          this.getCode();
+        }
+      });
+    },
     // 提交登录
     submitLogin() {
-      let userStatus = this.checkName(this.username);
-      let passwordStatus = this.checkPassword(this.password);
+      let userStatus = this.checkName(this.loginIfon.username);
+      let passwordStatus = this.checkPassword(this.loginIfon.password);
       if (userStatus && passwordStatus) {
-        api.post('user/login', qs.stringify({
-          username: this.username,
-          password: this.password,
-          type: 3
-        })).then((e) => {
-          if (e.status === 200) {
-            this.$router.push({name: 'admin'});
-          } else {
-            this.msg = e.msg;
-          }
-        });
+        this.checkCode(this.code, this.loginFun);
       }
     },
     // 验证用户名是否符合规则
@@ -92,7 +94,7 @@ export default {
         if (!regex.test(username)) {
           return true;
         } else {
-          this.username = '';
+          this.loginIfon.username = '';
           this.UserHint = '*请输入用户名!';
           return false;
         }
@@ -110,25 +112,41 @@ export default {
         if (!regex.test(password) && password.length > 5) {
           return true;
         } else {
-          this.Password = '';
+          this.loginIfon.Password = '';
           this.PasswordHint = '*请输入密码!';
           return false;
         }
       }
     },
+    checkCode(val, cb) {
+      if (val === '') {
+        this.CodeHint = '*请输入验证码!';
+        return false;
+      } else {
+        api.post('/user/verify', { code: val }).then(e => {
+          if (e.status === 200) {
+            this.statusCheckCode = true;
+            cb();
+          } else {
+            this.code = '';
+            this.CodeHint = '*验证码错误!';
+            this.statusCheckCode = false;
+          }
+        });
+        return this.statusCheckCode;
+      }
+    },
     // 获取验证码
-    checkCode() {
-      this.random = new Date().getTime();
-      console.log(this.random);
+    getCode() {
+      this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.checkCode();
+      this.getCode();
     });
   },
-  computed: {
-  }
+  computed: {}
 };
 </script>
 <style scoped>
@@ -220,7 +238,7 @@ export default {
   font-style: normal;
 }
 .icon::after {
-  content: "|";
+  content: '|';
   width: 1px;
   height: 29px;
   margin-left: 38px;
@@ -255,6 +273,14 @@ export default {
   left: 443px;
   cursor: pointer;
   background: url(../../assets/img/iconFront.png) no-repeat -10px -123px;
+}
+.updateCode img {
+  display: inline-block;
+  position: absolute;
+  right: 34px;
+  top: -11px;
+  width: 113px;
+  height: 40px;
 }
 </style>
 

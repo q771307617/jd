@@ -150,7 +150,6 @@
 
 <script>
 import api from './../../../plugins/api.js';
-import qs from 'qs';
 import {
   mapState
 } from 'vuex';
@@ -234,7 +233,7 @@ export default {
           } else {
             url = 'admin/company/update';
           }
-          api.post(url, qs.stringify(this.ruleForm)).then((e) => {
+          api.post(url, this.ruleForm).then((e) => {
             if (e.status === 200) {
               this.id = e.data;
               this.showInput = false;
