@@ -108,6 +108,7 @@ export default {
     }
   },
   mounted() {
+    window.localStorage.setItem('loginType', 'admin');
     // this.islogin();
     this.LIST_GET();
   },
