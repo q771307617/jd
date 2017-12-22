@@ -4,7 +4,6 @@ import Vue from 'vue';
 import Element from 'element-ui';
 Vue.use(Element);
 // let baseURL = ;
-
 // if (process.server) {
 //   baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}` + '/api';
 // }
@@ -43,9 +42,7 @@ instance.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
   var loginType = localStorage.getItem('loginType');
-  console.log(loginType === 'index', res.data);
   if (res.data && res.data.status === 401) {
-    console.log(loginType);
     if (loginType === 'admin') {
       goLogin();
       setTimeout(location.href = '/login/adminLogin', 2000);
