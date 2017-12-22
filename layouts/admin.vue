@@ -110,6 +110,9 @@ export default {
   mounted() {
     // this.islogin();
     this.LIST_GET();
+    this.$router.push({
+      name: 'admin'
+    });
   },
   methods: {
     ...mapActions(['LIST_GET']),

@@ -13,7 +13,7 @@
     </el-row>
     <el-row :gutter="24">
       <el-col :span="21" :offset="3">
-        <el-form :model="ruleForm" ref="ruleForm" label-width="350px" class="demo-ruleForm" label-position="left">
+        <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="350px" class="demo-ruleForm" label-position="left">
           <el-form-item label="厂房建筑面积（㎡）：" prop="facBuildingArea">
             <el-input v-model="ruleForm.facBuildingArea" class="input-length" v-if="showInput"></el-input>
             <div v-else>{{ruleForm.facBuildingArea}}</div>
@@ -53,9 +53,9 @@
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                                            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
-                                            <div v-else>div</div>
-                                          </el-form-item> -->
+                                                      <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
+                                                      <div v-else>div</div>
+                                                    </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
@@ -107,11 +107,23 @@ import qs from 'qs';
 import moment from 'moment';
 export default {
   data() {
+    var checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback();
+      } else {
+        if (!/^[0-9.]+$/.test(value)) {
+          callback(new Error('请输入数字值'));
+        } else {
+          callback();
+        }
+      }
+    };
     return {
       radio: '2',
       showInput: false,
       declareStartTime: null,
       declareEndTime: null,
+      id: null,
       ruleForm: {
         actualLandArea: '',
         addedEnergyConsume: '',
@@ -133,6 +145,50 @@ export default {
         tax: '',
         waterConsume: '',
         year: ''
+      },
+      rules: {
+        actualLandArea: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        addedEnergyConsume: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        coalConsume: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        elecConsume: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        energyConsume: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        facBuildingArea: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        mainBusIncome: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        patentNumber: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        ratifiedCoal: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        researchFee: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        staffScale: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        stockWorkArea: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        tax: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        waterConsume: [
+          { validator: checkNumber, trigger: 'blur' }
+        ]
       }
     };
   },
@@ -140,41 +196,40 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log('111', this.ruleForm.declareStartTime, this.ruleForm.declareEndTime);
           if (this.ruleForm.declareStartTime) {
-            this.ruleForm.declareStartTime = moment(this.ruleForm.declareStartTime).format('x');
             this.declareStartTime = moment(this.ruleForm.declareStartTime).format('YYYY-MM-DD');
+            this.ruleForm.declareStartTime = moment(this.ruleForm.declareStartTime).format('x');
           }
           if (this.ruleForm.declareEndTime) {
-            this.ruleForm.declareEndTime = moment(this.ruleForm.declareEndTime).format('x');
             this.declareEndTime = moment(this.ruleForm.declareEndTime).format('YYYY-MM-DD');
+            this.ruleForm.declareEndTime = moment(this.ruleForm.declareEndTime).format('x');
           }
-          this.ruleForm.companyId = this.$route.query.companyId;
+          let name = null;
           if (this.$route.query.type === 'add') {
-            api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
-              if (e.status === 200) {
-                this.id = e.data;
-                this.showInput = false;
-                this.$router.push({
-                  name: 'admin'
-                });
-              }
-            });
+            name = 'admin';
           } else {
-            api.post('admin/indicator/update', qs.stringify(this.ruleForm)).then((e) => {
-              if (e.status === 200) {
-                this.id = e.data;
-                this.showInput = false;
-                this.$router.push({
-                  name: 'admin-company-normData',
-                  query: {
-                    type: this.$route.query.type,
-                    companyId: this.$route.query.companyId,
-                    showInput: false
-                  }
-                });
-              }
-            });
+            this.ruleForm.companyId = this.$route.query.companyId;
+            name = 'admin-company-normData';
           }
+          api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
+            if (e.status === 200) {
+              this.showInput = false;
+              this.$router.push({
+                name: name,
+                query: {
+                  type: this.$route.query.type,
+                  companyId: this.$route.query.companyId,
+                  showInput: false
+                }
+              });
+            } else {
+              this.$notify.error({
+                title: '指标数据提交失败',
+                message: e.msg
+              });
+            }
+          });
         } else {
           return false;
         }
@@ -200,8 +255,12 @@ export default {
       api.get('admin/indicator/detail', { companyId: this.$route.query.companyId }).then((e) => {
         if (e.status === 200) {
           this.ruleForm = e.data;
-          this.declareStartTime = moment(e.data.declareStartTime).format('YYYY-MM-DD');
-          this.declareEndTime = moment(e.data.declareEndTime).format('YYYY-MM-DD');
+          if (e.data.declareStartTime) {
+            this.declareStartTime = moment(e.data.declareStartTime).format('YYYY-MM-DD');
+          }
+          if (e.data.declareEndTime) {
+            this.declareEndTime = moment(e.data.declareEndTime).format('YYYY-MM-DD');
+          }
         }
       });
     },

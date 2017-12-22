@@ -2,7 +2,7 @@
   <div class='add-company'>
     <el-radio-group v-model="radio" fill="#f2ba55" @change="changePage">
       <el-radio-button label='1'>基本信息</el-radio-button>
-      <el-radio-button label='2' v-if="this.$route.query.companyId==0" disabled> 指标数据</el-radio-button>
+      <el-radio-button label='2' v-if="this.$route.query.companyId=='null'" disabled> 指标数据</el-radio-button>
       <el-radio-button label='2' v-else> 指标数据</el-radio-button>
     </el-radio-group>
     <el-row :gutter="24">
@@ -15,7 +15,7 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
-            <el-upload action="https://172.30.34.41:8081/upload/companyimg" :on-success="handleSuccess" list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
+            <el-upload action="/upload/companyimg" :on-success="handleSuccess" list-type="picture-card" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
               <i class="el-icon-plus"></i>
               <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
             </el-upload>
@@ -26,9 +26,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-                                <div v-else>div</div>
-                              </el-form-item>-->
+            <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+            <div v-else>div</div>
+          </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -62,9 +62,9 @@
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-                                                                          <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-                                                                          <div v-else>div</div>
-                                                                        </el-form-item>-->
+            <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
+            <div v-else>div</div>
+          </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -153,6 +153,39 @@ import {
 } from 'vuex';
 export default {
   data() {
+    var checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback();
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('请输入数字值'));
+        } else {
+          callback();
+        }
+      }
+    };
+    var lat = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请输入纬度'));
+      } else {
+        if (!/^[0-9.]+$/.test(value)) {
+          callback(new Error('请输入正确纬度'));
+        } else {
+          callback();
+        }
+      }
+    };
+    var lng = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请输入经度'));
+      } else {
+        if (!/^[0-9.]+$/.test(value)) {
+          callback(new Error('请输入正确经度'));
+        } else {
+          callback();
+        }
+      }
+    };
     return {
       radio: '1',
       showInput: false,
@@ -200,13 +233,22 @@ export default {
           { required: true, message: '请输入详细地址', trigger: 'blur' }
         ],
         lng: [
-          { required: true, message: '请输入经度', trigger: 'blur' }
+          { required: true, validator: lng, trigger: 'blur' }
         ],
         lat: [
-          { required: true, message: '请输入纬度', trigger: 'blur' }
+          { required: true, validator: lat, trigger: 'blur' }
         ],
         tradeId: [
           { required: true, message: '请选择所属行业', trigger: 'change' }
+        ],
+        corporationPhone: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        staffScale: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        averageSalary: [
+          { validator: checkNumber, trigger: 'blur' }
         ]
       }
     };
@@ -225,41 +267,53 @@ export default {
     handlePictureCardPreview(file) {
       this.ruleForm.imageUrl = file.url;
     },
+    beforeAvatarUpload(file) {
+      var isIMG = null;
+      if (file.type === 'image/jpeg' || file.type === 'image/png') {
+        isIMG = true;
+      } else {
+        isIMG = false;
+      }
+      const isLt200 = file.size / 1024 < 200;
+      if (!isIMG) {
+        this.$message.error('上传图片只能是 JPG/PNG 格式!');
+      }
+      if (!isLt200) {
+        this.$message.error('上传图片大小不能超过 200KB!');
+      }
+      return isIMG && isLt200;
+    },
     handleSuccess(response, file, fileList) {
       console.log(response, file, fileList);
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.$route.query.companyId === '0') {
-            api.post('admin/company/add', qs.stringify(this.ruleForm)).then((e) => {
-              if (e.status === 200) {
-                this.$router.push({
-                  name: 'admin-company-normData',
-                  query: {
-                    type: this.$route.query.type,
-                    companyId: e.data,
-                    showInput: true,
-                    status: '2'
-                  }
-                });
-              }
-            });
+          let name = null;
+          if (this.$route.query.type === 'add') {
+            name = 'admin-company-normData';
           } else {
-            api.post('admin/company/update', qs.stringify(this.ruleForm)).then((e) => {
-              if (e.status === 200) {
-                this.showInput = false;
-                this.$router.push({
-                  name: 'admin-company-addCompany',
-                  query: {
-                    type: this.$route.query.type,
-                    companyId: this.$route.query.companyId,
-                    showInput: false
-                  }
-                });
-              }
-            });
+            this.ruleForm.companyId = this.$route.query.companyId;
+            name = 'admin-company-addCompany';
           }
+          api.post('admin/company/update', qs.stringify(this.ruleForm)).then((e) => {
+            if (e.status === 200) {
+              this.showInput = false;
+              this.$router.push({
+                name: name,
+                query: {
+                  type: this.$route.query.type,
+                  companyId: this.$route.query.companyId,
+                  showInput: false
+                }
+              });
+            } else {
+              this.$notify.error({
+                title: '企业信息提交失败',
+                message: e.msg
+              });
+            }
+          });
         } else {
           return false;
         }
@@ -267,7 +321,6 @@ export default {
     },
     // 选择选哪个镇触发
     selectTownId(val) {
-      console.log(val);
       api.get('common/getvillage', { townId: val }).then((e) => {
         this.village = e.data;
       }).catch(err => {
@@ -308,7 +361,7 @@ export default {
     },
     getCompanyInfo() {
       this.showInput = this.$route.query.showInput;
-      if (this.$route.query.companyId === '0') {
+      if (this.$route.query.companyId === 'null') {
       } else {
         this.getCompanyDetails();
       }
