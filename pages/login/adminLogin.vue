@@ -18,7 +18,7 @@
                 </transition>
           </div>
           <div class="input-warnnp">
-              <el-input placeholder="密码" type="password" v-model="loginIfon.password" class="input" :maxlength="20">
+              <el-input placeholder="密码" type="password" v-model="loginIfon.password" class="input" :maxlength="20" @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -54px;"></i>
               </el-input>
                 <transition name="fade">
@@ -26,7 +26,7 @@
                 </transition>
           </div>
             <div class="input-warnnp">
-              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;">
+              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;" @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
               <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
@@ -129,7 +129,8 @@ export default {
             cb();
           } else {
             this.code = '';
-            this.CodeHint = '*验证码错误!';
+            this.getCode();
+            this.msg = e.msg;
             this.statusCheckCode = false;
           }
         });

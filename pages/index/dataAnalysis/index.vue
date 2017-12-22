@@ -64,7 +64,7 @@
         <span class="red">{{pageCount}}</span>条数据
         <span style="margin-left:20px;">每页</span>
         <span class="red">15</span>条</p>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="4"  background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="companyInfo.length">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="4"  background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper">
         </el-pagination>
         </el-col>
         </el-row>
