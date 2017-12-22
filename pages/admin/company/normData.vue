@@ -103,8 +103,6 @@
 
 <script>
 import api from './../../../plugins/api.js';
-import qs from 'qs';
-import moment from 'moment';
 export default {
   data() {
     var checkNumber = (rule, value, callback) => {
@@ -212,7 +210,7 @@ export default {
             this.ruleForm.companyId = this.$route.query.companyId;
             name = 'admin-company-normData';
           }
-          api.post('admin/indicator/add', qs.stringify(this.ruleForm)).then((e) => {
+          api.post('admin/indicator/add', this.ruleForm).then((e) => {
             if (e.status === 200) {
               this.showInput = false;
               this.$router.push({
