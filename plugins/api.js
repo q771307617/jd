@@ -22,7 +22,7 @@ let goLogin = () => {
   // let router = new Router();
   // router.push({name: 'login'});
   Vue.prototype.$alert('当前账号已登出，请重新登录', '错误', {
-    confirmButtonText: '确定',
+    showConfirmButton: false,
     callback: action => {
       this.$message({
         type: 'info',
@@ -42,14 +42,20 @@ instance.interceptors.request.use(function (config) {
 
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
+  var loginType = localStorage.getItem('loginType');
+  console.log(loginType === 'index', res.data);
   if (res.data && res.data.status === 401) {
-    goLogin();
-    location.href = '/login';
+    console.log(loginType);
+    if (loginType === 'admin') {
+      goLogin();
+      setTimeout(location.href = '/login/adminLogin', 2000);
+    }
+    if (loginType === 'index') {
+      goLogin();
+      setTimeout(location.href = '/login', 2000);
+    }
   }
-  if (res.data && res.data.status === 402) {
-    goLogin();
-    location.href = 'login/adminLogin';
-  }
+
   if (res && res.data && res.data.status !== 200) {
     res.data.data = {
 

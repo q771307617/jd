@@ -41,6 +41,7 @@ export default {
     }
   },
   mounted() {
+    window.localStorage.setItem('loginType', 'index');
     // this.islogin();
     this.LIST_GET();
   }

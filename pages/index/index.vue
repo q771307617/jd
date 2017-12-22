@@ -315,21 +315,29 @@ export default {
         }
       );
       map.addOverLay(img1);
+      map.addOverLay(img1);
+      map.addOverLay(img1);
+      map.addOverLay(img1);
       map.addEventListener('zoomend', function (e) {
-        map.removeOverLay(img1);
+        console.log(map.getLayers());
         var zoom = map.getZoom();
+        // map.removeOverLay(img1, img2, img3, img4);
+        img1.hide();
+        img2.hide();
+        img3.hide();
+        img4.hide();
         if (zoom < 12) {
-          map.addOverLay(img1);
-          map.removeOverLay(img2, img3, img4);
+          // map.addOverLay(img1);
+          img1.show();
         } else if (zoom === 12) {
-          map.addOverLay(img2);
-          map.removeOverLay(img1, img3, img4);
+          // map.addOverLay(img2);
+          img2.show();
         } else if (zoom > 12 && zoom < 15) {
-          map.addOverLay(img3);
-          map.removeOverLay(img2, img1, img4);
+          img3.show();
+          // map.addOverLay(img3);
         } else if (zoom >= 15) {
-          map.addOverLay(img4);
-          map.removeOverLay(img2, img3, img1);
+          img4.show();
+          // map.addOverLay(img4);
         }
       });
     },
