@@ -30,7 +30,7 @@
         <div class='rm'>
           <p class="rmTitle"><span></span> 热门企业</p>
           <ul>
-            <li v-for = "item in remenParams" :key='item.companyId'>
+            <li v-for = "item in remenParams" :key='item.companyId' @click="findCompany(item.companyId)">
               <p>
                 <img :src='item.factoryImageUrl' alt=''>
               </p>
@@ -130,6 +130,14 @@ export default {
     }
   },
   methods: {
+    findCompany(val) {
+      this.$router.push({
+        name: 'index-enterprise-detail',
+        query: {
+          id: val
+        }
+      });
+    },
     // 右边侧边栏
     rmShow() {
       if (window.$('.right').css('width') === '20px') {
@@ -362,7 +370,11 @@ export default {
         // map.removeOverLay(marker);
         /** 信息窗体 **/
         var content = '';
-        content = '<h2>' + this.allCompanys[i].name + '</h2>' + this.allCompanys[i].chargePersonTel + '';
+        if (this.allCompanys[i].chargePersonTel) {
+          content = '<h2 style="text-overflow: ellipsis;">' + this.allCompanys[i].name + '</h2>' + this.allCompanys[i].chargePersonTel + '';
+        } else {
+          content = '<h2 style="text-overflow: ellipsis;">' + this.allCompanys[i].name + '</h2>' + '';
+        }
 
         addClickHandler(content, marker);
       }
@@ -542,6 +554,7 @@ body #mapDiv {
     height: 100%;
     border: 1px solid #e0e0e0;
     padding-left: 10px;
+    cursor:pointer;
     .rmTitle {
       height: 18px;
       line-height: 18px;

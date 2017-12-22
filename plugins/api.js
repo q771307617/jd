@@ -79,7 +79,7 @@ api.request = function () {
     url,
     responseType: 'json'
   };
-  config[isPost ? 'data' : 'params'] = qs.stringify(data);
+  config[isPost ? 'data' : 'params'] = isPost ? qs.stringify(data) : data;
   return new Promise(function (resolve, reject) {
     instance.request(config).then(result => {
       resolve(result.data);
