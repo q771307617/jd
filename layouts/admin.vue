@@ -125,7 +125,6 @@ export default {
       console.log(key, keyPath);
     },
     handleCommand() {
-
     },
     // 菜单激活回调
     selectMenu(routerName) {
