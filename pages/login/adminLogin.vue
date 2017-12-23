@@ -51,7 +51,7 @@ export default {
       loginIfon: {
         username: '',
         password: '',
-        type: 1
+        type: 3
       },
       code: '',
       UserHint: '',

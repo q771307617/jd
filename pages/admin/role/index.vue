@@ -186,9 +186,12 @@ export default {
           this.PermissionList = e.data;
           if (e.data) {
             e.data.map(x => {
-              x.status = (x.status).toString();
+              x.status = x.status.toString();
             });
           }
+        }
+        if (e.status === 403) {
+          this.PermissionList = '';
         }
       });
     },
@@ -206,8 +209,8 @@ export default {
           }
         });
     },
-    // 验证用户名是否符合规则
-    checkName(roleName) {
+    // 验证账号名是否符合规则
+    checkRoleName(roleName) {
       if (roleName === '') {
         this.RoleNameHint = '请输入角色名称';
         return false;
@@ -219,15 +222,32 @@ export default {
           return true;
         } else {
           this.roleName = '';
-          this.RoleNameHint = '请输入正确的 角色名称';
+          this.RoleNameHint = '请输入正确的角色名称';
           return false;
         }
       }
     },
+    // 验证用户名是否符合规则
+    checkName(userName) {
+      if (userName === '') {
+        console.log(123, userName);
+        this.UserHint = '请输入用户名称';
+        return false;
+      }
+      // 验证空格
+      let reg = /(^\s+)|(\s+$)/g;
+      let regex = new RegExp(reg);
+      if (!regex.test(userName)) {
+        return true;
+      }
+      this.userName = '';
+      this.UserHint = '请输入正确的用户名称';
+      return false;
+    },
     // 验证密码是否符合规则
     checkPassword(password) {
       if (password === '') {
-        this.PasswordHint = '请输入正确的 密码';
+        this.PasswordHint = '请输入密码';
         return false;
       } else {
         let reg = /(^\s+)|(\s+$)/g;
@@ -236,8 +256,8 @@ export default {
         if (!regex.test(password) && password.length > 5) {
           return true;
         } else {
-          this.Password = '';
-          this.PasswordHint = '请输入正确的 密码';
+          // this.Password = '';
+          this.PasswordHint = '请输入正确的密码';
           return false;
         }
       }
@@ -251,6 +271,7 @@ export default {
       this.PasswordHint = '';
       this.RoleNameHint = '';
       this.LimitHint = '';
+      this.UserHint = '';
     },
     // 添加,修改账号
     AccountoPeration(val) {
@@ -272,38 +293,35 @@ export default {
       this.SelectStatus = true;
     },
     ConfirmPeration() {
-      let userRoleStatus = this.checkName(this.UserInfo.roleName);
+      let userRoleStatus = this.checkRoleName(this.UserInfo.roleName);
+      let userStatus = this.checkName(this.UserInfo.username);
       let passwordRoleStatus = this.checkPassword(this.UserInfo.password);
-      if (userRoleStatus && passwordRoleStatus) {
+      if (userRoleStatus && passwordRoleStatus && userStatus) {
         let UserInfo = this.UserInfo;
         if (this.activeType === 1) {
-          api
-            .post('/admin/user/add', UserInfo)
-            .then(e => {
-              if (e.status === 200) {
-                this.getCompanyList();
-                this.$message({
-                  message: '添加成功',
-                  type: 'success'
-                });
-              } else {
-                this.$message.error('添加失败');
-              }
-            });
+          api.post('/admin/user/add', UserInfo).then(e => {
+            if (e.status === 200) {
+              this.getCompanyList();
+              this.$message({
+                message: '添加成功',
+                type: 'success'
+              });
+            } else {
+              this.$message.error('添加失败');
+            }
+          });
         } else {
-          api
-            .post('/admin/user/update', UserInfo)
-            .then(e => {
-              if (e.status === 200) {
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                });
-                this.getCompanyList();
-              } else {
-                this.$message.error('添加失败');
-              }
-            });
+          api.post('/admin/user/update', UserInfo).then(e => {
+            if (e.status === 200) {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              });
+              this.getCompanyList();
+            } else {
+              this.$message.error('添加失败');
+            }
+          });
         }
         this.SelectStatus = false;
       }
