@@ -15,7 +15,7 @@
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
-        <el-button disabled>快速筛选：</el-button>
+        <el-button disabled style='color:#606266'>快速筛选：</el-button>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
             <el-option  label='全部乡镇' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
@@ -251,18 +251,17 @@ export default {
     },
     // 企业搜索
     searchItem(id, data) {
+      this.map.clearOverLays();
       this.searchParams.value = data.name;
-      this.mapParams.zoom = '18';
+      this.mapParams.zoom = '17';
       this.mapParams.lat = data.lat;
       this.mapParams.lng = data.lng;
       this.allCompanys = [data];
-      this.map.clearOverLays();
+      this.fetchMap();
       this.imgOverLay(this.map);
-      this.polygon(this.map);
       // this.markerO.setLngLat({lng: 119.282672, lat: 29.409538});
       this.markers(this.map);
-      // this.getMap();
-      this.fetchMap();
+      this.polygon(this.map);
     },
     // 热门企业
     remen() {
@@ -281,7 +280,7 @@ export default {
     fetchMap() {
       // this.map.setZoom(this.mapParams.zoom);
       // console.log(this.mapParams.lng, this.mapParams.lat);
-      this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 14);
+      this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 17);
     },
     getMap() {
       var zoom = this.mapParams.zoom;
@@ -347,6 +346,8 @@ export default {
           map.addOverLay(img3);
         } else if (zoom >= 14 && zoom < 16) {
           map.addOverLay(img4);
+        } else {
+          map.removeOverLay(img1);
         }
       });
     },
