@@ -325,9 +325,11 @@ export default {
       map.addOverLay(img1);
       map.addEventListener('zoomend', function (e) {
         var zoom = map.getZoom();
-        map.removeOverLay(img1, img2, img3, img4);
+        map.removeOverLay(img1);
+        map.removeOverLay(img2);
+        map.removeOverLay(img3);
+        map.removeOverLay(img4);
         if (zoom < 12) {
-          map.removeOverLay(img1);
           map.addOverLay(img1);
         } else if (zoom === 12) {
           map.addOverLay(img2);
