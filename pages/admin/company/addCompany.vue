@@ -15,20 +15,21 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
-            <el-upload action="/upload/companyimg" :on-success="handleSuccess" :limit="1" list-type="picture-card" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
-              <i class="el-icon-plus"></i>
-              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
+            <div style="width:260px;height:174px;" v-if="ruleForm.imageUrl"><img :src="ruleForm.imageUrl" alt=""></div>
+            <div style="width:260px;height:174px;" v-else><img src="../../../assets/img/260x174.png" alt=""></div>
+            <el-upload action="/upload/companyimg" :on-success="handleSuccess" :limit="1"  :before-upload="beforeAvatarUpload" :on-exceed="handleExceed" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
-            <div v-else><img :src="ruleForm.imageUrl"></div>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
             <el-input v-model="ruleForm.name" class="input-length" v-if="showInput"></el-input>
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                  <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-                  <div v-else>div</div>
-                </el-form-item>-->
+                    <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+                    <div v-else>div</div>
+                  </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -62,9 +63,9 @@
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-                  <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-                  <div v-else>div</div>
-                </el-form-item>-->
+                    <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
+                    <div v-else>div</div>
+                  </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -262,6 +263,9 @@ export default {
   methods: {
     handleRemove(file, fileList) {
       console.log(file, fileList);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
     handlePictureCardPreview(response, file, fileList) {
       this.ruleForm.imageUrl = response.data.imgFile;
