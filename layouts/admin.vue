@@ -113,6 +113,8 @@ export default {
     this.$router.push({
       name: 'admin'
     });
+    this.LIST_GET();
+    this.USER_GET();
   },
   methods: {
     ...mapActions(['LIST_GET', 'USER_GET']),
