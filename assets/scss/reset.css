@@ -102,6 +102,7 @@ table {
 body {
   font-size: 14px;
   font-weight: 500;
+  font-family: "Microsoft YaHei","PingFang SC","Hiragino Sans GB","WenQuanYi Micro Hei","Helvetica Neue",Arial,sans-serif !important;
 }
 
 .ivu-input {

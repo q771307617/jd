@@ -2,6 +2,14 @@
   <el-container>
     <el-main>
       <el-row>
+      <!-- 导航 -->
+      <div class="navbar">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ name: 'index' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'index-enterprise'}">企业管理</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'index-enterprise-detail' }">企业详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <!-- 企业封面 -->
         <div class="scope">
             <div class="el-col" style="width:1200px;margin:0 auto">
@@ -176,7 +184,7 @@ export default {
   },
   methods: {
     getCompanyInfo() {
-      api.get('/company/detail', { id: this.$route.query.id }).then((e) => {
+      api.get('/company/detail', { id: this.$route.query.id }).then(e => {
         if (e.status === 200) {
           this.companyInfo = e.data;
         }
@@ -195,6 +203,10 @@ export default {
   .el-row {
     background-color: #f7f7f7;
     min-width: 100%;
+    .navbar{
+      width:1200px;
+      margin:0 auto;
+    }
     .el-col {
       margin: 0 0 16px 0;
       background-color: #fff;
@@ -204,16 +216,16 @@ export default {
         span {
           margin-left: 60px;
         }
-        .type{
+        .type {
           display: inline-block;
-          background:#fafdff;
-          border:1px solid #2e86b9;
-          border-radius:1px;
+          background: #fafdff;
+          border: 1px solid #2e86b9;
+          border-radius: 1px;
           padding: 0 4px;
-          height:20px;
+          height: 20px;
           font-style: normal;
-          font-size:14px;
-          color:#2e86b9;
+          font-size: 14px;
+          color: #2e86b9;
           text-align: center;
         }
       }
@@ -243,19 +255,19 @@ export default {
         }
       }
       .top-picture {
-        margin-left:60px;
+        margin-left: 60px;
         max-width: 600px;
         max-height: 400px;
         background: red;
-        img{
+        img {
           background-size: 600px 400px;
         }
         // background-color:red;
       }
     }
-    .scope{
+    .scope {
       width: 100%;
-      background-color:#fff;
+      background-color: #fff;
       margin-bottom: 16px;
       padding-bottom: 30px;
     }

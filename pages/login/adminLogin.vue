@@ -2,12 +2,12 @@
     <div class="login">
     <div class="container bg-admin">
       <div class="slogan">
-        <p class="one">建德企业信息管理后台</p>
+        <h1 class="one">建德企业信息管理后台</h1>
         <hr style="margin:26px 0;">
-        <p class="two">以企业为中心,以服务为核心</p>
+        <h1 class="two">以企业为中心,以服务为核心</h1>
       </div>
       <div class="content">
-        <p class="text">登录</p>
+        <h1 class="text">登录</h1>
         <div class="demo-input-size">
           <div class="input-warnnp">
               <el-input  placeholder="管理员账号" v-model="loginIfon.username" class="input" autofocus @keyup.enter.native="submitLogin">
