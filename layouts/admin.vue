@@ -5,7 +5,7 @@
       <div class="header">
         <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
         <div class="user-info">{{info.name}}{{info.username}}
-          <a style="margin:0 30px;cursor:pointer" @click="exitUser">退出</a>
+          <a style="margin:0 30px;cursor:pointer" @click="loginOut">退出</a>
         </div>
       </div>
       <!-- 侧边栏 -->
@@ -38,6 +38,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
+import api from '~/plugins/api';
 export default {
   data() {
     return {
@@ -108,15 +109,13 @@ export default {
   },
   mounted() {
     window.localStorage.setItem('loginType', 'admin');
-    // this.islogin();
-    this.fetchUserData();
-    this.LIST_GET();
+    this.isPermissions();
     this.$router.push({
       name: 'admin'
     });
   },
   methods: {
-    ...mapActions(['LIST_GET', 'exitUser', 'fetchUserData']),
+    ...mapActions(['LIST_GET', 'USER_GET']),
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -133,6 +132,27 @@ export default {
       };
       this.$router.push({
         name: routerName
+      });
+    },
+    loginOut() {
+      api.post('/user/logout')
+        .then(e => {
+        })
+        .catch(error => {
+          this.$notify.error({
+            title: '错误',
+            message: error.msg
+          });
+        });
+    },
+    isPermissions() {
+      api.get('user/info', {}).then(e => {
+        if (e.status !== 200) return;
+        console.log(e.data.type);
+        if (e.data.type === 2) {
+          location.href = '/login/adminLogin';
+          this.loginOut();
+        }
       });
     }
   }
