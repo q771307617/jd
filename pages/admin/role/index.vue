@@ -62,7 +62,7 @@
           </transition>
         </div>
         <el-form-item label="用户名">
-          <el-input v-model="UserInfo.username" placeholder=" 请输入新增用户名，可为数字、英文大小写、特殊字符"></el-input>
+          <el-input v-model="UserInfo.username" placeholder=" 请输入新增用户名，可为数字、英文大小写、特殊字符" @keyup.enter.native="ConfirmPeration"></el-input>
         </el-form-item>
         <div class="bottomaera">
           <transition name="fade">
@@ -70,7 +70,7 @@
           </transition>
         </div>
         <el-form-item label="密码">
-          <el-input v-model="UserInfo.password" placeholder="请输入6-20位数字、大小写英文、特殊字符" :maxlength="20"></el-input>
+          <el-input v-model="UserInfo.password" placeholder="请输入6-20位数字、大小写英文、特殊字符" :maxlength="20" @keyup.enter.native="ConfirmPeration"></el-input>
         </el-form-item>
         <div class="bottomaera">
           <transition name="fade">
@@ -139,7 +139,7 @@ export default {
       UserInfo: {
         password: '',
         roleName: '',
-        type: '',
+        type: 1,
         username: '',
         roleId: '',
         id: ''
@@ -191,13 +191,13 @@ export default {
           }
         }
         if (e.status === 403) {
-          this.PermissionList = '';
+          this.PermissionList = [];
         }
       });
     },
     // 禁用账号
     SwitchStatus(val) {
-      console.log(val);
+      // console.log(val);
       api
         .post('/admin/user/status', {
           id: val.id,
@@ -205,7 +205,7 @@ export default {
         })
         .then(e => {
           if (e.status === 200) {
-            console.log('操作成功!');
+            // console.log('操作成功!');
           }
         });
     },
@@ -236,8 +236,11 @@ export default {
       }
       // 验证空格
       let reg = /(^\s+)|(\s+$)/g;
+      let reg2 = /[^\u4e00-\u9fa5]/;
       let regex = new RegExp(reg);
-      if (!regex.test(userName)) {
+      let regex2 = new RegExp(reg2);
+      if (!regex.test(userName) && regex2.test(userName)) {
+        console.log(!regex2.test(userName));
         return true;
       }
       this.userName = '';
@@ -250,13 +253,12 @@ export default {
         this.PasswordHint = '请输入密码';
         return false;
       } else {
-        let reg = /(^\s+)|(\s+$)/g;
+        let reg = /^[x00-x7f]+$/;
         let regex = new RegExp(reg);
         // 不存在空格且密码长度为6-20位
-        if (!regex.test(password) && password.length > 5) {
+        if (regex.test(password) && password.length > 5) {
           return true;
         } else {
-          // this.Password = '';
           this.PasswordHint = '请输入正确的密码';
           return false;
         }
@@ -266,7 +268,7 @@ export default {
     clearData() {
       this.UserInfo.password = '';
       this.UserInfo.roleName = '';
-      this.UserInfo.type = '';
+      // this.UserInfo.type = '';
       this.UserInfo.username = '';
       this.PasswordHint = '';
       this.RoleNameHint = '';
