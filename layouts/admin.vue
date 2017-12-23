@@ -4,7 +4,7 @@
       <!-- 顶部 -->
       <div class="header">
         <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
-        <div class="user-info">{{info.name}}{{info.username}}
+        <div class="user-info"><div class="top-admin"></div>{{info.name}}{{info.username}}
           <a style="margin:0 30px;cursor:pointer" @click="loginOut">退出</a>
         </div>
       </div>
