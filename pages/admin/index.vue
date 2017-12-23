@@ -150,13 +150,13 @@ export default {
       });
     },
     change(val, row) {
-      let showInput = true;
+      let showInput = 'yes';
       if (val === 'view') {
         row = row.companyId;
-        showInput = false;
+        showInput = 'no';
       } else if (val === 'edit') {
         row = row.companyId;
-        showInput = true;
+        showInput = 'yes';
       }
       this.$router.push({
         name: 'admin-company-addCompany',
