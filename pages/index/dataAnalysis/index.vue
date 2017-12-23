@@ -92,7 +92,7 @@ export default {
         pageNum: 1
       },
       currentPage: 1,
-      pageCount: '',
+      pageCount: 0,
       companyInfo: [{
         actualLandArea: null,
         facBuildingArea: null,
