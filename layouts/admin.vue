@@ -137,6 +137,7 @@ export default {
       });
     },
     loginOut() {
+      location.href = '/login/adminLogin';
       api.post('/user/logout')
         .then(e => {
         })
@@ -152,7 +153,6 @@ export default {
         if (e.status !== 200) return;
         console.log(e.data.type);
         if (e.data.type === 2) {
-          location.href = '/login/adminLogin';
           this.loginOut();
         }
       });

@@ -16,11 +16,13 @@
       </ul>
       <div class='seachJl'>
         <el-button @click="initMap">
-          <i class='el-icon-location' style='color:#1c7bef;'></i>建德市</el-button>
+          <i style='color:#1c7bef;'></i>快速筛选：</el-button>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
+            <el-option  label='全部' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
         </el-select>
         <el-select class='hy' v-model='hy' slot='prepend' placeholder='行业分类'>
+          <el-option  label='全部' value=''></el-option>
             <el-option v-for = "item in industry" :label='item.tradeName':key='item.id' :value='item.id'></el-option>
         </el-select>
       </div>
@@ -124,10 +126,17 @@ export default {
   watch: {
     xz(val, old) {
       this.searchXzHy(2, val);
+      if (val === '') {
+        this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
+        return;
+      }
       this.map.panTo(new window.T.LngLat(this.mapParams.markers[val - 1][0], this.mapParams.markers[val - 1][1]), 13);
     },
     hy(val, old) {
       this.searchXzHy(3, val);
+      if (val === '') {
+        this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
+      }
     }
   },
   methods: {
@@ -335,9 +344,9 @@ export default {
           map.addOverLay(img1);
         } else if (zoom === 12) {
           map.addOverLay(img2);
-        } else if (zoom > 12 && zoom < 15) {
+        } else if (zoom > 12 && zoom < 14) {
           map.addOverLay(img3);
-        } else if (zoom >= 15) {
+        } else if (zoom >= 14 && zoom < 16) {
           map.addOverLay(img4);
         }
       });
@@ -418,16 +427,16 @@ export default {
             for (var i = 0; i < a.length; i++) {
               point.push(new window.T.LngLat(a[i][0], a[i][1]));
             }
-            var polygon = new window.T.Polygon(point, {color: '#537fb9', weight: 2, opacity: '.6', fillColor: '#FFF', fillOpacity: 0});
+            var polygon = new window.T.Polygon(point, {color: '#90bcff', weight: 2, opacity: '.6', fillColor: '#FFF', fillOpacity: 0});
             // 鼠标滑过
             polygon.addEventListener('mouseover', function (e) {
-              polygon.setColor('#537fb9');
+              polygon.setColor('#90bcff');
               polygon.setOpacity({opacity: '0.6'});
               polygon.setFillOpacity('0.3');
               polygon.setFillColor('#488EF9');
             });
             polygon.addEventListener('mouseout', function (e) {
-              polygon.setColor('#537fb9');
+              polygon.setColor('#90bcff');
               polygon.setOpacity({opacity: '0'});
               polygon.setFillOpacity('0');
               polygon.setFillColor('#FFFFFF');
