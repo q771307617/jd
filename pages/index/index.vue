@@ -348,6 +348,9 @@ export default {
           map.addOverLay(img4);
         } else {
           map.removeOverLay(img1);
+          map.removeOverLay(img2);
+          map.removeOverLay(img3);
+          map.removeOverLay(img4);
         }
       });
     },
