@@ -9,7 +9,7 @@
           <el-option label='企业' value='1'></el-option>
           <el-option label='项目' value='2'></el-option>
         </el-select> -->
-        <el-button  slot='append' style='background:#1c7bef;' icon='el-icon-search' class="searchBtn" @click="searchcompany(1)"></el-button>
+        <el-button  slot='append' style='background:#1c7bef;color:#FFF' icon='el-icon-search' class="searchBtn" @click="searchcompany(1)"></el-button>
       </el-input>
       <ul class="searchList" >
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
@@ -31,8 +31,8 @@
         <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
         <div class='rm'>
           <p class="rmTitle"><span></span> 热门企业</p>
-          <ul>
-            <li v-for = "item in remenParams" :key='item.companyId' @click="findCompany(item.companyId)">
+          <ul class="ul">
+            <li class="li" v-for = "item in remenParams" :key='item.companyId' @click="findCompany(item.companyId)">
               <p>
                 <img :src='item.factoryImageUrl' alt=''>
               </p>
@@ -578,9 +578,10 @@ body #mapDiv {
       overflow: hidden;
       width: 413px;
       padding: 5px 0;
-      li {
+      .li {
         overflow: hidden;
         clear: both;
+        margin-bottom: 10px;
         p {
           display: inline-block;
           width: 121px;
@@ -589,6 +590,7 @@ body #mapDiv {
           float: left;
           img {
             max-width: 119px;
+            // height: 79px;
             margin: 0 auto;
           }
         }
