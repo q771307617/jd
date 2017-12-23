@@ -69,7 +69,7 @@ export default {
   mounted() {
     window.localStorage.setItem('loginType', 'index');
     // this.USER_GET();
-    // this.LIST_GET();
+    this.LIST_GET();
     this.isPermissions();
   }
 };
@@ -111,11 +111,11 @@ a {
   background: -ms-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: linear-gradient(to bottom, #0267ca 0%, #072fa0 100%);
   .topbackground{
-    background:url(./../assets/img/frontHeaderBg.png)no-repeat; 
-    padding-left: 356px; 
-    width:100%;  
-    height:100px;  
-    background-size:100% 100%;  
+    background:url(./../assets/img/frontHeaderBg.png)no-repeat;
+    padding-left: 356px;
+    // width:100%;
+    height:100px;
+    background-size:100% 100%;
     .frontHeader{
       margin-top: 10px;
     }
