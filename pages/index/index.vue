@@ -15,13 +15,13 @@
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
-        <el-button >快速筛选：</el-button>
+        <el-button disabled>快速筛选：</el-button>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
-            <el-option  label='全部' value=''></el-option>
+            <el-option  label='全部乡镇' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
         </el-select>
         <el-select class='hy' v-model='hy' slot='prepend' placeholder='行业分类'>
-          <el-option  label='全部' value=''></el-option>
+          <el-option  label='全部行业' value=''></el-option>
             <el-option v-for = "item in industry" :label='item.tradeName':key='item.id' :value='item.id'></el-option>
         </el-select>
       </div>
