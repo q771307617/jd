@@ -28,11 +28,16 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import api from '~/plugins/api';
 export default {
+  computed: {
+    ...mapState({
+      info: state => state.user.info
+    })
+  },
   methods: {
-    ...mapActions(['LIST_GET']),
+    ...mapActions(['LIST_GET', 'USER_GET']),
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -49,12 +54,23 @@ export default {
             message: error.msg
           });
         });
+    },
+    isPermissions() {
+      api.get('user/info', {}).then(e => {
+        if (e.status !== 200) return;
+        console.log(e.data.type);
+        if (e.data.type === 3) {
+          location.href = '/login';
+          this.loginOut();
+        }
+      });
     }
   },
   mounted() {
     window.localStorage.setItem('loginType', 'index');
-    // this.islogin();
-    this.LIST_GET();
+    // this.USER_GET();
+    // this.LIST_GET();
+    this.isPermissions();
   }
 };
 </script>
