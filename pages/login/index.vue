@@ -124,6 +124,7 @@ export default {
     checkCode(val, cb) {
       if (val === '') {
         this.CodeHint = '*请输入验证码!';
+        this.getCode();
         return false;
       } else {
         api

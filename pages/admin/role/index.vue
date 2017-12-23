@@ -62,7 +62,7 @@
           </transition>
         </div>
         <el-form-item label="用户名">
-          <el-input v-model="UserInfo.username" placeholder=" 请输入新增用户名，可为数字、英文大小写、特殊字符"></el-input>
+          <el-input v-model="UserInfo.username" placeholder=" 请输入新增用户名，可为数字、英文大小写、特殊字符" @keyup.enter.native="ConfirmPeration"></el-input>
         </el-form-item>
         <div class="bottomaera">
           <transition name="fade">
@@ -70,7 +70,7 @@
           </transition>
         </div>
         <el-form-item label="密码">
-          <el-input v-model="UserInfo.password" placeholder="请输入6-20位数字、大小写英文、特殊字符" :maxlength="20"></el-input>
+          <el-input v-model="UserInfo.password" placeholder="请输入6-20位数字、大小写英文、特殊字符" :maxlength="20" @keyup.enter.native="ConfirmPeration"></el-input>
         </el-form-item>
         <div class="bottomaera">
           <transition name="fade">
@@ -139,7 +139,7 @@ export default {
       UserInfo: {
         password: '',
         roleName: '',
-        type: '',
+        type: 1,
         username: '',
         roleId: '',
         id: ''
@@ -186,15 +186,18 @@ export default {
           this.PermissionList = e.data;
           if (e.data) {
             e.data.map(x => {
-              x.status = (x.status).toString();
+              x.status = x.status.toString();
             });
           }
+        }
+        if (e.status === 403) {
+          this.PermissionList = [];
         }
       });
     },
     // 禁用账号
     SwitchStatus(val) {
-      console.log(val);
+      // console.log(val);
       api
         .post('/admin/user/status', {
           id: val.id,
@@ -202,12 +205,12 @@ export default {
         })
         .then(e => {
           if (e.status === 200) {
-            console.log('操作成功!');
+            // console.log('操作成功!');
           }
         });
     },
-    // 验证用户名是否符合规则
-    checkName(roleName) {
+    // 验证账号名是否符合规则
+    checkRoleName(roleName) {
       if (roleName === '') {
         this.RoleNameHint = '请输入角色名称';
         return false;
@@ -219,25 +222,44 @@ export default {
           return true;
         } else {
           this.roleName = '';
-          this.RoleNameHint = '请输入正确的 角色名称';
+          this.RoleNameHint = '请输入正确的角色名称';
           return false;
         }
       }
     },
+    // 验证用户名是否符合规则
+    checkName(userName) {
+      if (userName === '') {
+        console.log(123, userName);
+        this.UserHint = '请输入用户名称';
+        return false;
+      }
+      // 验证空格
+      let reg = /(^\s+)|(\s+$)/g;
+      let reg2 = /[^\u4e00-\u9fa5]/;
+      let regex = new RegExp(reg);
+      let regex2 = new RegExp(reg2);
+      if (!regex.test(userName) && regex2.test(userName)) {
+        console.log(!regex2.test(userName));
+        return true;
+      }
+      this.userName = '';
+      this.UserHint = '请输入正确的用户名称';
+      return false;
+    },
     // 验证密码是否符合规则
     checkPassword(password) {
       if (password === '') {
-        this.PasswordHint = '请输入正确的 密码';
+        this.PasswordHint = '请输入密码';
         return false;
       } else {
-        let reg = /(^\s+)|(\s+$)/g;
+        let reg = /^[x00-x7f]+$/;
         let regex = new RegExp(reg);
         // 不存在空格且密码长度为6-20位
-        if (!regex.test(password) && password.length > 5) {
+        if (regex.test(password) && password.length > 5) {
           return true;
         } else {
-          this.Password = '';
-          this.PasswordHint = '请输入正确的 密码';
+          this.PasswordHint = '请输入正确的密码';
           return false;
         }
       }
@@ -246,11 +268,12 @@ export default {
     clearData() {
       this.UserInfo.password = '';
       this.UserInfo.roleName = '';
-      this.UserInfo.type = '';
+      // this.UserInfo.type = '';
       this.UserInfo.username = '';
       this.PasswordHint = '';
       this.RoleNameHint = '';
       this.LimitHint = '';
+      this.UserHint = '';
     },
     // 添加,修改账号
     AccountoPeration(val) {
@@ -272,38 +295,35 @@ export default {
       this.SelectStatus = true;
     },
     ConfirmPeration() {
-      let userRoleStatus = this.checkName(this.UserInfo.roleName);
+      let userRoleStatus = this.checkRoleName(this.UserInfo.roleName);
+      let userStatus = this.checkName(this.UserInfo.username);
       let passwordRoleStatus = this.checkPassword(this.UserInfo.password);
-      if (userRoleStatus && passwordRoleStatus) {
+      if (userRoleStatus && passwordRoleStatus && userStatus) {
         let UserInfo = this.UserInfo;
         if (this.activeType === 1) {
-          api
-            .post('/admin/user/add', UserInfo)
-            .then(e => {
-              if (e.status === 200) {
-                this.getCompanyList();
-                this.$message({
-                  message: '添加成功',
-                  type: 'success'
-                });
-              } else {
-                this.$message.error('添加失败');
-              }
-            });
+          api.post('/admin/user/add', UserInfo).then(e => {
+            if (e.status === 200) {
+              this.getCompanyList();
+              this.$message({
+                message: '添加成功',
+                type: 'success'
+              });
+            } else {
+              this.$message.error('添加失败');
+            }
+          });
         } else {
-          api
-            .post('/admin/user/update', UserInfo)
-            .then(e => {
-              if (e.status === 200) {
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                });
-                this.getCompanyList();
-              } else {
-                this.$message.error('添加失败');
-              }
-            });
+          api.post('/admin/user/update', UserInfo).then(e => {
+            if (e.status === 200) {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              });
+              this.getCompanyList();
+            } else {
+              this.$message.error('添加失败');
+            }
+          });
         }
         this.SelectStatus = false;
       }

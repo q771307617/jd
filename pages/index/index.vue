@@ -48,7 +48,7 @@
 </template>
 <script>
 import api from '~/plugins/api';
-import { mapState } from 'vuex';
+import {mapState, mapActions} from 'vuex';
 export default {
   data() {
     return {
@@ -115,6 +115,7 @@ export default {
     })
   },
   mounted() {
+    this.LIST_GET();
     /* 热门企业 */
     this.remen();
     /* 地图实例化 */
@@ -130,6 +131,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions([ 'LIST_GET' ]),
     findCompany(val) {
       this.$router.push({
         name: 'index-enterprise-detail',
@@ -325,9 +327,11 @@ export default {
       map.addOverLay(img1);
       map.addEventListener('zoomend', function (e) {
         var zoom = map.getZoom();
-        map.removeOverLay(img1, img2, img3, img4);
+        map.removeOverLay(img1);
+        map.removeOverLay(img2);
+        map.removeOverLay(img3);
+        map.removeOverLay(img4);
         if (zoom < 12) {
-          map.removeOverLay(img1);
           map.addOverLay(img1);
         } else if (zoom === 12) {
           map.addOverLay(img2);
