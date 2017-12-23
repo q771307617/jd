@@ -268,7 +268,7 @@ export default {
     clearData() {
       this.UserInfo.password = '';
       this.UserInfo.roleName = '';
-      // this.UserInfo.type = '';
+      this.UserInfo.type = '';
       this.UserInfo.username = '';
       this.PasswordHint = '';
       this.RoleNameHint = '';
