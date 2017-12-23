@@ -15,8 +15,7 @@
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
-        <el-button @click="initMap">
-          <i style='color:#1c7bef;'></i>快速筛选：</el-button>
+        <el-button >快速筛选：</el-button>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
             <el-option  label='全部' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
