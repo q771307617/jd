@@ -53,9 +53,9 @@
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                                                      <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
-                                                      <div v-else>div</div>
-                                                    </el-form-item> -->
+                                                            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
+                                                            <div v-else>div</div>
+                                                          </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
@@ -268,6 +268,7 @@ export default {
       this.showInput = this.$route.query.showInput;
       type = this.$route.query.type;
       if (type === 'add') {
+        this.ruleForm.companyId = this.$route.query.companyId;
       } else {
         this.getCompanyDetails();
       }

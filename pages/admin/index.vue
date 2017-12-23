@@ -85,7 +85,6 @@ export default {
       },
       params: {
         pageNum: 1,
-        chargePersonType: 1,
         pageSize: 20,
         count: null
       },

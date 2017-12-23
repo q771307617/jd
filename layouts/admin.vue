@@ -4,18 +4,20 @@
       <!-- 顶部 -->
       <div class="header">
         <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
-        <div class="user-info">{{info.name}}{{info.username}}
+        <div class="user-info">
+          <div class="top-admin"></div>{{info.name}}{{info.username}}
           <a style="margin:0 30px;cursor:pointer" @click="exitUser">退出</a>
         </div>
       </div>
       <!-- 侧边栏 -->
       <div class="sidebar">
-        <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" text-color="#fff" background-color="#354f8a" active-text-color="#ffd04b" unique-opened @select="selectMenu">
+        <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" text-color="#7792d0" background-color="#4d67a4" active-text-color="#fff" unique-opened @select="selectMenu">
           <div v-for="item in menus" :key="item.index">
             <div v-if="item.subs">
               <el-submenu :index="item.index" :key="item.index">
                 <div slot="title">
-                  <i :class="item.icon"></i>{{ item.title }}
+                  <div :class="[item.icon, status== item.index? item.index : '']"></div>
+                  <span style="font-size:20px;">{{ item.title }}</span>
                 </div>
                 <el-menu-item v-for="(subItem,i) in item.subs" :key="i" :index="subItem.index">{{ subItem.title }}
                 </el-menu-item>
@@ -23,7 +25,8 @@
             </div>
             <div v-else>
               <el-menu-item :index="item.index" :key="item.index">
-                <i :class="item.icon"></i>{{ item.title }}
+                <div :class="[item.icon, status== item.index? item.index : '']"></div>
+                <span style="font-size:20px;">{{ item.title }}</span>
               </el-menu-item>
             </div>
           </div>
@@ -44,14 +47,15 @@ export default {
       onRoutes: 'admin',
       name: '王厂长',
       role: '管理员',
+      status: 'admin',
       menus: [
         {
-          icon: 'el-icon-setting',
+          icon: 'companyIcon',
           index: 'admin',
           title: '企业管理'
         },
         {
-          icon: 'el-icon-menu',
+          icon: 'roleIcon',
           index: 'admin-role',
           title: '角色管理'
           // subs: [
@@ -111,9 +115,6 @@ export default {
     // this.islogin();
     this.fetchUserData();
     this.LIST_GET();
-    this.$router.push({
-      name: 'admin'
-    });
   },
   methods: {
     ...mapActions(['LIST_GET', 'exitUser', 'fetchUserData']),
@@ -128,6 +129,7 @@ export default {
     },
     // 菜单激活回调
     selectMenu(routerName) {
+      this.status = routerName;
       if (typeof routerName !== 'string' || routerName.length <= 0) {
         return;
       };
@@ -205,6 +207,57 @@ export default {
   float: right;
   font-size: 16px;
   color: #fff;
+  cursor: pointer;
+}
+
+.top-admin {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-bottom: -9px;
+  margin-right: 30px;
+  background: url(../assets/img/iconBackground.png) no-repeat;
+  background-position: -21px -291px;
+}
+
+.companyIcon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-left: 30px;
+  background: url(../assets/img/iconBackground.png) no-repeat;
+  background-position: -21px -165px;
+}
+
+.admin {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-left: 30px;
+  background: url(../assets/img/iconBackground.png) no-repeat;
+  background-position: -21px -123px;
+}
+
+.roleIcon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-left: 30px;
+  background: url(../assets/img/iconBackground.png) no-repeat;
+  background-position: -21px -249px;
+}
+
+.admin-role {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  margin-left: 30px;
+  background: url(../assets/img/iconBackground.png) no-repeat;
+  background-position: -21px -208px;
 }
 
 .user-info .el-dropdown-link {
@@ -233,6 +286,7 @@ export default {
   background-color: #354f8a;
   display: block;
   position: absolute;
+  font-size: 20px;
   width: 230px;
   left: 0;
   top: 90px;

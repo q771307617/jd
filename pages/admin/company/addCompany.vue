@@ -19,16 +19,16 @@
               <i class="el-icon-plus"></i>
               <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
             </el-upload>
-            <div v-else><img :src="ruleForm.imageUrl" ></div>
+            <div v-else><img :src="ruleForm.imageUrl"></div>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
             <el-input v-model="ruleForm.name" class="input-length" v-if="showInput"></el-input>
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-            <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-            <div v-else>div</div>
-          </el-form-item>-->
+                  <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
+                  <div v-else>div</div>
+                </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -62,9 +62,9 @@
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-            <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-            <div v-else>div</div>
-          </el-form-item>-->
+                  <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
+                  <div v-else>div</div>
+                </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -187,14 +187,14 @@ export default {
     };
     return {
       radio: '1',
-      showInput: false,
+      showInput: this.$route.query.showInput,
       village: null,
       ruleForm: {
         address: '',
         averageSalary: '',
         companyProfile: '',
         corporationName: '',
-        corporationNameId: '',
+        corporationId: '',
         corporationPhone: '',
         id: '',
         imageUrl: '',
@@ -263,8 +263,8 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    handlePictureCardPreview(file) {
-      this.ruleForm.imageUrl = file.url;
+    handlePictureCardPreview(response, file, fileList) {
+      this.ruleForm.imageUrl = response.data.imgFile;
     },
     beforeAvatarUpload(file) {
       var isIMG = null;
@@ -283,17 +283,19 @@ export default {
       return isIMG && isLt200;
     },
     handleSuccess(response, file, fileList) {
-      console.log(response, file, fileList);
+      this.ruleForm.imageUrl = response.data.imgFile;
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let name = null;
+          let showInput = true;
           if (this.$route.query.type === 'add') {
             name = 'admin-company-normData';
           } else {
             this.ruleForm.companyId = this.$route.query.companyId;
             name = 'admin-company-addCompany';
+            showInput = false;
           }
           api.post('admin/company/update', this.ruleForm).then((e) => {
             if (e.status === 200) {
@@ -302,8 +304,8 @@ export default {
                 name: name,
                 query: {
                   type: this.$route.query.type,
-                  companyId: this.$route.query.companyId,
-                  showInput: false
+                  companyId: e.data,
+                  showInput: showInput
                 }
               });
             } else {
@@ -359,7 +361,7 @@ export default {
       });
     },
     getCompanyInfo() {
-      this.showInput = this.$route.query.showInput;
+      // this.showInput = this.$route.query.showInput;
       if (this.$route.query.companyId === 'null') {
       } else {
         this.getCompanyDetails();
