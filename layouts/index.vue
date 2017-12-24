@@ -7,14 +7,15 @@
       </div>
       <div class="nav">
         <p class="navLeft">
-          <nuxt-link :to="{name:'index'}">首页</nuxt-link>
+          <nuxt-link :to="{name:'front'}">首页</nuxt-link>
           <span></span>
-          <nuxt-link :to="{name:'index-dataAnalysis'}">数据分析</nuxt-link>
+          <nuxt-link :to="{name:'front-dataAnalysis'}">数据分析</nuxt-link>
           <span></span>
-          <nuxt-link :to="{name:'index-enterprise'}">企业管理</nuxt-link>
+          <nuxt-link :to="{name:'front-enterprise'}">企业管理</nuxt-link>
         </p>
+        <a href="/front/enterprise/detail?id=923">11111111111111</a>
         <p class="navRight" @click="loginOut">
-          <nuxt-link :to="{name:'login'}">
+          <nuxt-link :to="{name:'index'}">
             <i class="el-icon-remove-outline"></i> 退出</nuxt-link>
         </p>
       </div>
@@ -58,7 +59,7 @@ export default {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
         if (e.data.type === 3) {
-          location.href = '/login';
+          location.href = '/';
           this.loginOut();
         }
       });
