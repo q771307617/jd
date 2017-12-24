@@ -9,13 +9,14 @@
           <el-option label='企业' value='1'></el-option>
           <el-option label='项目' value='2'></el-option>
         </el-select> -->
-        <el-button  slot='append' style='background:#1c7bef;color:#FFF' icon='el-icon-search' class="searchBtn" @click="searchcompany(1)"></el-button>
+        <el-button  slot='append' style='background:#1c7bef;color:#FFF;margin:0 -20px;' icon='el-icon-search' class="searchBtn" @click="searchcompany(1)"></el-button>
       </el-input>
       <ul class="searchList" >
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
-        <el-button disabled style='color:#606266'>快速筛选：</el-button>
+        <!-- <el-button :loading="false" style='color:#606266'>快速筛选：</el-button> -->
+        <span style="display:inline-block;width:119px;height:40px;line-height:40px;border:1px solid #c9ccd3; border-radius:5px;color:#606266;text-align:center;background-color:#fff;">快速筛选：</span>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
             <el-option  label='全部乡镇' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
@@ -279,7 +280,6 @@ export default {
     // 更新地图
     fetchMap() {
       // this.map.setZoom(this.mapParams.zoom);
-      // console.log(this.mapParams.lng, this.mapParams.lat);
       this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 17);
     },
     getMap() {

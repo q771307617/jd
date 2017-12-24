@@ -39,7 +39,6 @@ export default {
   methods: {
     ...mapActions(['LIST_GET', 'USER_GET']),
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
     },
     shouye() {
       this.$router.push('/');
@@ -58,7 +57,6 @@ export default {
     isPermissions() {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
-        console.log(e.data.type);
         if (e.data.type === 3) {
           location.href = '/login';
           this.loginOut();
@@ -104,9 +102,12 @@ a {
 .header {
   width: 100%;
   min-width: 1400px;
+  background:#0267ca;
   background: -moz-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0267ca), color-stop(100%, #072fa0));
   background: -webkit-linear-gradient(top, #0267ca 0%, #072fa0 100%);
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#0267ca), to(#072fa0));   
+  background: -webkit-linear-gradient(left, #0267ca, #072fa0); 
   background: -o-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -ms-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: linear-gradient(to bottom, #0267ca 0%, #072fa0 100%);
