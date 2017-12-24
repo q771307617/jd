@@ -392,6 +392,9 @@ export default {
     this.getCompanyInfo();
   },
   watch: {
+    'ruleForm.townId'(val) {
+      this.ruleForm.villageId = '';
+    }
   }
 };
 </script>
