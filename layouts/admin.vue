@@ -33,8 +33,7 @@
       </div>
     </div>
     <div class="content">
-      <transition name="move" mode="out-in">
-        <nuxt/> </transition>
+        <nuxt/>
     </div>
   </div>
 </template>
