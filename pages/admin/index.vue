@@ -29,7 +29,7 @@
         <el-table-column prop="address" label="操作">
           <div slot-scope="scope">
             <el-button @click="change('view',scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small" @click="change('edit',scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="change('view',scope.row)">编辑</el-button>
             <el-button type="text" size="small" @click="deleteCompany(scope.row)" style="color:red;">删除</el-button>
           </div>
         </el-table-column>
@@ -150,13 +150,13 @@ export default {
       });
     },
     change(val, row) {
-      let showInput = true;
+      let showInput = 'yes';
       if (val === 'view') {
         row = row.companyId;
-        showInput = false;
+        showInput = 'no';
       } else if (val === 'edit') {
         row = row.companyId;
-        showInput = true;
+        showInput = 'yes';
       }
       this.$router.push({
         name: 'admin-company-addCompany',

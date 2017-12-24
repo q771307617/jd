@@ -3,14 +3,14 @@
     <div class="container bg-admin">
       <div class="slogan">
         <p class="one">建德企业信息管理平台</p>
-        <hr style="margin:26px 0;">
+        <div class="wire"></div>
         <p class="two">以企业为中心,以服务为核心</p>
       </div>
       <div class="content">
         <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
-              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
+              <el-input  placeholder="用户名" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
               </el-input>
                 <transition name="fade">
@@ -26,7 +26,7 @@
                 </transition>
           </div>
             <div class="input-warnnp">
-              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="6" style="width: 214px;margin-right:164px;" @keyup.enter.native="submitLogin">
+              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
               <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
@@ -115,8 +115,10 @@ export default {
         if (!regex.test(password) && password.length > 5) {
           return true;
         } else {
-          this.Password = '';
-          this.PasswordHint = '*请输入密码!';
+          console.log(1322123132);
+          console.log(this.password);
+          this.password = '';
+          this.PasswordHint = '*请输入正确的密码!';
           return false;
         }
       }
@@ -136,7 +138,7 @@ export default {
               this.statusCheckCode = true;
               cb();
             } else {
-              this.code = '';
+              // this.code = '';
               this.getCode();
               this.msg = e.msg;
               this.statusCheckCode = false;
@@ -184,12 +186,21 @@ export default {
 }
 .one {
   font-size: 48px;
-  color: #ffffff;
-  /* // color:linear-gradient(-180deg, #88FAFF 0%, #69ADFF 97%); */
+  background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .two {
   font-size: 18px;
-  color: #ffffff;
+  background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.wire {
+  width: 527px;
+  height: 2px;
+  background: -webkit-linear-gradient(0,rgba(136, 250, 255,0.7) 0%, rgba(0, 0, 0, 0) 97%);
+  margin:16px 0;
 }
 .login .container .content {
   background: #f7f7f7;

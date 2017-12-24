@@ -73,32 +73,33 @@
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
               <el-col :span="6">
-                <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
+                <div class="imgInfo">
+                  <img :src="item.imageUrlr" alt="">
+                  </div>
               </el-col>
               <el-col :span="14">
               <el-col :span="24">
-                <el-col :span="8"><h1>公司名称</h1></el-col>
-                <el-col :span="16">{{item.companyName}}</el-col>
+                <h1>{{item.companyName}}</h1>
               </el-col>
-              <el-col :span="24">
-                <el-col :span="8"><span>所属乡镇/村：</span></el-col>
-                <el-col :span="16">{{item.townName}}</el-col>
+              <el-col :span="24" class="height30">
+                <el-col :span="6"><span>所属乡镇/村：</span></el-col>
+                <el-col :span="18">{{item.townName}}</el-col>
               </el-col>
-              <el-col :span="24">
-                <el-col :span="8"><span>所属行业：</span></el-col>
-                <el-col :span="16"><i>{{item.tradeName}}</i></el-col>
+              <el-col :span="24" class="height30">
+                <el-col :span="6"><span>所属行业：</span></el-col>
+                <el-col :span="18"><i>{{item.tradeName}}</i></el-col>
               </el-col>
-              <el-col :span="24">
-                <el-col :span="8"><span>主要核心产品：</span></el-col>
-                <el-col :span="16">{{item.productMainName}}</el-col>
+              <el-col :span="24" class="height30">
+                <el-col :span="6"><span>主要核心产品：</span></el-col>
+                <el-col :span="18">{{item.productMainName}}</el-col>
               </el-col>
-              <el-col :span="24">
-                <el-col :span="8"><span>地      址：</span></el-col>
-                <el-col :span="16">{{item.companyAddress}}</el-col>
+              <el-col :span="24" class="height30">
+                <el-col :span="6"><span>地&nbsp&nbsp&nbsp址：</span></el-col>
+                <el-col :span="18">{{item.companyAddress}}</el-col>
               </el-col>
-              <el-col :span="24">
-                <el-col :span="8"><span>联系方式：</span></el-col>
-                <el-col :span="16">{{item.chargePersonTel}}</el-col>
+              <el-col :span="24" class="height30">
+                <el-col :span="6"><span>联系方式：</span></el-col>
+                <el-col :span="18">{{item.chargePersonTel}}</el-col>
               </el-col>
               </el-col>
             <el-col :span="3">
@@ -126,9 +127,7 @@
 
 <script>
 import api from '~/plugins/api';
-import {
-  mapState
-} from 'vuex';
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -148,11 +147,13 @@ export default {
       EnterpriseProfile: {},
       currentPage: 1,
       pageCount: null,
-      selectType: [{
-        index: 1,
-        classify: '行业',
-        type: ['不限', '化工']
-      }]
+      selectType: [
+        {
+          index: 1,
+          classify: '行业',
+          type: ['不限', '化工']
+        }
+      ]
     };
   },
   computed: {
@@ -186,7 +187,9 @@ export default {
     },
     // 党员人数排序
     party() {
-      this.params.partyMemberNumberType = Number(!this.params.partyMemberNumberType);
+      this.params.partyMemberNumberType = Number(
+        !this.params.partyMemberNumberType
+      );
       this.getCompanyInfo();
     },
     // 查看企业详情
@@ -200,7 +203,9 @@ export default {
     },
     // 企业名称搜索
     Search(val) {
-      if (val === '') { return; };
+      if (val === '') {
+        return;
+      }
       this.params.companyName = val;
       console.log(this.params.companyName);
       this.getCompanyInfo();
@@ -239,17 +244,20 @@ export default {
     * 获取企业信息
     */
     getCompanyInfo() {
-      api.get('company/getcompany', this.params).then((e) => {
-        if (e.status === 200) {
-          this.EnterpriseProfile = e.data.list;
-          this.pageCount = e.data.count;
-        };
-      }).catch(err => {
-        this.$notify.error({
-          title: '错误',
-          message: err.msg
+      api
+        .get('company/getcompany', this.params)
+        .then(e => {
+          if (e.status === 200) {
+            this.EnterpriseProfile = e.data.list;
+            this.pageCount = e.data.count;
+          }
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err.msg
+          });
         });
-      });
     }
   },
   created() {
@@ -325,15 +333,15 @@ export default {
   margin: 0 auto;
   .el-main {
     .el-row {
-      .el-col{
-        .searchBtn{
-          background-color:#409eff;
+      .el-col {
+        .searchBtn {
+          background-color: #409eff;
           width: 217px;
           height: 40px;
           border-radius: 0;
-          font-size:16px;
-          color:#ffffff;
-          letter-spacing:9.14px;
+          font-size: 16px;
+          color: #ffffff;
+          letter-spacing: 9.14px;
         }
       }
       .content {
@@ -343,33 +351,45 @@ export default {
           font-size: 18px;
           font-weight: bold;
           padding-bottom: 11px;
+          display: inline-block;
         }
         span {
           display: inline-block;
           font-size: 14px;
           color: #666666;
           letter-spacing: 5px;
-          padding-bottom: 12px;
+          width: 150px;
+          text-align: justify;
         }
-        i{
+        span::after {
+          content: '';
+          padding-left: 100%;
           display: inline-block;
-          background:#fafdff;
-          border:1px solid #2e86b9;
-          border-radius:1px;
+        }
+        i {
+          display: inline-block;
+          background: #fafdff;
+          border: 1px solid #2e86b9;
+          border-radius: 1px;
           padding: 0 4px;
-          height:20px;
+          height: 20px;
           font-style: normal;
-          font-size:14px;
-          color:#2e86b9;
+          font-size: 14px;
+          color: #2e86b9;
           text-align: center;
         }
         .imgInfo {
           margin-bottom: 20px;
-          max-width: 264px;
-          max-height: 176px;
-          img{
-            background-size: 264px 176px;
+          width: 264px;
+          height: 176px;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
           }
+        }
+        .height30 {
+          height: 30px;
         }
       }
       .selecteType {

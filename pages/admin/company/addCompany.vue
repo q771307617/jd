@@ -7,7 +7,7 @@
     </el-radio-group>
     <el-row :gutter="24">
       <el-col :span="4" :offset="20">
-        <el-button type="primary" class="save" v-if="showInput" @click="submitForm('ruleForm')">保存</el-button>
+        <el-button type="primary" class="save" v-if="showInput=='yes'" @click="submitForm('ruleForm')">保存</el-button>
         <el-button type="primary" class="save" v-else @click="modify()">修改</el-button>
       </el-col>
     </el-row>
@@ -15,68 +15,70 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
-            <el-upload action="/upload/companyimg" :on-success="handleSuccess" :limit="1" list-type="picture-card" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput">
-              <i class="el-icon-plus"></i>
-              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG</div>
+            <div style="width:260px;height:174px;" v-if="this.img!=null"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;" v-if="this.img==null">
+              <img :src="img" v-else alt="" style="max-width:100%;"></div>
+            <div v-else><img :src="ruleForm.imageUrl" alt="" style="width:260px;height:174px;max-width:100%;"></div>
+            <el-upload action="/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :limit="1" :before-upload="beforeAvatarUpload" :on-exceed="handleExceed" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
-            <div v-else><img :src="ruleForm.imageUrl"></div>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
-            <el-input v-model="ruleForm.name" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.name" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                  <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput" @change="handleChange"></el-cascader>
-                  <div v-else>div</div>
-                </el-form-item>-->
+                                                <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
+                                                <div v-else>div</div>
+                                              </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
-            <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput" @change="selectTownId">
+            <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput=='yes'" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
             </el-select>
             <div v-else>{{ruleForm.townName}}</div>
           </el-form-item>
           <el-form-item label="所属村（社区）：" prop="villageId">
-            <el-select v-model="ruleForm.villageId" placeholder="请选择村（社区）" v-if="showInput">
+            <el-select v-model="ruleForm.villageId" placeholder="请选择村（社区）" v-if="showInput=='yes'">
               <el-option :label="item.name" :value="item.id" v-for="item in village" :key="item.id"></el-option>
             </el-select>
             <div v-else>{{ruleForm.villageName}}</div>
           </el-form-item>
           <el-form-item label="详细地址：" prop="address">
-            <el-input v-model="ruleForm.address" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.address" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.address}}</div>
           </el-form-item>
           <el-row :gutter="24">
             <el-col :span="8">
               <el-form-item label="经纬度：" prop="lng">
                 经度
-                <el-input v-model="ruleForm.lng" style="width:100px;" v-if="showInput"></el-input>
+                <el-input v-model="ruleForm.lng" style="width:100px;" v-if="showInput=='yes'"></el-input>
                 <span v-else>{{ruleForm.lng}}</span>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item prop="lat">
                 <span style="margin-left:-250px;">纬度</span>
-                <el-input v-model="ruleForm.lat" style="width:100px;" v-if="showInput"></el-input>
+                <el-input v-model="ruleForm.lat" style="width:100px;" v-if="showInput=='yes'"></el-input>
                 <span v-else>{{ruleForm.lat}}</span>
               </el-form-item>
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-                  <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput"></el-input>
-                  <div v-else>div</div>
-                </el-form-item>-->
+            <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>div</div>
+          </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
-            <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput">
+            <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput=='yes'">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
             </el-select>
             <div v-else>{{ruleForm.tradeName}}</div>
           </el-form-item>
           <el-form-item label="主要核心产品：" prop="productName">
-            <el-input v-model="ruleForm.productName" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.productName" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.productName}}</div>
           </el-form-item>
           <el-form-item label="规上（规下）：" prop="scaleUp">
-            <el-radio-group v-model="ruleForm.scaleUp" v-if="showInput">
+            <el-radio-group v-model="ruleForm.scaleUp" v-if="showInput=='yes'">
               <el-radio label="1" value="1">规上</el-radio>
               <el-radio label="2" value="2">规下</el-radio>
             </el-radio-group>
@@ -86,15 +88,15 @@
             </div>
           </el-form-item>
           <el-form-item label="主要负责人：" prop="corporationName">
-            <el-input v-model="ruleForm.corporationName" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.corporationName" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.corporationName}}</div>
           </el-form-item>
           <el-form-item label="联系电话：" prop="corporationPhone">
-            <el-input v-model="ruleForm.corporationPhone" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.corporationPhone" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.corporationPhone}}</div>
           </el-form-item>
           <el-form-item label="是否“两代表一委员”：" prop="isCommittee">
-            <el-radio-group v-model="ruleForm.isCommittee" v-if="showInput">
+            <el-radio-group v-model="ruleForm.isCommittee" v-if="showInput=='yes'">
               <el-radio label="1" value="1">是</el-radio>
               <el-radio label="2" value="2">否</el-radio>
             </el-radio-group>
@@ -104,39 +106,39 @@
             </div>
           </el-form-item>
           <el-form-item label="具体负责人：" prop="leaderName">
-            <el-input v-model="ruleForm.leaderName" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.leaderName" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.leaderName}}</div>
           </el-form-item>
           <el-form-item label="联系电话：" prop="leaderPhone">
-            <el-input v-model="ruleForm.leaderPhone" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.leaderPhone" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.leaderPhone}}</div>
           </el-form-item>
           <el-form-item label="企业职工人数： " prop="staffScale">
-            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
             <span v-else>{{ruleForm.staffScale}}</span>人
           </el-form-item>
           <el-form-item label="企业职工平均工资：" prop="averageSalary">
-            <el-input v-model="ruleForm.averageSalary" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.averageSalary" class="input-length" v-if="showInput=='yes'"></el-input>
             <span v-else>{{ruleForm.averageSalary}}</span>元
           </el-form-item>
           <el-form-item label="党组织名称：" prop="partyName">
-            <el-input v-model="ruleForm.partyName" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.partyName" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.partyName}}</div>
           </el-form-item>
           <el-form-item label="党员人数： " prop="partyMemberNum">
-            <el-input v-model="ruleForm.partyMemberNum" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.partyMemberNum" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.partyMemberNum}}</div>
           </el-form-item>
           <el-form-item label="每月电费：" prop="monthElecBill">
-            <el-input v-model="ruleForm.monthElecBill" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.monthElecBill" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.monthElecBill}}</div>
           </el-form-item>
           <el-form-item label="每月水费：" prop="monthWaterBill">
-            <el-input v-model="ruleForm.monthWaterBill" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.monthWaterBill" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.monthWaterBill}}</div>
           </el-form-item>
           <el-form-item label="企业简介：" prop="companyProfile">
-            <el-input type="textarea" v-model="ruleForm.companyProfile" style="width:50%" v-if="showInput"></el-input>
+            <el-input type="textarea" v-model="ruleForm.companyProfile" style="width:50%" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.companyProfile}}</div>
           </el-form-item>
         </el-form>
@@ -187,8 +189,9 @@ export default {
     };
     return {
       radio: '1',
-      showInput: this.$route.query.showInput,
+      showInput: 'no',
       village: null,
+      img: null,
       ruleForm: {
         address: '',
         averageSalary: '',
@@ -263,8 +266,17 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
     handlePictureCardPreview(response, file, fileList) {
-      this.ruleForm.imageUrl = response.data.imgFile;
+      console.log(response.data.imgUrl);
+      if (response.status === 200) {
+        this.img = response.data.imgUrl;
+        this.ruleForm.imageUrl = response.data.imgFile;
+      } else {
+        this.$message.error('企业图片上传失败！');
+      }
     },
     beforeAvatarUpload(file) {
       var isIMG = null;
@@ -283,23 +295,24 @@ export default {
       return isIMG && isLt200;
     },
     handleSuccess(response, file, fileList) {
+      this.img = response.data.imgUrl;
       this.ruleForm.imageUrl = response.data.imgFile;
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let name = null;
-          let showInput = true;
+          let showInput = 'yes';
           if (this.$route.query.type === 'add') {
             name = 'admin-company-normData';
           } else {
             this.ruleForm.companyId = this.$route.query.companyId;
             name = 'admin-company-addCompany';
-            showInput = false;
+            showInput = 'no';
           }
           api.post('admin/company/update', this.ruleForm).then((e) => {
             if (e.status === 200) {
-              this.showInput = false;
+              this.showInput = 'no';
               this.$router.push({
                 name: name,
                 query: {
@@ -348,11 +361,13 @@ export default {
       this.$refs[formName].resetFields();
     },
     modify() {
-      this.showInput = true;
+      this.showInput = 'yes';
     },
     getCompanyDetails() {
       api.get('admin/company/detail', { id: this.$route.query.companyId }).then((e) => {
         this.ruleForm = e.data;
+        this.ruleForm.imageUrl = e.data.imageUrl;
+        console.log(this.ruleForm.imageUrl);
       }).catch(err => {
         this.$notify.error({
           title: '获取详情错误',
@@ -361,7 +376,8 @@ export default {
       });
     },
     getCompanyInfo() {
-      // this.showInput = this.$route.query.showInput;
+      console.log(typeof (this.$route.query.showInput));
+      this.showInput = this.$route.query.showInput;
       if (this.$route.query.companyId === 'null') {
       } else {
         this.getCompanyDetails();

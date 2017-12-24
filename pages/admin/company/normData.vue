@@ -7,7 +7,7 @@
     </el-radio-group>
     <el-row :gutter="24">
       <el-col :span="4" :offset="20">
-        <el-button type="primary" class="save" v-if="showInput" @click="submitForm('ruleForm')">保存</el-button>
+        <el-button type="primary" class="save" v-if="showInput=='yes'" @click="submitForm('ruleForm')">保存</el-button>
         <el-button type="primary" class="save" v-else @click="modify()">修改</el-button>
       </el-col>
     </el-row>
@@ -15,31 +15,31 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="350px" class="demo-ruleForm" label-position="left">
           <el-form-item label="厂房建筑面积（㎡）：" prop="facBuildingArea">
-            <el-input v-model="ruleForm.facBuildingArea" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.facBuildingArea" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.facBuildingArea}}</div>
           </el-form-item>
           <el-form-item label="实际用地面积（亩）：" prop="actualLandArea">
-            <el-input v-model="ruleForm.actualLandArea" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.actualLandArea" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.actualLandArea}}</div>
           </el-form-item>
           <el-form-item label="存量厂房面积（米2）：" prop="stockWorkArea">
-            <el-input v-model="ruleForm.stockWorkArea" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.stockWorkArea" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.stockWorkArea}}</div>
           </el-form-item>
           <el-form-item label="入库税收（万元）：" prop="tax">
-            <el-input v-model="ruleForm.tax" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.tax" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.tax}}</div>
           </el-form-item>
           <el-form-item label="R＆D经费投入（万元）：" prop="researchFee">
-            <el-input v-model="ruleForm.researchFee" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.researchFee" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.researchFee}}</div>
           </el-form-item>
           <el-form-item label="主营业务收入（万元）：" prop="mainBusIncome">
-            <el-input v-model="ruleForm.mainBusIncome" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.mainBusIncome" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.mainBusIncome}}</div>
           </el-form-item>
           <el-form-item label="是否高新技术企业：" prop="isHighTech">
-            <el-radio-group v-model="ruleForm.isHighTech" v-if="showInput">
+            <el-radio-group v-model="ruleForm.isHighTech" v-if="showInput=='yes'">
               <el-radio label="1" value="1">是</el-radio>
               <el-radio label="2" value="2">否</el-radio>
             </el-radio-group>
@@ -49,46 +49,46 @@
             </div>
           </el-form-item>
           <el-form-item label="发明专利量：" prop="patentNumber">
-            <el-input v-model="ruleForm.patentNumber" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.patentNumber" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                                                            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput"></el-input>
-                                                            <div v-else>div</div>
-                                                          </el-form-item> -->
+                                                              <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
+                                                              <div v-else>div</div>
+                                                            </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
-            <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
           </el-form-item>
           <el-form-item label="实际等价值能耗（吨标煤）：" prop="energyConsume">
-            <el-input v-model="ruleForm.energyConsume" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.energyConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.energyConsume}}</div>
           </el-form-item>
           <el-form-item label="水耗（吨）或天然气（万立方米）" prop="waterConsume">
-            <el-input v-model="ruleForm.waterConsume" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.waterConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.waterConsume}}</div>
           </el-form-item>
           <el-form-item label="电耗（万千瓦时）" prop="elecConsume">
-            <el-input v-model="ruleForm.elecConsume" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.elecConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.elecConsume}}</div>
           </el-form-item>
           <el-form-item label="煤耗（吨标煤）" prop="coalConsume">
-            <el-input v-model="ruleForm.coalConsume" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.coalConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.coalConsume}}</div>
           </el-form-item>
           <el-form-item label="增加值能耗（吨标煤/万元）" prop="addedEnergyConsume">
-            <el-input v-model="ruleForm.addedEnergyConsume" class="input-length" v-if="showInput"></el-input>
+            <el-input v-model="ruleForm.addedEnergyConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.addedEnergyConsume}}</div>
           </el-form-item>
           <el-form-item label="申报时间" required>
-            <el-col :span="5" v-if="showInput">
+            <el-col :span="5" v-if="showInput=='yes'">
               <el-form-item prop="declareStartTime" class="input-length">
                 <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
             <span v-else>{{declareStartTime}}-</span>
-            <el-col class="line" :span="1" v-if="showInput">&nbsp——</el-col>
-            <el-col :span="11" v-if="showInput">
+            <el-col class="line" :span="1" v-if="showInput=='yes'">&nbsp——</el-col>
+            <el-col :span="11" v-if="showInput=='yes'">
               <el-form-item prop="declareEndTime" class="input-length">
                 <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
@@ -119,7 +119,7 @@ export default {
     };
     return {
       radio: '2',
-      showInput: false,
+      showInput: 'no',
       declareStartTime: null,
       declareEndTime: null,
       id: null,
@@ -238,7 +238,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     modify() {
-      this.showInput = true;
+      this.showInput = 'yes';
     },
     changePage() {
       this.$router.push({
