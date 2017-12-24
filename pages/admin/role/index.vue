@@ -27,19 +27,9 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <!-- <div style="margin:20px 0">
-    <el-col :span="24">
-      <el-col :span="14">&nbsp</el-col>
-      <el-col :span="10">
-        <p class="demonstration" style="float:left;margin-top:5px;">共
-        <span class="red">{{totalPage}}</span>条数据
-        <span style="margin-left:20px;">每页</span>
-        <span class="red">15</span>条</p>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="totalPage">
-        </el-pagination>
-      </el-col>
-    </el-col>
-    </div> -->
+    <div style="margin:20px 0">
+      <pages :pageSize=15 :count="totalData" @pageCurrentChange="handleCurrentChange"></pages>
+    </div>
   </el-col>
 
   <!-- 新增、修改账号 -->
@@ -113,6 +103,7 @@
 
 <script>
 import api from '~/plugins/api';
+import pages from '~/components/pages';
 export default {
   data() {
     return {
@@ -170,26 +161,36 @@ export default {
       PasswordHint: '',
       RoleNameHint: '',
       LimitHint: '',
-      currentPage: 1,
-      totalPage: 0
+      currentPage: 0,
+      totalPage: 0,
+      totalData: 0
     };
+  },
+  components: {
+    pages
   },
   methods: {
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      // this.currentPage = val;
-      // this.getCompanyList();
+      this.currentPage = Number(val);
+      this.getCompanyList();
       // console.log(`当前页: ${val}`);
     },
     // 账号列表
     getCompanyList() {
-      api.get('/admin/user/list').then(e => {
-        if (e.status === 200) {
-          this.PermissionList = e.data.list;
-        }
-      });
+      api
+        .get('/admin/user/list', {
+          pageNum: this.currentPage,
+          pageSize: 15
+        })
+        .then(e => {
+          if (e.status === 200) {
+            this.PermissionList = e.data.list;
+            this.totalData = e.data.count;
+          }
+        });
       setTimeout(() => {
         this.loading = false;
       }, 600);
