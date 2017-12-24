@@ -10,7 +10,7 @@
         <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
-              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
+              <el-input  placeholder="用户名" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
               </el-input>
                 <transition name="fade">
