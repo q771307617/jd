@@ -260,7 +260,7 @@ export default {
           display: inline-block;
           width: 35px;
           height: 35px;
-          background: url(../../../assets/img/iconFront.png) no-repeat;
+          background: url(../../../../assets/img/iconFront.png) no-repeat;
           position: absolute;
           top: 0;
           left: -60px;
