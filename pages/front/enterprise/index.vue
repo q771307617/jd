@@ -211,7 +211,7 @@ export default {
     // 查看企业详情
     ViewDetails(id) {
       this.$router.push({
-        name: 'index-enterprise-detail',
+        name: 'front-enterprise-detail',
         query: {
           id: id
         }

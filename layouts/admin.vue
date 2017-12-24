@@ -136,7 +136,7 @@ export default {
       });
     },
     loginOut() {
-      location.href = '/login/adminLogin';
+      location.href = '/adminLogin';
       api.post('/user/logout')
         .then(e => {
         })
