@@ -424,7 +424,12 @@ export default {
           url: 'http://172.30.34.63:6080/arcgis/rest/services/JDLand_XZM/MapServer/identify',
           data: 'f=json&tolerance=5&returnGeometry=true&imageDisplay=1398%2C210%2C96&geometry=%7B"x"%3A' + polygonList[item][0] + '%2C"y"%3A' + polygonList[item][1] + '%7D&geometryType=esriGeometryPoint&sr=4326&mapExtent=118.94165999313367%2C29.6123519861085%2C119.90159041305554%2C29.756547542749125&layers=top',
           success: function (data) {
-            var a = JSON.parse(data).results[0].geometry.rings[0];
+            var d = JSON.parse(data).results[0].geometry.rings[0];
+            // let c = [];
+            let a = [];
+            for (var e = 0; e < d.length; e += 4) {
+              a.push(d[e]);
+            };
             var point = [];
             for (var i = 0; i < a.length; i++) {
               point.push(new window.T.LngLat(a[i][0], a[i][1]));
