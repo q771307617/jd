@@ -25,24 +25,20 @@
         </div>
       </el-table-column>
     </el-table>
-    <!-- <div class="footer-page">
+    <!-- 分页 -->
+    <div style="margin:20px 0">
+    <el-col :span="24">
       <el-col :span="14">&nbsp</el-col>
       <el-col :span="10">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="10"
-        background
-        prev-text="上一页"
-        next-text="下一页"
-        layout="total, prev, pager, next, jumper"
-        :total="400">
-      </el-pagination>
+        <p class="demonstration" style="float:left;margin-top:5px;">共
+        <span class="red">{{totalPage}}</span>条数据
+        <span style="margin-left:20px;">每页</span>
+        <span class="red">15</span>条</p>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="totalPage">
+        </el-pagination>
       </el-col>
-      <el-col :span="1"><el-button size="mini"  type="primary" @click="handleCurrentChange(currentPage4)">确定</el-button></el-col>
-    </div> -->
+    </el-col>
+    </div>
   </el-col>
 
   <!-- 新增、修改账号 -->
@@ -62,7 +58,7 @@
           </transition>
         </div>
         <el-form-item label="用户名">
-          <el-input v-model="UserInfo.username" placeholder=" 请输入新增用户名，可为数字、英文大小写、特殊字符" @keyup.enter.native="ConfirmPeration"></el-input>
+          <el-input v-model="UserInfo.username"  :disabled="statusAbaled" placeholder=" 请输入新增用户名，可为数字、英文大小写、特殊字符" @keyup.enter.native="ConfirmPeration"></el-input>
         </el-form-item>
         <div class="bottomaera">
           <transition name="fade">
@@ -87,7 +83,7 @@
         </el-form-item>
         <div class="bottomaera">
           <transition name="fade">
-            <p class="hint">{{LimitHint}}</p>
+            <p class="hint" v-if="checkStatus">{{LimitHint}}</p>
           </transition>
         </div>
       </el-form>
@@ -119,7 +115,7 @@ import api from '~/plugins/api';
 export default {
   data() {
     return {
-      status: 0,
+      statusAbaled: false,
       loginSype: ['', '不限', '前台', '后台'],
       // 账户列表
       PermissionList: [
@@ -131,8 +127,10 @@ export default {
           roleId: null,
           status: null,
           title: null,
-          type: null,
-          username: null
+          type: '',
+          username: null,
+          pageSize: 15,
+          pageNum: ''
         }
       ],
       // 添加账户信息
@@ -169,7 +167,9 @@ export default {
       UserHint: '',
       PasswordHint: '',
       RoleNameHint: '',
-      LimitHint: ''
+      LimitHint: '',
+      currentPage: 1,
+      totalPage: 0
     };
   },
   methods: {
@@ -177,6 +177,8 @@ export default {
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getCompanyList();
       // console.log(`当前页: ${val}`);
     },
     // 账号列表
@@ -184,6 +186,8 @@ export default {
       api.get('/admin/user/list').then(e => {
         if (e.status === 200) {
           this.PermissionList = e.data;
+          this.totalPage =
+            this.PermissionList === [] ? 0 : this.PermissionList.length;
           if (e.data) {
             e.data.map(x => {
               x.status = x.status.toString();
@@ -264,6 +268,16 @@ export default {
         }
       }
     },
+    // 是否选择类型
+    checkStatus() {
+      console.log(this.UserInfo.type);
+      if (this.UserInfo.type === '') {
+        this.LimitHint = '请选择权限';
+        this.SelectStatus = true;
+        return false;
+      }
+      return true;
+    },
     // 清空数据
     clearData() {
       this.UserInfo.password = '';
@@ -279,6 +293,7 @@ export default {
     AccountoPeration(val) {
       if (val === null) {
         this.title = '新增账号';
+        this.statusAbaled = false;
         this.activeType = 1;
         this.clearData();
       } else {
@@ -291,6 +306,7 @@ export default {
         this.activeType = 2;
         this.UserInfo.id = val.id;
         this.UserInfo.roleId = val.roleId;
+        this.statusAbaled = true;
       }
       this.SelectStatus = true;
     },
@@ -298,7 +314,8 @@ export default {
       let userRoleStatus = this.checkRoleName(this.UserInfo.roleName);
       let userStatus = this.checkName(this.UserInfo.username);
       let passwordRoleStatus = this.checkPassword(this.UserInfo.password);
-      if (userRoleStatus && passwordRoleStatus && userStatus) {
+      let optionStatus = this.checkStatus();
+      if (userRoleStatus && passwordRoleStatus && userStatus && optionStatus) {
         let UserInfo = this.UserInfo;
         if (this.activeType === 1) {
           api.post('/admin/user/add', UserInfo).then(e => {

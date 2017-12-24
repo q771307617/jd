@@ -45,10 +45,10 @@
             <el-col :span="20">{{companyInfo.address}}</el-col>
               </el-col>
 
-            <el-col :span="24">
+            <!-- <el-col :span="24">
             <el-col :span="4"><span class="justify_120">行    业   代   码：</span></el-col>
             <el-col :span="20">{{companyInfo.tradeId}}</el-col>
-              </el-col>
+              </el-col> -->
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">所    属   行   业：</span></el-col>
@@ -62,7 +62,7 @@
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">规上（规下）：</span></el-col>
-            <el-col :span="20">{{companyInfo.scaleUp}}</el-col>
+            <el-col :span="20">{{scaleUp[companyInfo.scaleUp]}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -77,7 +77,7 @@
 
             <el-col :span="24">
             <el-col :span="6"><span class="justify_120" style="width:200px">是否“两代表一委员”：</span></el-col>
-            <el-col :span="18">{{companyInfo.isCommittee}}</el-col>
+            <el-col :span="18">{{isCommittee[companyInfo.isCommittee]}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -107,7 +107,7 @@
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">企    业   简   介：</span></el-col>
-            <el-col :span="20">{{companyInfo.companyProfile}}</el-col>
+            <el-col :span="20" style="letter-spacing:2px;">{{companyInfo.companyProfile}}</el-col>
             </el-col>
             </div>
         </div>
@@ -186,7 +186,9 @@ export default {
       factoryImage: '',
       leader: '',
       product: '',
-      companyInfo: {}
+      companyInfo: {},
+      scaleUp: ['', '规上', '规下'],
+      isCommittee: ['', '是', '否']
     };
   },
   methods: {
@@ -215,13 +217,6 @@ export default {
       margin: 0 auto;
     }
     .el-col {
-      margin: 0 0 16px 0;
-      // background-color: #fff;
-      .colHeight30 {
-        .el-col {
-          height: 30px;
-        }
-      }
       .col {
         overflow: hidden;
         .justify_120,

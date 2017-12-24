@@ -26,7 +26,7 @@
                 </transition>
           </div>
             <div class="input-warnnp">
-              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;">
+              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;" @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
               <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
@@ -118,7 +118,7 @@ export default {
           console.log(1322123132);
           console.log(this.password);
           this.password = '';
-          this.PasswordHint = '*请输入密码!';
+          this.PasswordHint = '*请输入正确的密码!';
           return false;
         }
       }
@@ -138,7 +138,7 @@ export default {
               this.statusCheckCode = true;
               cb();
             } else {
-              this.code = '';
+              // this.code = '';
               this.getCode();
               this.msg = e.msg;
               this.statusCheckCode = false;
