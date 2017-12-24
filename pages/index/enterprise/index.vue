@@ -13,12 +13,12 @@
           <el-row>
             <el-col :span="3" class="tittle">行业：</el-col>
             <el-col :span="20">
-              <ul class="industry"  v-bind:class="{ hidden: isActiveIndustry}">
+              <ul class="industry" v-bind:class="{ hidden: isActiveIndustry}">
                 <li class="industry-list">
                   <a :class="{select: params.tradeId == null}" @click="selectIndustry(null)">不限</a>
                 </li>
                 <li v-for="item in industry" :key="item.id" class="industry-list">
-                  <a @click="selectIndustry(item.id)"  :class="{select: item.id == params.tradeId}">{{item.tradeName}}</a>
+                  <a @click="selectIndustry(item.id)" :class="{select: item.id == params.tradeId}">{{item.tradeName}}</a>
                 </li>
               </ul>
             </el-col>
@@ -32,17 +32,17 @@
           <el-row>
             <el-col :span="3" class="tittle">乡镇：</el-col>
             <el-col :span="20">
-               <ul class="industry" v-bind:class="{ hidden: isActiveTown}">
-                 <li class="industry-list">
+              <ul class="industry" v-bind:class="{ hidden: isActiveTown}">
+                <li class="industry-list">
                   <a :class="{select: params.townId == null}" @click="selectTownShip(null)">不限</a>
                 </li>
                 <li v-for="item in townShip" :key="item.key" class="industry-list">
                   <a @click="selectTownShip(item.id)" :class="{select: item.id == params.townId}">{{item.name}}</a>
                 </li>
               </ul>
-             <!--<transition name="el-zoom-in-top">
-                <div class="transition-box">.el-zoom-in-top</div>
-              </transition>-->
+              <!--<transition name="el-zoom-in-top">
+                  <div class="transition-box">.el-zoom-in-top</div>
+                </transition>-->
             </el-col>
             <el-col :span="1">
               <a @click="showTownShip" class="more">更多
@@ -58,7 +58,7 @@
                 <li class="industry-list">
                   <a :class="{select: params.scaleType == null}" @click="selectScale(null)">不限</a>
                 </li>
-                 <li v-for="item in scale" :key="item.key" class="industry-list">
+                <li v-for="item in scale" :key="item.key" class="industry-list">
                   <a @click="selectScale(item.key)" :class="{select: item.key == params.scaleType}">{{item.name}}</a>
                 </li>
               </ul>
@@ -67,39 +67,63 @@
         </el-row>
         <el-row class="company">
           <el-row class="selecteType">
-              <div class="personal" @click="staff()"><span>职工人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.staffScaleType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.staffScaleType }"></i></span></div>
-              <div class="personal" @click="party()"><span>党员人数</span><span class="arrow"><i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i><i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i></span></div>
+            <div class="personal" @click="staff()">
+              <span>职工人数</span>
+              <span class="arrow">
+                <i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.staffScaleType }"></i>
+                <i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.staffScaleType }"></i>
+              </span>
+            </div>
+            <div class="personal" @click="party()">
+              <span>党员人数</span>
+              <span class="arrow">
+                <i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i>
+                <i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i>
+              </span>
+            </div>
           </el-row>
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
-              <el-col :span="6">
-                <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
-              </el-col>
-              <el-col :span="14">
+            <el-col :span="6">
+              <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
+            </el-col>
+            <el-col :span="14">
               <el-col :span="24">
                 <h1>{{item.companyName}}</h1>
               </el-col>
               <el-col :span="24" class="height30">
-                <el-col :span="6"><span>所属乡镇/村：</span></el-col>
+                <el-col :span="6">
+                  <span>所属乡镇/村：</span>
+                </el-col>
                 <el-col :span="18">{{item.townName}}</el-col>
               </el-col>
               <el-col :span="24" class="height30">
-                <el-col :span="6"><span>所属行业：</span></el-col>
-                <el-col :span="18"><i>{{item.tradeName}}</i></el-col>
+                <el-col :span="6">
+                  <span>所属行业：</span>
+                </el-col>
+                <el-col :span="18">
+                  <i>{{item.tradeName}}</i>
+                </el-col>
               </el-col>
               <el-col :span="24" class="height30">
-                <el-col :span="6"><span>主要核心产品：</span></el-col>
+                <el-col :span="6">
+                  <span>主要核心产品：</span>
+                </el-col>
                 <el-col :span="18">{{item.productMainName}}</el-col>
               </el-col>
               <el-col :span="24" class="height30">
-                <el-col :span="6"><span>地&nbsp&nbsp&nbsp址：</span></el-col>
+                <el-col :span="6">
+                  <span>地&nbsp&nbsp&nbsp址：</span>
+                </el-col>
                 <el-col :span="18">{{item.companyAddress}}</el-col>
               </el-col>
               <el-col :span="24" class="height30">
-                <el-col :span="6"><span>联系方式：</span></el-col>
+                <el-col :span="6">
+                  <span>联系方式：</span>
+                </el-col>
                 <el-col :span="18">{{item.chargePersonTel}}</el-col>
               </el-col>
-              </el-col>
+            </el-col>
             <el-col :span="3">
               <el-button type="primary" style="margin-top: 80px;" @click="ViewDetails(item.companyId)">查看企业详情</el-button>
             </el-col>
@@ -109,9 +133,9 @@
             <el-col :span="10">&nbsp</el-col>
             <el-col :span="14">
               <p class="demonstration" style="float:left;margin-top:5px;">共
-              <span class="red">{{pageCount}}</span>条数据
-              <span style="margin-left:20px;">每页</span>
-              <span class="red">15</span>条</p>
+                <span class="red">{{pageCount}}</span>条数据
+                <span style="margin-left:20px;">每页</span>
+                <span class="red">15</span>条</p>
               <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="EnterpriseProfile.length">
               </el-pagination>
             </el-col>
@@ -245,7 +269,7 @@ export default {
       api
         .get('company/getcompany', this.params)
         .then(e => {
-          if (e.status === 200) {
+          if (e.status === 200 && e.data) {
             this.EnterpriseProfile = e.data.list;
             this.pageCount = e.data.count;
           }

@@ -15,10 +15,12 @@
       <el-col :span="21" :offset="3">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
-            <div style="width:260px;height:174px;" v-if="this.img!=null"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;" v-if="this.img==null">
+            <div style="width:260px;height:174px;overflow: hidden;" v-if="this.img!=null"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;" v-if="this.img==null">
               <img :src="img" v-else alt="" style="max-width:100%;"></div>
-            <div v-else><img :src="ruleForm.imageUrl" alt="" style="width:260px;height:174px;max-width:100%;"></div>
-            <el-upload action="/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :limit="1" :before-upload="beforeAvatarUpload" :on-exceed="handleExceed" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
+            <div v-else>
+              <div style="width:260px;height:174px;overflow: hidden;" v-if="this.$route.query.type!='add'"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;"></div>
+            </div>
+            <el-upload action="/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
               <el-button size="small" type="primary">点击上传</el-button>
               <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
@@ -28,9 +30,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
-                                                <div v-else>div</div>
-                                              </el-form-item>-->
+                                                  <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
+                                                  <div v-else>div</div>
+                                                </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput=='yes'" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -64,9 +66,9 @@
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-            <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
-            <div v-else>div</div>
-          </el-form-item>-->
+              <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
+              <div v-else>div</div>
+            </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput=='yes'">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -266,9 +268,6 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
     handlePictureCardPreview(response, file, fileList) {
       console.log(response.data.imgUrl);
       if (response.status === 200) {
@@ -297,6 +296,10 @@ export default {
     handleSuccess(response, file, fileList) {
       this.img = response.data.imgUrl;
       this.ruleForm.imageUrl = response.data.imgFile;
+      this.$message({
+        message: '企业图片上传成功！',
+        type: 'success'
+      });
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -362,11 +365,12 @@ export default {
     },
     modify() {
       this.showInput = 'yes';
+      console.log(this.ruleForm.imageUrl);
     },
     getCompanyDetails() {
       api.get('admin/company/detail', { id: this.$route.query.companyId }).then((e) => {
         this.ruleForm = e.data;
-        this.ruleForm.imageUrl = e.data.imageUrl;
+        this.img = e.data.imageUrl;
         console.log(this.ruleForm.imageUrl);
       }).catch(err => {
         this.$notify.error({

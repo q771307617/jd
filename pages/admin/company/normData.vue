@@ -22,7 +22,7 @@
             <el-input v-model="ruleForm.actualLandArea" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.actualLandArea}}</div>
           </el-form-item>
-          <el-form-item label="存量厂房面积（米2）：" prop="stockWorkArea">
+          <el-form-item label="存量厂房面积（㎡）：" prop="stockWorkArea">
             <el-input v-model="ruleForm.stockWorkArea" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.stockWorkArea}}</div>
           </el-form-item>
