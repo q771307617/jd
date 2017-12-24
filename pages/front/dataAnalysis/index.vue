@@ -23,19 +23,8 @@
           </div>
         </el-table-column>
       </el-table>
-      <!-- <pages :count='25' :pageNum='1' :pageSize='5'  @size-change="handleSizeChange" @current-change="handleCurrentChange" /> -->
       <div class="page">
-        <el-row>
-          <el-col :span="9">&nbsp</el-col>
-          <el-col :span="15">
-            <p class="demonstration" style="float:left;margin-top:5px;">共
-              <span class="red">{{pageCount}}</span>条数据
-              <span style="margin-left:20px;">每页</span>
-              <span class="red">15</span>条</p>
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper">
-            </el-pagination>
-          </el-col>
-        </el-row>
+      <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
       </div>
     </div>
     <nuxt-child/>
@@ -58,7 +47,7 @@ export default {
         sort: 1,
         type: 1,
         pageSize: 15,
-        pageNum: 1
+        pageNum: 0
       },
       currentPage: 1,
       pageCount: 0,
@@ -101,7 +90,7 @@ export default {
     },
     // 改变页数时回调
     handleCurrentChange(val) {
-      this.dataParams.pageNum = val;
+      this.dataParams.pageNum = Number(val);
       this.getData();
       console.log(val);
     },

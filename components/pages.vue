@@ -6,7 +6,8 @@
                                 <span class="red">{{pageSize}}</span>条</p> -->
     <el-pagination background @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page.sync="pageNum" prev-text=" < 上一页 " next-text=" 下一页 > " :page-size="pageSize" layout="prev, pager, next" :total="count">
     </el-pagination>
-    <p style="line-height:28px;">第{{pageNum}}页/共{{Math.floor(count/pageSize)+1}}页</p>
+    <p style="line-height:28px;" v-if="count==0">第1页/共1页</p>
+    <p style="line-height:28px;" v-else>第{{pageNum}}页/共{{Math.ceil(count/pageSize)}}页</p>
     <div style="margin-left:16px;">到第
       <el-input v-model="input" size="mini" style="width:46px;"></el-input>页</div>
     <div style="line-height:28px;margin-left:16px;">
@@ -24,7 +25,7 @@ export default {
       pageNum: 1
     };
   },
-  mounted() { },
+  mounted() {},
   methods: {
     pageSizeChange(val) {
       this.$emit('pageSizeChange', val);
@@ -33,8 +34,8 @@ export default {
       if (this.input) {
         this.pageNum = this.input;
         this.$emit('pageCurrentChange', Number(this.pageNum));
-        if (this.input > Math.floor(this.count / this.pageSize) + 1) {
-          this.input = Math.floor(this.count / this.pageSize) + 1;
+        if (this.input > Math.ceil(this.count / this.pageSize)) {
+          this.input = Math.ceil(this.count / this.pageSize);
           this.$emit('pageCurrentChange', Number(this.input));
         }
       }

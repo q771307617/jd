@@ -184,17 +184,18 @@ export default {
 .two {
   font-size: 18px;
   background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  /* background: -moz-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  background: -ms-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  background: -o-linear-gradient(-90deg, #88faff 0%, #69adff 97%); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .wire {
   width: 527px;
   height: 2px;
-  background: -webkit-linear-gradient(0,rgba(136, 250, 255,0.7) 0%, rgba(0, 0, 0, 0) 97%);
-  margin:16px 0;
+  background: -webkit-linear-gradient(
+    0,
+    rgba(136, 250, 255, 0.7) 0%,
+    rgba(0, 0, 0, 0) 97%
+  );
+  margin: 16px 0;
 }
 .login .container .content {
   background: #f7f7f7;
