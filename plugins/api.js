@@ -45,11 +45,11 @@ instance.interceptors.response.use(function (res) {
   if (res.data && res.data.status === 401) {
     if (loginType === 'admin') {
       goLogin();
-      setTimeout(location.href = '/login/adminLogin', 1000);
+      setTimeout(location.href = '/adminLogin', 1000);
     }
     if (loginType === 'index') {
       goLogin();
-      setTimeout(location.href = '/login', 1000);
+      setTimeout(location.href = '/', 1000);
     }
   }
 
