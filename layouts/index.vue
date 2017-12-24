@@ -13,7 +13,6 @@
           <span></span>
           <nuxt-link :to="{name:'front-enterprise'}">企业管理</nuxt-link>
         </p>
-        <a href="/front/enterprise/detail?id=923">11111111111111</a>
         <p class="navRight" @click="loginOut">
           <nuxt-link :to="{name:'index'}">
             <i class="el-icon-remove-outline"></i> 退出</nuxt-link>
