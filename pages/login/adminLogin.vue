@@ -129,7 +129,7 @@ export default {
             this.statusCheckCode = true;
             cb();
           } else {
-            this.code = '';
+            // this.code = '';
             this.getCode();
             this.msg = e.msg;
             this.statusCheckCode = false;
@@ -184,6 +184,9 @@ export default {
 .two {
   font-size: 18px;
   background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  /* background: -moz-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  background: -ms-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  background: -o-linear-gradient(-90deg, #88faff 0%, #69adff 97%); */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

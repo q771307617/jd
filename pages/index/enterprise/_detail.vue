@@ -7,7 +7,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ name: 'index' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item :to="{ name: 'index-enterprise'}">企业管理</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ name: 'index-enterprise-detail' }">企业详情</el-breadcrumb-item>
+          <el-breadcrumb-item>企业详情</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <!-- 企业封面 -->
@@ -15,8 +15,7 @@
             <div class="el-col" style="width:1200px;margin:0 auto">
           <div class="top-text" style="padding-top:25px;"><i style="background-position:-92px -17px;top:25px;"></i>企业封面</div>
           <div class="top-picture">
-            <img :src="factoryImage.imageUrl" v-if="factoryImage.imageUrl">
-            <!-- <img v-else src="../../../assets/img/"> -->
+            <img :src="companyInfo.imageUrl" alt="">
           </div>
           </div>
         </div>
@@ -45,10 +44,10 @@
             <el-col :span="20">{{companyInfo.address}}</el-col>
               </el-col>
 
-            <el-col :span="24">
+            <!-- <el-col :span="24">
             <el-col :span="4"><span class="justify_120">行    业   代   码：</span></el-col>
             <el-col :span="20">{{companyInfo.tradeId}}</el-col>
-              </el-col>
+              </el-col> -->
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">所    属   行   业：</span></el-col>
@@ -62,7 +61,7 @@
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">规上（规下）：</span></el-col>
-            <el-col :span="20">{{companyInfo.scaleUp}}</el-col>
+            <el-col :span="20">{{scaleUp[companyInfo.scaleUp]}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -77,7 +76,7 @@
 
             <el-col :span="24">
             <el-col :span="6"><span class="justify_120" style="width:200px">是否“两代表一委员”：</span></el-col>
-            <el-col :span="18">{{companyInfo.isCommittee}}</el-col>
+            <el-col :span="18">{{isCommittee[companyInfo.isCommittee]}}</el-col>
               </el-col>
 
             <el-col :span="24">
@@ -107,7 +106,7 @@
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">企    业   简   介：</span></el-col>
-            <el-col :span="20">{{companyInfo.companyProfile}}</el-col>
+            <el-col :span="20" style="letter-spacing:2px;">{{companyInfo.companyProfile}}</el-col>
             </el-col>
             </div>
         </div>
@@ -186,7 +185,9 @@ export default {
       factoryImage: '',
       leader: '',
       product: '',
-      companyInfo: {}
+      companyInfo: {},
+      scaleUp: ['', '规上', '规下'],
+      isCommittee: ['', '是', '否']
     };
   },
   methods: {
@@ -215,13 +216,6 @@ export default {
       margin: 0 auto;
     }
     .el-col {
-      margin: 0 0 16px 0;
-      // background-color: #fff;
-      .colHeight30 {
-        .el-col {
-          height: 30px;
-        }
-      }
       .col {
         overflow: hidden;
         .justify_120,
@@ -285,7 +279,8 @@ export default {
         max-width: 600px;
         max-height: 400px;
         img {
-          background-size: 600px 400px;
+          width: 100%;
+          height: 100%;
         }
       }
     }

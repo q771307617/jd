@@ -10,7 +10,7 @@
         <p class="text">登录</p>
         <div class="demo-input-size">
           <div class="input-warnnp">
-              <el-input  placeholder="管理员账号" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
+              <el-input  placeholder="用户名" v-model="username" class="input" autofocus @keyup.enter.native="submitLogin">
                 <i slot="prefix" class="icon" style="background-position: -20px -18px;"></i>
               </el-input>
                 <transition name="fade">
@@ -118,7 +118,7 @@ export default {
           console.log(1322123132);
           console.log(this.password);
           this.password = '';
-          this.PasswordHint = '*请输入密码!';
+          this.PasswordHint = '*请输入正确的密码!';
           return false;
         }
       }
@@ -138,7 +138,7 @@ export default {
               this.statusCheckCode = true;
               cb();
             } else {
-              this.code = '';
+              // this.code = '';
               this.getCode();
               this.msg = e.msg;
               this.statusCheckCode = false;

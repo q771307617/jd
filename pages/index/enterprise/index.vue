@@ -406,7 +406,8 @@ export default {
           height: 176px;
           overflow: hidden;
           img {
-            background-size: 264px 176px;
+            width: 100%;
+            height: 100%;
           }
         }
         .height30 {
