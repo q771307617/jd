@@ -15,8 +15,7 @@
             <div class="el-col" style="width:1200px;margin:0 auto">
           <div class="top-text" style="padding-top:25px;"><i style="background-position:-92px -17px;top:25px;"></i>企业封面</div>
           <div class="top-picture">
-            <img :src="factoryImage.imageUrl" v-if="factoryImage.imageUrl">
-            <!-- <img v-else src="../../../assets/img/"> -->
+            <img :src="companyInfo.imageUrl" alt="">
           </div>
           </div>
         </div>
@@ -280,7 +279,8 @@ export default {
         max-width: 600px;
         max-height: 400px;
         img {
-          background-size: 600px 400px;
+          width: 100%;
+          height: 100%;
         }
       }
     }

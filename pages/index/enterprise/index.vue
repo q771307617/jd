@@ -73,7 +73,9 @@
           <!-- 企业信息展示 -->
           <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
               <el-col :span="6">
-                <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
+                <div class="imgInfo">
+                  <img :src="item.imageUrlr" alt="">
+                  </div>
               </el-col>
               <el-col :span="14">
               <el-col :span="24">
@@ -382,7 +384,8 @@ export default {
           height: 176px;
           overflow: hidden;
           img {
-            background-size: 264px 176px;
+            width: 100%;
+            height: 100%;
           }
         }
         .height30 {
