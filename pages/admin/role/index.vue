@@ -188,18 +188,7 @@ export default {
       api.get('/admin/user/list').then(e => {
         if (e.status === 200) {
           this.PermissionList = e.data.list;
-
-          // this.totalPage =
-          // this.PermissionList === [] ? 0 : this.PermissionList.length;
-          // if (e.data) {
-          //   e.data.map(x => {
-          //     x.status = x.status.toString();
-          //   });
-          // }
         }
-        // if (e.status === 403) {
-        //   this.PermissionList = [];
-        // }
       });
       setTimeout(() => {
         this.loading = false;
@@ -244,6 +233,7 @@ export default {
     },
     // 验证用户名是否符合规则
     checkName(userName) {
+      console.log(userName);
       if (userName === '') {
         console.log(123, userName);
         this.UserHint = '请输入用户名称';
@@ -264,14 +254,18 @@ export default {
     },
     // 验证密码是否符合规则
     checkPassword(password) {
+      console.log(password);
       if (password === '') {
         this.PasswordHint = '请输入密码';
         return false;
       } else {
-        let reg = /^[x00-x7f]+$/;
+        let reg = /[^\u4e00-\u9fa5\s*|\s*$]/;
         let regex = new RegExp(reg);
         // 不存在空格且密码长度为6-20位
-        if (regex.test(password) && password.length > 5) {
+        if (
+          (regex.test(password) && password.length > 5) ||
+          password === '******'
+        ) {
           return true;
         } else {
           this.PasswordHint = '请输入正确的密码';
@@ -300,6 +294,13 @@ export default {
       this.LimitHint = '';
       this.UserHint = '';
     },
+    // 清空提示方法
+    clearHint() {
+      this.UserHint = '';
+      this.PasswordHint = '';
+      this.LimitHint = '';
+      this.RoleNameHint = '';
+    },
     // 添加,修改账号
     AccountoPeration(val) {
       if (val === null) {
@@ -309,11 +310,12 @@ export default {
         this.clearData();
       } else {
         this.clearData();
+        this.UserInfo.password = '******';
         this.title = '修改账号';
         this.UserInfo.roleName = val.name;
         this.UserInfo.username = val.username;
         this.UserInfo.type = val.type;
-        this.UserInfo.password = '';
+        // this.UserInfo.password = '';
         this.activeType = 2;
         this.UserInfo.id = val.id;
         this.UserInfo.roleId = val.roleId;
@@ -322,6 +324,7 @@ export default {
       this.SelectStatus = true;
     },
     ConfirmPeration() {
+      this.clearHint();
       let userRoleStatus = this.checkRoleName(this.UserInfo.roleName);
       let userStatus = this.checkName(this.UserInfo.username);
       let passwordRoleStatus = this.checkPassword(this.UserInfo.password);
