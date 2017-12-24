@@ -90,7 +90,7 @@ export default {
     handleEdit(index, row) {
       // console.log(index, row);
       this.$router.push({
-        name: 'index-enterprise-detail',
+        name: 'front-enterprise-detail',
         query: {
           id: row.id
         }
