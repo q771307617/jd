@@ -378,9 +378,8 @@ export default {
         if (this.allCompanys[i].chargePersonTel) {
           content = '<a href="/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;" >' + this.allCompanys[i].name + '</h2>' + '</a>' + this.allCompanys[i].chargePersonTel + '';
         } else {
-          content = '<a href="/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;"">' + this.allCompanys[i].name + '</h2>' + '' + '</a>';
+          content = '<a href="/enterprise/detail/?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;"">' + this.allCompanys[i].name + '</h2>' + '' + '</a>';
         }
-
         addClickHandler(content, marker);
       }
       this.markerO = marker;
