@@ -30,9 +30,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                  <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
-                                                  <div v-else>div</div>
-                                                </el-form-item>-->
+                                                    <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
+                                                    <div v-else>div</div>
+                                                  </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput=='yes'" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -66,9 +66,9 @@
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-              <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
-              <div v-else>div</div>
-            </el-form-item>-->
+                <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
+                <div v-else>div</div>
+              </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput=='yes'">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
