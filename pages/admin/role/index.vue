@@ -5,7 +5,7 @@
     <el-button type="primary" class="top-btn" @click="AccountoPeration(null)">新增账号</el-button>
   </el-col>
   <el-col :span="24" style="text-align:center">
-    <el-table :data="PermissionList" stripe border style="max-width: 100%;">
+    <el-table :data="PermissionList" stripe border style="max-width: 100%;" v-loading="loading" element-loading-background="#fff">
       <el-table-column prop="name" label="账号名称" min-width="150" header-align="center"></el-table-column>
       <el-table-column prop="username" label="用户名" min-width="150" header-align="center"></el-table-column>
       <el-table-column prop="type" label="权限" min-width="150" header-align="center">
@@ -15,7 +15,8 @@
       </el-table-column>
       <el-table-column label="账号状态" min-width="150" header-align="center">
           <div slot-scope="scope">
-            <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="SwitchStatus(scope.row)"></el-switch>
+            <el-switch v-model="scope.row.status"  active-value="0"
+    inactive-value="1"  @change="SwitchStatus(scope.row)"></el-switch>
         </div>
       </el-table-column>
       <el-table-column label="操作" min-width="100" header-align="center">
@@ -26,7 +27,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <div style="margin:20px 0">
+    <!-- <div style="margin:20px 0">
     <el-col :span="24">
       <el-col :span="14">&nbsp</el-col>
       <el-col :span="10">
@@ -38,7 +39,7 @@
         </el-pagination>
       </el-col>
     </el-col>
-    </div>
+    </div> -->
   </el-col>
 
   <!-- 新增、修改账号 -->
@@ -115,6 +116,7 @@ import api from '~/plugins/api';
 export default {
   data() {
     return {
+      loading: true,
       statusAbaled: false,
       loginSype: ['', '不限', '前台', '后台'],
       // 账户列表
@@ -177,27 +179,31 @@ export default {
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getCompanyList();
+      // this.currentPage = val;
+      // this.getCompanyList();
       // console.log(`当前页: ${val}`);
     },
     // 账号列表
     getCompanyList() {
       api.get('/admin/user/list').then(e => {
         if (e.status === 200) {
-          this.PermissionList = e.data;
-          this.totalPage =
-            this.PermissionList === [] ? 0 : this.PermissionList.length;
-          if (e.data) {
-            e.data.map(x => {
-              x.status = x.status.toString();
-            });
-          }
+          this.PermissionList = e.data.list;
+
+          // this.totalPage =
+          // this.PermissionList === [] ? 0 : this.PermissionList.length;
+          // if (e.data) {
+          //   e.data.map(x => {
+          //     x.status = x.status.toString();
+          //   });
+          // }
         }
-        if (e.status === 403) {
-          this.PermissionList = [];
-        }
+        // if (e.status === 403) {
+        //   this.PermissionList = [];
+        // }
       });
+      setTimeout(() => {
+        this.loading = false;
+      }, 600);
     },
     // 禁用账号
     SwitchStatus(val) {
@@ -209,7 +215,12 @@ export default {
         })
         .then(e => {
           if (e.status === 200) {
-            // console.log('操作成功!');
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            });
+          } else {
+            this.$message.error('修改失败');
           }
         });
     },

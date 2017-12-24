@@ -26,7 +26,7 @@
                 </transition>
           </div>
             <div class="input-warnnp">
-              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;" @keyup.enter.native="submitLogin">
+              <el-input placeholder="验证码" v-model="code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;">
                 <i slot="prefix" class="icon" style="background-position: -20px -88px;"></i>
               </el-input>
               <div class="loginCode"></div><i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
