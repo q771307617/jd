@@ -266,7 +266,7 @@ export default {
   },
   methods: {
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      // console.log(file, fileList);
     },
     handlePictureCardPreview(response, file, fileList) {
       if (response.status === 200) {
@@ -360,14 +360,14 @@ export default {
       });
     },
     handleChange(value) {
-      console.log(value);
+      // console.log(value);
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
     modify() {
       this.showInput = 'yes';
-      console.log(this.ruleForm.imageUrl);
+      // console.log(this.ruleForm.imageUrl);
     },
     getCompanyDetails() {
       api.get('admin/company/detail', { id: this.$route.query.companyId }).then((e) => {
@@ -384,7 +384,7 @@ export default {
       });
     },
     getCompanyInfo() {
-      console.log(typeof (this.$route.query.showInput));
+      // console.log(typeof (this.$route.query.showInput));
       this.showInput = this.$route.query.showInput;
       if (this.$route.query.companyId === 'null') {
       } else {

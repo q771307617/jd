@@ -341,7 +341,7 @@ export default {
       map.addEventListener('zoomend', function (e) {
         map.removeOverLay(img1);
         var zoom = map.getZoom();
-        console.log(zoom);
+        // console.log(zoom);
         map.removeOverLay(img1);
         map.removeOverLay(img3);
         map.removeOverLay(img5);
