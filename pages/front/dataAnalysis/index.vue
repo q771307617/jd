@@ -51,20 +51,22 @@ export default {
       },
       currentPage: 1,
       pageCount: 0,
-      companyInfo: [{
-        actualLandArea: null,
-        facBuildingArea: null,
-        id: null,
-        isHighTech: null,
-        name: null,
-        patentNumber: null,
-        ratifiedCoal: null,
-        researchFee: null,
-        stockWorkArea: null,
-        tax: null,
-        town: null,
-        village: null
-      }]
+      companyInfo: [
+        {
+          actualLandArea: null,
+          facBuildingArea: null,
+          id: null,
+          isHighTech: null,
+          name: null,
+          patentNumber: null,
+          ratifiedCoal: null,
+          researchFee: null,
+          stockWorkArea: null,
+          tax: null,
+          town: null,
+          village: null
+        }
+      ]
     };
   },
   computed: {
@@ -85,9 +87,7 @@ export default {
         }
       });
     },
-    handleSizeChange() {
-
-    },
+    handleSizeChange() {},
     // 改变页数时回调
     handleCurrentChange(val) {
       this.dataParams.pageNum = Number(val);
@@ -100,17 +100,18 @@ export default {
       this.getData();
     },
     getData() {
-      api.get('company/searchindicator', this.dataParams)
-        .then((e) => {
+      api
+        .get('company/searchindicator', this.dataParams)
+        .then(e => {
           if (e.status === 200) {
             this.companyInfo = e.data.list;
             this.pageCount = e.data.count;
-            this.companyInfo.map((x) => {
+            this.companyInfo.map(x => {
               if (x.isHighTech === 1) {
                 x.isHighTech = '是';
               } else if (x.isHighTech === 2) {
                 x.isHighTech = '否';
-              };
+              }
             });
           } else {
             this.$notify.error({
@@ -154,7 +155,7 @@ export default {
   .page {
     margin: 20px 0;
   }
-  .el-radio-button /deep/ .el-radio-button__inner {
+  .el-radio-button__inner {
     width: 150px;
   }
 }
