@@ -373,6 +373,8 @@ export default {
       api.get('admin/company/detail', { id: this.$route.query.companyId }).then((e) => {
         this.ruleForm = e.data;
         this.img = e.data.imageUrl;
+        this.ruleForm.isCommittee = String(e.data.isCommittee);
+        this.ruleForm.scaleUp = String(e.data.scaleUp);
         this.selectTownId(this.ruleForm.townId);
       }).catch(err => {
         this.$notify.error({
