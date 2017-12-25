@@ -3,11 +3,10 @@
     <el-main>
       <el-row>
       <!-- 导航 -->
-      
       <div class="navbar">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ name: 'index' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ name: 'index-enterprise'}">企业管理</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'front' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'front-enterprise'}">企业管理</el-breadcrumb-item>
           <el-breadcrumb-item>企业详情</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -104,6 +103,14 @@
             <el-col :span="4"><span class="justify_120">党    员   人   数：</span></el-col>
             <el-col :span="20">{{companyInfo.partyMemberNum}}</el-col>
               </el-col>
+            <el-col :span="24">
+            <el-col :span="4"><span class="justify_120">每    月   电   费：</span></el-col>
+            <el-col :span="20">{{companyInfo.monthElecBill}}</el-col>
+              </el-col>
+            <el-col :span="24">
+            <el-col :span="4"><span class="justify_120">每    月   水   费：</span></el-col>
+            <el-col :span="20">{{companyInfo.monthWaterBill}}</el-col>
+              </el-col>
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">企    业   简   介：</span></el-col>
@@ -120,7 +127,7 @@
           <!-- 数据指标左-->
             <el-col :span="12" class="colHeight30" style="background:#eff6fa;">
               <el-col :span="24" style="margin-top:17px;">
-                <el-col :span="10"><span class="justify_180">厂房建筑面积（米2）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">厂房建筑面积（m2）：</span></el-col>
                 <el-col :span="14">{{companyInfo.facBuildingArea}}</el-col>
               </el-col>
               <el-col :span="24">
@@ -128,7 +135,7 @@
                 <el-col :span="14">{{companyInfo.actualLandArea}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">存量厂房面积（米2）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">存量厂房面积（m2）：</span></el-col>
                 <el-col :span="14">{{companyInfo.stockWorkArea}}</el-col>
               </el-col>
               <el-col :span="24">
@@ -145,7 +152,7 @@
           <!-- 数据指标右 -->
           <el-col :span="12" class="colHeight30"  style="background:#eff6fa;">
             <el-col :span="24" style="margin-top:17px;">
-              <el-col :span="10"><span class="justify_180">主营业务收入：</span></el-col>
+              <el-col :span="10"><span class="justify_180">主营业务收入(万元)：</span></el-col>
               <el-col :span="14">{{companyInfo.mainBusIncome}}</el-col>
             </el-col>
             <el-col :span="24">
@@ -161,12 +168,8 @@
               <el-col :span="14">{{companyInfo.waterConsume}}</el-col>
             </el-col>
             <el-col :span="24">
-              <el-col :span="10"><span class="justify_180"></span></el-col>
-              <el-col :span="14"></el-col>
-            </el-col>
-            <el-col :span="24">
-              <el-col :span="10"><span class="justify_180"></span></el-col>
-              <el-col :span="14"></el-col>
+              <el-col :span="10"><span class="justify_180">申    报 时  间:</span></el-col>
+              <el-col :span="14">{{companyInfo.declareStartTime}}</el-col>
             </el-col>
           </el-col>
             </div>
@@ -179,6 +182,7 @@
 
 <script>
 import api from '~/plugins/api';
+import moment from 'moment';
 export default {
   data() {
     return {
@@ -196,6 +200,7 @@ export default {
       api.get('/company/detail', { id: this.$route.query.id }).then(e => {
         if (e.status === 200) {
           this.companyInfo = e.data;
+          this.companyInfo.declareStartTime = this.companyInfo.declareStartTime ? moment(this.companyInfo.declareStartTime).format('YYYY-MM-DD') : '';
         }
       });
     }

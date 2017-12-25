@@ -27,19 +27,9 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <!-- <div style="margin:20px 0">
-    <el-col :span="24">
-      <el-col :span="14">&nbsp</el-col>
-      <el-col :span="10">
-        <p class="demonstration" style="float:left;margin-top:5px;">共
-        <span class="red">{{totalPage}}</span>条数据
-        <span style="margin-left:20px;">每页</span>
-        <span class="red">15</span>条</p>
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="totalPage">
-        </el-pagination>
-      </el-col>
-    </el-col>
-    </div> -->
+    <div style="margin:20px 0">
+      <pages :pageSize=15 :count="totalData" @pageCurrentChange="handleCurrentChange"></pages>
+    </div>
   </el-col>
 
   <!-- 新增、修改账号 -->
@@ -113,6 +103,7 @@
 
 <script>
 import api from '~/plugins/api';
+import pages from '~/components/pages';
 export default {
   data() {
     return {
@@ -170,37 +161,36 @@ export default {
       PasswordHint: '',
       RoleNameHint: '',
       LimitHint: '',
-      currentPage: 1,
-      totalPage: 0
+      currentPage: 0,
+      totalPage: 0,
+      totalData: 0
     };
+  },
+  components: {
+    pages
   },
   methods: {
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      // this.currentPage = val;
-      // this.getCompanyList();
+      this.currentPage = Number(val);
+      this.getCompanyList();
       // console.log(`当前页: ${val}`);
     },
     // 账号列表
     getCompanyList() {
-      api.get('/admin/user/list').then(e => {
-        if (e.status === 200) {
-          this.PermissionList = e.data.list;
-
-          // this.totalPage =
-          // this.PermissionList === [] ? 0 : this.PermissionList.length;
-          // if (e.data) {
-          //   e.data.map(x => {
-          //     x.status = x.status.toString();
-          //   });
-          // }
-        }
-        // if (e.status === 403) {
-        //   this.PermissionList = [];
-        // }
-      });
+      api
+        .get('/admin/user/list', {
+          pageNum: this.currentPage,
+          pageSize: 15
+        })
+        .then(e => {
+          if (e.status === 200) {
+            this.PermissionList = e.data.list;
+            this.totalData = e.data.count;
+          }
+        });
       setTimeout(() => {
         this.loading = false;
       }, 600);
@@ -244,6 +234,7 @@ export default {
     },
     // 验证用户名是否符合规则
     checkName(userName) {
+      console.log(userName);
       if (userName === '') {
         console.log(123, userName);
         this.UserHint = '请输入用户名称';
@@ -264,14 +255,18 @@ export default {
     },
     // 验证密码是否符合规则
     checkPassword(password) {
+      console.log(password);
       if (password === '') {
         this.PasswordHint = '请输入密码';
         return false;
       } else {
-        let reg = /^[x00-x7f]+$/;
+        let reg = /[^\u4e00-\u9fa5\s*|\s*$]/;
         let regex = new RegExp(reg);
         // 不存在空格且密码长度为6-20位
-        if (regex.test(password) && password.length > 5) {
+        if (
+          (regex.test(password) && password.length > 5) ||
+          password === '******'
+        ) {
           return true;
         } else {
           this.PasswordHint = '请输入正确的密码';
@@ -300,6 +295,13 @@ export default {
       this.LimitHint = '';
       this.UserHint = '';
     },
+    // 清空提示方法
+    clearHint() {
+      this.UserHint = '';
+      this.PasswordHint = '';
+      this.LimitHint = '';
+      this.RoleNameHint = '';
+    },
     // 添加,修改账号
     AccountoPeration(val) {
       if (val === null) {
@@ -309,11 +311,12 @@ export default {
         this.clearData();
       } else {
         this.clearData();
+        this.UserInfo.password = '******';
         this.title = '修改账号';
         this.UserInfo.roleName = val.name;
         this.UserInfo.username = val.username;
         this.UserInfo.type = val.type;
-        this.UserInfo.password = '';
+        // this.UserInfo.password = '';
         this.activeType = 2;
         this.UserInfo.id = val.id;
         this.UserInfo.roleId = val.roleId;
@@ -322,6 +325,7 @@ export default {
       this.SelectStatus = true;
     },
     ConfirmPeration() {
+      this.clearHint();
       let userRoleStatus = this.checkRoleName(this.UserInfo.roleName);
       let userStatus = this.checkName(this.UserInfo.username);
       let passwordRoleStatus = this.checkPassword(this.UserInfo.password);

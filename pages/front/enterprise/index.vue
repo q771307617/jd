@@ -130,15 +130,7 @@
           </el-col>
           <!-- 分页 -->
           <el-col :span="24">
-            <el-col :span="10">&nbsp</el-col>
-            <el-col :span="14">
-              <p class="demonstration" style="float:left;margin-top:5px;">共
-                <span class="red">{{pageCount}}</span>条数据
-                <span style="margin-left:20px;">每页</span>
-                <span class="red">15</span>条</p>
-              <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="4" background prev-text="< 上一页" next-text="下一页 >" layout="prev, pager, next, jumper" :total="EnterpriseProfile.length">
-              </el-pagination>
-            </el-col>
+            <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
           </el-col>
         </el-row>
       </el-main>
@@ -150,15 +142,19 @@
 <script>
 import api from '~/plugins/api';
 import { mapState } from 'vuex';
+import pages from '~/components/pages';
 export default {
+  components: {
+    pages
+  },
   data() {
     return {
       isActiveIndustry: true,
       isActiveTown: true,
       params: {
         companyName: null,
-        pageNum: null,
-        pageSize: null,
+        pageNum: 0,
+        pageSize: 15,
         partyMemberNumberType: 0,
         scaleType: null,
         staffScaleType: 0,
@@ -168,7 +164,7 @@ export default {
       FindCompanyName: '',
       EnterpriseProfile: {},
       currentPage: 1,
-      pageCount: null,
+      pageCount: 0,
       selectType: [
         {
           index: 1,
@@ -191,10 +187,8 @@ export default {
     },
     // 改变页数时回调
     handleCurrentChange(val) {
-      this.params.pageNum = val;
+      this.params.pageNum = Number(val);
       this.getCompanyInfo();
-      // console.log(`当前页: ${val}`, this.pageNum);
-      // console.log(this.$route.path.slice(1));
     },
     showIndustry() {
       this.isActiveIndustry = !this.isActiveIndustry;
