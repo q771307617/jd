@@ -475,14 +475,14 @@ body #mapDiv {
   min-width: 1200px;
   min-height: 600px;
   position: absolute;
-  top: 140px;
+  top: 150px;
   left: 0;
   bottom: 0px;
 }
 
 .seach {
   position: absolute;
-  top: 147px;
+  top: 157px;
   left: 100px;
   z-index: 999;
   width: 800px;
@@ -499,7 +499,7 @@ body #mapDiv {
   }
   .searchList {
     position: absolute;
-    top: 39px;
+    top: 49px;
     background: #ffffff;
     border: 1px solid #e0e0e0;
     width: 294px;
@@ -531,7 +531,7 @@ body #mapDiv {
 .right {
   overflow: hidden;
   position: absolute;
-  top: 140px;
+  top: 150px;
   right: 0px;
   bottom: 0px;
   z-index: 999;
