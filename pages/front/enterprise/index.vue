@@ -225,7 +225,7 @@ export default {
         return;
       }
       this.params.companyName = val;
-      console.log(this.params.companyName);
+      // console.log(this.params.companyName);
       this.getCompanyInfo();
     },
     /* @argument val

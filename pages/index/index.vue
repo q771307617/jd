@@ -115,8 +115,8 @@ export default {
         if (!regex.test(password) && password.length > 5) {
           return true;
         } else {
-          console.log(1322123132);
-          console.log(this.password);
+          // console.log(1322123132);
+          // console.log(this.password);
           this.password = '';
           this.PasswordHint = '*请输入正确的密码!';
           return false;
