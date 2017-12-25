@@ -252,7 +252,7 @@ export default {
     searchItem(id, data) {
       this.map.clearOverLays();
       this.searchParams.value = data.name;
-      this.mapParams.zoom = '17';
+      this.mapParams.zoom = '13';
       this.mapParams.lat = data.lat;
       this.mapParams.lng = data.lng;
       this.allCompanys = [data];
@@ -278,7 +278,7 @@ export default {
     // 更新地图
     fetchMap() {
       // this.map.setZoom(this.mapParams.zoom);
-      this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 17);
+      this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 13);
     },
     getMap() {
       var zoom = this.mapParams.zoom;
@@ -297,24 +297,25 @@ export default {
       this.map = map;
     },
     imgOverLay(map) {
+      // map.removeEventListener('zoomend');
       var bd = new window.T.LngLatBounds(
         new window.T.LngLat(118.8940912546568, 29.20439576265778),
         new window.T.LngLat(120.32081607375262, 30.155545642054992)
       );
       var img1 = new window.T.ImageOverlay(
-        'http://1.img.dianjiangla.com/jdAssets/JD1.png',
+        'http://1.img.dianjiangla.com/jdAssets/JD3.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
         }
       );
-      var img2 = new window.T.ImageOverlay(
-        'http://1.img.dianjiangla.com/jdAssets/JD2.png',
-        bd, {
-          opacity: '.7',
-          alt: '建德市'
-        }
-      );
+      // var img2 = new window.T.ImageOverlay(
+      //   'http://1.img.dianjiangla.com/jdAssets/JD2.png',
+      //   bd, {
+      //     opacity: '.7',
+      //     alt: '建德市'
+      //   }
+      // );
       var img3 = new window.T.ImageOverlay(
         'http://1.img.dianjiangla.com/jdAssets/JD3.png',
         bd, {
@@ -322,8 +323,15 @@ export default {
           alt: '建德市'
         }
       );
-      var img4 = new window.T.ImageOverlay(
-        'http://1.img.dianjiangla.com/jdAssets/JD4.png',
+      // var img4 = new window.T.ImageOverlay(
+      //   'http://1.img.dianjiangla.com/jdAssets/JD4.png',
+      //   bd, {
+      //     opacity: '.7',
+      //     alt: '建德市'
+      //   }
+      // );
+      var img5 = new window.T.ImageOverlay(
+        'http://1.img.dianjiangla.com/jdAssets/JD5.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
@@ -331,24 +339,22 @@ export default {
       );
       map.addOverLay(img1);
       map.addEventListener('zoomend', function (e) {
-        var zoom = map.getZoom();
         map.removeOverLay(img1);
-        map.removeOverLay(img2);
+        var zoom = map.getZoom();
+        console.log(zoom);
+        map.removeOverLay(img1);
         map.removeOverLay(img3);
-        map.removeOverLay(img4);
-        if (zoom < 12) {
+        map.removeOverLay(img5);
+        if (zoom < 11) {
           map.addOverLay(img1);
-        } else if (zoom === 12) {
-          map.addOverLay(img2);
-        } else if (zoom > 12 && zoom < 14) {
+        } else if (zoom === 11 || zoom === 12) {
           map.addOverLay(img3);
-        } else if (zoom >= 14 && zoom < 16) {
-          map.addOverLay(img4);
+        } else if (zoom === 13) {
+          map.addOverLay(img5);
         } else {
           map.removeOverLay(img1);
-          map.removeOverLay(img2);
           map.removeOverLay(img3);
-          map.removeOverLay(img4);
+          map.removeOverLay(img5);
         }
       });
     },

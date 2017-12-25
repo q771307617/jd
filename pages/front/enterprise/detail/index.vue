@@ -51,7 +51,7 @@
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">所    属   行   业：</span></el-col>
-            <el-col :span="20"><i class="type">{{companyInfo.tradeName}}</i></el-col>
+            <el-col :span="20"><i class="type" v-if="companyInfo.tradeName">{{companyInfo.tradeName}}</i></el-col>
               </el-col>
 
             <el-col :span="24">
@@ -65,7 +65,7 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">主要负责人：</span></el-col>
+            <el-col :span="4"><span class="justify_120">主 要 负 责 人：</span></el-col>
             <el-col :span="20">{{companyInfo.corporationName}}</el-col>
               </el-col>
 
@@ -80,7 +80,7 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">具体负责人：</span></el-col>
+            <el-col :span="4"><span class="justify_120">具  体  负  责  人：</span></el-col>
             <el-col :span="20">{{companyInfo.leaderName}}</el-col>
               </el-col>
 
@@ -95,7 +95,7 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">党组织名称：</span></el-col>
+            <el-col :span="4"><span class="justify_120">党 组 织 名 称：</span></el-col>
             <el-col :span="20">{{companyInfo.partyName}}</el-col>
               </el-col>
 
@@ -189,7 +189,7 @@
             </el-col>
             <el-col :span="24">
               <el-col :span="10"><span class="justify_180">申    报 时  间:</span></el-col>
-              <el-col :span="14">{{companyInfo.declareStartTime}}</el-col>
+              <el-col :span="14" v-if="companyInfo.declareStartTime">{{companyInfo.declareStartTime}}至{{companyInfo.declareEndTime}}</el-col>
             </el-col>
             <el-col :span="24">
               <el-col :span="10"><span class="justify_180"></span></el-col>
@@ -229,6 +229,7 @@ export default {
         if (e.status === 200) {
           this.companyInfo = e.data;
           this.companyInfo.declareStartTime = this.companyInfo.declareStartTime ? moment(this.companyInfo.declareStartTime).format('YYYY-MM-DD') : '';
+          this.companyInfo.declareEndTime = this.companyInfo.declareStartTime ? moment(this.companyInfo.declareEndTime).format('YYYY-MM-DD') : '';
         }
       });
     }
@@ -255,9 +256,14 @@ export default {
         .justify_120,
         .justify_180 {
           margin-left: 60px;
+          text-justify:inter-word;
           display: inline-block;
           text-align: justify;
         }
+        // i{
+        //   display: inline-block;
+        //   padding-left: 100%;
+        // }
         .justify_120 {
           width: 120px;
         }
