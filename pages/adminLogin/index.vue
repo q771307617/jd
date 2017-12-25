@@ -1,11 +1,7 @@
 <template>
     <div class="login">
     <div class="container bg-admin">
-      <div class="slogan">
-        <p class="one">建德企业信息管理后台</p>
-        <div class="wire"></div>
-        <p class="two">以企业为中心,以服务为核心</p>
-      </div>
+      <div class="slogan"></div>
       <div class="content">
         <p class="text">登录</p>
         <div class="demo-input-size">
@@ -170,32 +166,13 @@ export default {
   background-image: url(../../assets/img/bgAdminLogin.png);
 }
 .slogan {
+  width: 516px;
+  height: 125px;
   position: absolute;
   top: 235px;
   left: 350px;
   z-index: 10;
-}
-.one {
-  font-size: 48px;
-  background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.two {
-  font-size: 18px;
-  background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.wire {
-  width: 527px;
-  height: 2px;
-  background: -webkit-linear-gradient(
-    0,
-    rgba(136, 250, 255, 0.7) 0%,
-    rgba(0, 0, 0, 0) 97%
-  );
-  margin: 16px 0;
+  background: url(../../assets/img/JdTilte.png) no-repeat;
 }
 .login .container .content {
   background: #f7f7f7;

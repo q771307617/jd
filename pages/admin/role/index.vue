@@ -5,7 +5,7 @@
     <el-button type="primary" class="top-btn" @click="AccountoPeration(null)">新增账号</el-button>
   </el-col>
   <el-col :span="24" style="text-align:center">
-    <el-table :data="PermissionList" stripe border style="max-width: 100%;" v-loading="loading" element-loading-background="#fff">
+    <el-table :data="PermissionList" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="max-width: 100%;" v-loading="loading" element-loading-background="#fff">
       <el-table-column prop="name" label="账号名称" min-width="150" header-align="center"></el-table-column>
       <el-table-column prop="username" label="用户名" min-width="150" header-align="center"></el-table-column>
       <el-table-column prop="type" label="权限" min-width="150" header-align="center">
@@ -178,6 +178,16 @@ export default {
       this.getCompanyList();
       // console.log(`当前页: ${val}`);
     },
+    // 表格颜色
+    tableRowClassName({ row, rowIndex }) {
+      if (rowIndex % 2 !== 0) {
+        return 'warning-row';
+      }
+      return 'success-row';
+    },
+    tableHeaderClassName({ row, rowIndex }) {
+      return 'warning-row';
+    },
     // 账号列表
     getCompanyList() {
       api
@@ -255,17 +265,22 @@ export default {
     },
     // 验证密码是否符合规则
     checkPassword(password) {
-      console.log(password);
+      // console.log(password);
       if (password === '') {
         this.PasswordHint = '请输入密码';
         return false;
+      } else if (password === null) {
+        console.log('465', password);
+        return true;
       } else {
         let reg = /[^\u4e00-\u9fa5\s*|\s*$]/;
         let regex = new RegExp(reg);
         // 不存在空格且密码长度为6-20位
         if (
-          (regex.test(password) && password.length > 5) ||
-          password === '******'
+          // (regex.test(password) && password.length > 5) ||
+          // password === '******'
+          regex.test(password) &&
+          password.length > 5
         ) {
           return true;
         } else {
@@ -311,12 +326,12 @@ export default {
         this.clearData();
       } else {
         this.clearData();
-        this.UserInfo.password = '******';
+        // this.UserInfo.password = '******';
+        this.UserInfo.password = null;
         this.title = '修改账号';
         this.UserInfo.roleName = val.name;
         this.UserInfo.username = val.username;
         this.UserInfo.type = val.type;
-        // this.UserInfo.password = '';
         this.activeType = 2;
         this.UserInfo.id = val.id;
         this.UserInfo.roleId = val.roleId;
@@ -337,11 +352,11 @@ export default {
             if (e.status === 200) {
               this.getCompanyList();
               this.$message({
-                message: '添加成功',
+                message: e.msg,
                 type: 'success'
               });
             } else {
-              this.$message.error('添加失败');
+              this.$message.error(e.msg);
             }
           });
         } else {
