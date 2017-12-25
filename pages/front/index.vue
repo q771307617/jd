@@ -503,7 +503,7 @@ body #mapDiv {
   }
   .searchList {
     position: absolute;
-    top: 49px;
+    top: 39px;
     background: #ffffff;
     border: 1px solid #e0e0e0;
     width: 294px;
