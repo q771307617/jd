@@ -118,10 +118,8 @@ export default {
   methods: {
     ...mapActions(['LIST_GET', 'USER_GET']),
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
     },
     handleCommand() {
     },
@@ -150,8 +148,9 @@ export default {
     isPermissions() {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
-        console.log(e.data.type);
+        // console.log(e.data.type);
         if (e.data.type === 2) {
+          // alert(e.data.type);
           this.loginOut();
         }
       });

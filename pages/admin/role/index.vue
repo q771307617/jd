@@ -203,7 +203,7 @@ export default {
         });
       setTimeout(() => {
         this.loading = false;
-      }, 600);
+      }, 800);
     },
     // 禁用账号
     SwitchStatus(val) {
@@ -244,9 +244,9 @@ export default {
     },
     // 验证用户名是否符合规则
     checkName(userName) {
-      console.log(userName);
+      // console.log(userName);
       if (userName === '') {
-        console.log(123, userName);
+        // console.log(123, userName);
         this.UserHint = '请输入用户名称';
         return false;
       }
@@ -256,7 +256,7 @@ export default {
       let regex = new RegExp(reg);
       let regex2 = new RegExp(reg2);
       if (!regex.test(userName) && regex2.test(userName)) {
-        console.log(!regex2.test(userName));
+        // console.log(!regex2.test(userName));
         return true;
       }
       this.userName = '';
@@ -270,7 +270,6 @@ export default {
         this.PasswordHint = '请输入密码';
         return false;
       } else if (password === null) {
-        console.log('465', password);
         return true;
       } else {
         let reg = /[^\u4e00-\u9fa5\s*|\s*$]/;
@@ -291,7 +290,7 @@ export default {
     },
     // 是否选择类型
     checkStatus() {
-      console.log(this.UserInfo.type);
+      // console.log(this.UserInfo.type);
       if (this.UserInfo.type === '') {
         this.LimitHint = '请选择权限';
         this.SelectStatus = true;

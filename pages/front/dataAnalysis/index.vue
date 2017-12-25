@@ -1,10 +1,12 @@
 <template>
+<div class="content">
   <div class='hello'>
     <div class="mainNav">
       <div class="mainNavs">
         <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
-          <el-radio-button :label="item.key" class="redio" style="width:150px;" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
+          <el-radio-button :label="item.key" class="redio" style="width:133px" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
         </el-radio-group>
+        <!-- <ul><li v-for="(item,index) in type" :key="item.key" class="redio" :class="{native: index===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul> -->
       </div>
     </div>
     <div class="mainContent">
@@ -28,6 +30,7 @@
       </div>
     </div>
     <nuxt-child/>
+  </div>
   </div>
 </template>
 <script>
@@ -104,6 +107,7 @@ export default {
     },
     // 选择具体信息
     selecType(val) {
+      this.radio = val;
       this.dataParams.type = val;
       this.getData();
     },
@@ -141,7 +145,9 @@ export default {
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang="scss">
-#content {
+.hello {
+  width: 1200px;
+  margin: 0 auto;
   .mainNav {
     background: #f7f7f7;
     border: 1px solid #e0e0e0;
@@ -151,17 +157,23 @@ export default {
     .mainNavs {
       width: 1200px;
       margin: 9px auto 0;
-      el-radio-button {
-        background: #f7f7f7;
+      .redio {
+        display: inline-block;
+        width: 133px;
+        height: 42px;
+        line-height:42px;
+        cursor: pointer;
+        text-align: center;
+      }
+      .nactive{
+        background-color: #f2ba55;
       }
     }
   }
   .mainContent {
     width: 1200px;
+    min-width: 800px;
     margin: 20px auto;
-  }
-  .page {
-    margin: 20px 0;
   }
   .el-radio-button__inner {
     width: 133px;

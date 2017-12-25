@@ -42,16 +42,16 @@ instance.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
   var loginType = localStorage.getItem('loginType');
-  if (res.data && res.data.status === 401) {
-    if (loginType === 'admin') {
-      goLogin();
-      setTimeout(location.href = '/adminLogin', 1000);
-    }
-    if (loginType === 'index') {
-      goLogin();
-      setTimeout(location.href = '/', 1000);
-    }
-  }
+  // if (res.data && res.data.status === 401) {
+  //   if (loginType === 'admin') {
+  //     goLogin();
+  //     setTimeout(location.href = '/adminLogin', 1000);
+  //   }
+  //   if (loginType === 'index') {
+  //     goLogin();
+  //     setTimeout(location.href = '/', 1000);
+  //   }
+  // }
 
   if (res && res.data && res.data.status !== 200) {
     res.data.data = {

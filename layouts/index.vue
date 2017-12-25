@@ -22,7 +22,7 @@
       </div>
     </div>
     <nuxt id="content" />
-    <div class="footer" v-if="$route.name!='index'">
+    <div class="footer" v-if="$route.name!='front'">
       <p>关于我们</p>
       <p>@2017 jiandezhengfuxinxi Reserved. 浙ICP备案15043816号-1 浙公网安备 33010902000325</p>
     </div>
@@ -60,6 +60,7 @@ export default {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
         if (e.data.type === 3) {
+          // alert(e.data.type);
           location.href = '/';
           this.loginOut();
         }
@@ -112,15 +113,14 @@ a {
   background: -moz-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0267ca), color-stop(100%, #072fa0));
   background: -webkit-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#0267ca), to(#072fa0));   
-  background: -webkit-linear-gradient(left, #0267ca, #072fa0); 
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#0267ca), to(#072fa0));
+  background: -webkit-linear-gradient(left, #0267ca, #072fa0);
   background: -o-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -ms-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: linear-gradient(to bottom, #0267ca 0%, #072fa0 100%);
   .topbackground{
     background:url(./../assets/img/frontHeaderBg.png)no-repeat;
     padding-left: 356px;
-    // width:100%;
     height:100px;
     background-size:100% 100%;
     .frontHeader{
@@ -179,8 +179,8 @@ a {
 }
 
 #content {
-  min-height: 800px;
-  max-height:1200px;
+  min-height: 850px;
+  max-height:3200px;
   height: auto; // width: 1200px;
   margin: 0 auto;
 }
