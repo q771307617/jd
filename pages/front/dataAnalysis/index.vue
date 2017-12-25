@@ -3,7 +3,7 @@
     <div class="mainNav">
       <div class="mainNavs">
         <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
-          <el-radio-button :label="item.key" class="redio" style="width:150px;" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
+          <el-radio-button :label="item.key" class="redio" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
         </el-radio-group>
       </div>
     </div>
