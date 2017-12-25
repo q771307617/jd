@@ -80,21 +80,21 @@
             <el-input v-model="ruleForm.addedEnergyConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.addedEnergyConsume}}</div>
           </el-form-item>
-          <el-form-item label="申报时间" required>
-            <el-col :span="5" v-if="showInput=='yes'">
+          <el-form-item label="申报时间" required >
+            <el-col :span="4" v-if="showInput=='yes'" style="margin-left:-12px;">
               <el-form-item prop="declareStartTime" class="input-length">
                 <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
             <span v-else>{{declareStartTime}}-</span>
-            <el-col class="line" :span="1" v-if="showInput=='yes'">&nbsp——</el-col>
+            <el-col class="line" :span="1" v-if="showInput=='yes'">&nbsp————</el-col>
             <el-col :span="11" v-if="showInput=='yes'">
               <el-form-item prop="declareEndTime" class="input-length">
                 <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
             <span v-else>{{declareEndTime}}</span>
-          </el-form-item>`
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
@@ -213,13 +213,13 @@ export default {
           }
           api.post('admin/indicator/update', this.ruleForm).then((e) => {
             if (e.status === 200) {
-              this.showInput = false;
+              this.showInput = 'no';
               this.$router.push({
                 name: name,
                 query: {
                   type: this.$route.query.type,
                   companyId: this.$route.query.companyId,
-                  showInput: false
+                  showInput: 'yes'
                 }
               });
             } else {

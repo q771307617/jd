@@ -28,20 +28,20 @@
         </el-table-column>
         <el-table-column prop="address" label="操作">
           <div slot-scope="scope">
-            <el-button @click="change('view',scope.row)" type="text" size="small">查看/编辑</el-button>
+            <el-button @click="change('view',scope.row)" type="text" size="small">查看/修改</el-button>
             <!-- <el-button type="text" size="small" @click="change('view',scope.row)"></el-button> -->
             <el-button type="text" size="small" @click="deleteCompany(scope.row)" style="color:red;">删除</el-button>
           </div>
         </el-table-column>
       </el-table>
       <!-- <div class="flex-box block">
-            <p class="demonstration">共
-              <span class="red">{{params.count}}</span>条数据
-              <span style="margin-left:20px;">每页</span>
-              <span class="red">{{params.pageSize}}</span>条</p>
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
-            </el-pagination>
-          </div> -->
+              <p class="demonstration">共
+                <span class="red">{{params.count}}</span>条数据
+                <span style="margin-left:20px;">每页</span>
+                <span class="red">{{params.pageSize}}</span>条</p>
+              <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
+              </el-pagination>
+            </div> -->
       <pages :pageSize=20 :count="params.count" @pageCurrentChange="handleCurrentChange"></pages>
     </div>
     <el-dialog :visible.sync="data" width="640px" center>
@@ -50,8 +50,10 @@
         <i class="el-icon-warning" style="text-align:center;color:#ff3f20;font-size:66px;" v-else></i>
       </div>
       <div style="text-align:center;">
-        <h1 style="font-size:24px;margin-top:21px;" v-if="fileStatus">企业信息数据导入成功！</h1>
-        <h1 style="font-size:24px;margin-top:21px;" v-else>企业信息数据导入失败，请重新导入！</h1>
+        <div style="font-size:24px;margin-top:21px;" v-if="fileStatus">企业信息数据导入成功！</div>
+        <div style="font-size:24px;margin-top:21px;" v-else>企业信息数据导入失败，请重新导入！
+          <p style="text-align:center;color:orange;margin-top:20px;font-size:16px;">{{message}}</p>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
       </span>
@@ -81,6 +83,7 @@ export default {
       data: false,
       fileStatus: true,
       deleteCom: false,
+      message: null,
       company: {
         companyId: null,
         companyName: ''
@@ -110,7 +113,8 @@ export default {
         this.getcompanyInfo();
       } else {
         this.handleError();
-        this.$message.error(res.msg);
+        // this.$message.error(res.msg);
+        this.message = res.msg;
       }
     },
     handleError() {
@@ -244,6 +248,7 @@ export default {
     }
   }
 }
+
 
 
 
