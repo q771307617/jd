@@ -219,8 +219,6 @@ export default {
     initMap() {
       this.map.centerAndZoom(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
       this.map.clearOverLays();
-      // this.imgOverLay(this.map);
-      // this.polygon(this.map);
       api.get('company/getallcompany')
         .then(e => {
           this.map.clearOverLays();

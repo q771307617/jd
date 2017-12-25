@@ -3,7 +3,7 @@
     <div class="container bg-admin">
       <div class="slogan">
         <p class="one">建德企业信息管理平台</p>
-        <div class="wire"></div>
+        <hr class="wire">
         <p class="two">以企业为中心,以服务为核心</p>
       </div>
       <div class="content">
@@ -183,23 +183,25 @@ export default {
   top: 235px;
   left: 350px;
   z-index: 10;
+  color:#fff;
+  /* background-image:url(../../assets/img/JdTitle.png) no-repeat; */
 }
 .one {
   font-size: 48px;
-  background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  /* background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
 }
 .two {
   font-size: 18px;
-  background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
+  /* background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
 }
 .wire {
   width: 527px;
-  height: 2px;
-  background: -webkit-linear-gradient(0,rgba(136, 250, 255,0.7) 0%, rgba(0, 0, 0, 0) 97%);
+  background-color: #fff;
+  /* background: -webkit-linear-gradient(0,rgba(136, 250, 255,0.7) 0%, rgba(0, 0, 0, 0) 97%); */
   margin:16px 0;
 }
 .login .container .content {
