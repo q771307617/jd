@@ -60,6 +60,7 @@ export default {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
         if (e.data.type === 3) {
+          alert(e.data.type);
           location.href = '/';
           this.loginOut();
         }
