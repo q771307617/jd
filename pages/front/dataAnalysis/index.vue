@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="mainContent">
-      <el-table :data="companyInfo" stripe border style="width: 100%;text-align:center">
+      <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center">
         <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
         </el-table-column>
         <el-table-column prop="town" label="所属乡镇" min-width="180" header-align="center">
@@ -30,8 +30,6 @@
     <nuxt-child/>
   </div>
 </template>
-
-
 <script>
 import pages from '~/components/pages';
 import api from '~/plugins/api';
@@ -94,6 +92,16 @@ export default {
       this.getData();
       console.log(val);
     },
+    // 表格颜色
+    tableRowClassName({ row, rowIndex }) {
+      if (rowIndex % 2 !== 0) {
+        return 'warning-row';
+      }
+      return 'success-row';
+    },
+    tableHeaderClassName({ row, rowIndex }) {
+      return 'warning-row';
+    },
     // 选择具体信息
     selecType(val) {
       this.dataParams.type = val;
@@ -150,13 +158,13 @@ export default {
   }
   .mainContent {
     width: 1200px;
-    margin: 0 auto;
+    margin: 20px auto;
   }
   .page {
     margin: 20px 0;
   }
   .el-radio-button__inner {
-    width: 150px;
+    width: 133px;
   }
 }
 </style>
