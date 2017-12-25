@@ -203,7 +203,7 @@ export default {
         });
       setTimeout(() => {
         this.loading = false;
-      }, 600);
+      }, 800);
     },
     // 禁用账号
     SwitchStatus(val) {
