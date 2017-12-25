@@ -150,7 +150,7 @@ export default {
         if (e.status !== 200) return;
         // console.log(e.data.type);
         if (e.data.type === 2) {
-          alert(e.data.type);
+          // alert(e.data.type);
           this.loginOut();
         }
       });
