@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="mainContent">
-      <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;min-height:570px;text-align:center">
+      <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center">
         <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
         </el-table-column>
         <el-table-column prop="town" label="所属乡镇" min-width="180" header-align="center">
