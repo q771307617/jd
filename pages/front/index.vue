@@ -233,12 +233,6 @@ export default {
             message: error.msg
           });
         });
-      this.map.addEventListener('zoomend', function (e) {
-        this.map.clearOverLays();
-        this.imgOverLay(this.map);
-        this.polygon(this.map);
-        this.markers(this.map);
-      });
     },
     // 所有企业
     allCompany() {
@@ -335,25 +329,28 @@ export default {
           alt: '建德市'
         }
       );
-      var zoom = map.getZoom();
-      map.removeOverLay(img1);
-      map.removeOverLay(img2);
-      map.removeOverLay(img3);
-      map.removeOverLay(img4);
-      if (zoom < 12) {
-        map.addOverLay(img1);
-      } else if (zoom === 12) {
-        map.addOverLay(img2);
-      } else if (zoom > 12 && zoom < 14) {
-        map.addOverLay(img3);
-      } else if (zoom >= 14 && zoom < 16) {
-        map.addOverLay(img4);
-      } else {
+      map.addOverLay(img1);
+      map.addEventListener('zoomend', function (e) {
+        var zoom = map.getZoom();
         map.removeOverLay(img1);
         map.removeOverLay(img2);
         map.removeOverLay(img3);
         map.removeOverLay(img4);
-      }
+        if (zoom < 12) {
+          map.addOverLay(img1);
+        } else if (zoom === 12) {
+          map.addOverLay(img2);
+        } else if (zoom > 12 && zoom < 14) {
+          map.addOverLay(img3);
+        } else if (zoom >= 14 && zoom < 16) {
+          map.addOverLay(img4);
+        } else {
+          map.removeOverLay(img1);
+          map.removeOverLay(img2);
+          map.removeOverLay(img3);
+          map.removeOverLay(img4);
+        }
+      });
     },
     markers(map) {
       var markers = [];
