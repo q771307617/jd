@@ -43,6 +43,7 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(function (res) {
   var loginType = localStorage.getItem('loginType');
   if (res.data && res.data.status === 401) {
+    alert(res.data.status);
     if (loginType === 'admin') {
       goLogin();
       setTimeout(location.href = '/adminLogin', 1000);
