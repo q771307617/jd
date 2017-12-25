@@ -28,7 +28,7 @@
         </el-table-column>
         <el-table-column prop="address" label="操作">
           <div slot-scope="scope">
-            <el-button @click="change('view',scope.row)" type="text" size="small">查看/编辑</el-button>
+            <el-button @click="change('view',scope.row)" type="text" size="small">查看/修改</el-button>
             <!-- <el-button type="text" size="small" @click="change('view',scope.row)"></el-button> -->
             <el-button type="text" size="small" @click="deleteCompany(scope.row)" style="color:red;">删除</el-button>
           </div>
