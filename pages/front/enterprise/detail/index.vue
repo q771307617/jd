@@ -318,6 +318,7 @@ export default {
         margin-left: 60px;
         max-width: 600px;
         max-height: 400px;
+        overflow: hidden;
         img {
           width: 100%;
           height: 100%;
