@@ -1,5 +1,5 @@
 <template>
-  <div class='ListDetail'>
+  <div class='ListDetail' style="min-height:500px;">
     <el-container>
       <el-main>
         <el-row>
@@ -83,6 +83,7 @@
             </div>
           </el-row>
           <!-- 企业信息展示 -->
+          <div class="container">
           <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
             <el-col :span="6">
               <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
@@ -128,6 +129,7 @@
               <el-button type="primary" style="margin-top: 80px;" @click="ViewDetails(item.companyId)">查看企业详情</el-button>
             </el-col>
           </el-col>
+          </div>
           <!-- 分页 -->
           <el-col :span="24">
             <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
@@ -290,6 +292,9 @@ export default {
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .ListDetail {
+  .container{
+    min-height: 400px;
+  }
   .search {
     margin-top: 23px;
     padding: 10px 0 0 20px;
