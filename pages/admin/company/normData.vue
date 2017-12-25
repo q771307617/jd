@@ -40,8 +40,8 @@
           </el-form-item>
           <el-form-item label="是否高新技术企业：" prop="isHighTech">
             <el-radio-group v-model="ruleForm.isHighTech" v-if="showInput=='yes'">
-              <el-radio label="1" value="1">是</el-radio>
-              <el-radio label="2" value="2">否</el-radio>
+              <el-radio label='1' value='1'>是</el-radio>
+              <el-radio label='2' value='2'>否</el-radio>
             </el-radio-group>
             <div v-else>
               <p v-if="ruleForm.isHighTech==1">是</p>
@@ -53,9 +53,9 @@
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                                                                  <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
-                                                                  <div v-else>div</div>
-                                                                </el-form-item> -->
+                                                                            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
+                                                                            <div v-else>div</div>
+                                                                          </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
@@ -80,23 +80,26 @@
             <el-input v-model="ruleForm.addedEnergyConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.addedEnergyConsume}}</div>
           </el-form-item>
-          <el-form-item label="申报时间" required>
-            <el-col :span="4" v-if="showInput=='yes'" style="margin-left:-12px;">
-              <el-form-item prop="declareStartTime" class="input-length">
-                <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <span v-else>{{declareStartTime}}
-              <span class="line" :span="1">至</span>
-            </span>
-            <el-col :span="1" v-if="showInput=='yes'" style="margin-left:40px;">至
-            </el-col>
-            <el-col :span="11" v-if="showInput=='yes'">
-              <el-form-item prop="declareEndTime" class="input-length" style="margin-left:-25px;">
-                <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <span v-else>{{declareEndTime}}</span>
+          <el-form-item label="申报时间">
+            <!-- <el-col :span="4" v-if="showInput=='yes'" style="margin-left:-12px;">
+                        <el-form-item prop="declareStartTime" class="input-length">
+                          <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                      </el-col>
+                      <span v-else>{{declareStartTime}}
+                        <span class="line" :span="1">至</span>
+                      </span>
+                      <el-col :span="1" v-if="showInput=='yes'" style="margin-left:40px;">至
+                      </el-col>
+                      <el-col :span="11" v-if="showInput=='yes'">
+                        <el-form-item prop="declareEndTime" class="input-length" style="margin-left:-25px;">
+                          <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                      </el-col>
+                      <span v-else>{{declareEndTime}}</span> -->
+            <el-date-picker v-model="value" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" v-if="showInput=='yes'">
+            </el-date-picker>
+            <span v-else>{{value[0]}}至{{value[1]}}</span>
           </el-form-item>
         </el-form>
       </el-col>
@@ -121,6 +124,7 @@ export default {
       }
     };
     return {
+      value: [],
       radio: '2',
       showInput: 'no',
       declareStartTime: null,
@@ -137,7 +141,7 @@ export default {
         energyConsume: '',
         facBuildingArea: '',
         id: null,
-        isHighTech: '',
+        isHighTech: '0',
         mainBusIncome: '',
         patentNumber: '',
         ratifiedCoal: '',
@@ -198,14 +202,11 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.ruleForm.declareStartTime) {
-            this.declareStartTime = moment(this.ruleForm.declareStartTime).format('YYYY-MM-DD');
-            this.ruleForm.declareStartTime = moment(this.ruleForm.declareStartTime).format('x');
+          if (this.value) {
+            this.ruleForm.declareStartTime = moment(this.value[0]).format('x');
+            this.ruleForm.declareEndTime = moment(this.value[1]).format('x');
           }
-          if (this.ruleForm.declareEndTime) {
-            this.declareEndTime = moment(this.ruleForm.declareEndTime).format('YYYY-MM-DD');
-            this.ruleForm.declareEndTime = moment(this.ruleForm.declareEndTime).format('x');
-          }
+          this.ruleForm.isHighTech = Number(this.ruleForm.isHighTech);
           let name = 'admin-company-normData';
           if (this.$route.query.type === 'add') {
             name = 'admin';
@@ -257,13 +258,10 @@ export default {
       api.get('admin/indicator/detail', { companyId: this.$route.query.companyId }).then((e) => {
         if (e.status === 200) {
           this.ruleForm = e.data;
-          this.ruleForm.isHighTech = String(e.data.isHighTech);
-          if (e.data.declareStartTime) {
-            this.declareStartTime = moment(e.data.declareStartTime).format('YYYY-MM-DD');
+          if (e.data.isHighTech) {
+            this.ruleForm.isHighTech = String(e.data.isHighTech);
           }
-          if (e.data.declareEndTime) {
-            this.declareEndTime = moment(e.data.declareEndTime).format('YYYY-MM-DD');
-          }
+          this.value.push(moment(e.data.declareStartTime).format('YYYY-MM-DD'), moment(e.data.declareEndTime).format('YYYY-MM-DD'));
         }
       });
     },
