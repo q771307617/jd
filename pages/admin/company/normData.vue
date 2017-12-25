@@ -53,9 +53,9 @@
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                                                              <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
-                                                              <div v-else>div</div>
-                                                            </el-form-item> -->
+                                                                  <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
+                                                                  <div v-else>div</div>
+                                                                </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
@@ -80,16 +80,19 @@
             <el-input v-model="ruleForm.addedEnergyConsume" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.addedEnergyConsume}}</div>
           </el-form-item>
-          <el-form-item label="申报时间" required >
+          <el-form-item label="申报时间" required>
             <el-col :span="4" v-if="showInput=='yes'" style="margin-left:-12px;">
               <el-form-item prop="declareStartTime" class="input-length">
                 <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
-            <span v-else>{{declareStartTime}}-</span>
-            <el-col class="line" :span="1" v-if="showInput=='yes'">&nbsp————</el-col>
+            <span v-else>{{declareStartTime}}
+              <span class="line" :span="1">至</span>
+            </span>
+            <el-col :span="1" v-if="showInput=='yes'" style="margin-left:40px;">至
+            </el-col>
             <el-col :span="11" v-if="showInput=='yes'">
-              <el-form-item prop="declareEndTime" class="input-length">
+              <el-form-item prop="declareEndTime" class="input-length" style="margin-left:-25px;">
                 <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
@@ -195,7 +198,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('111', this.ruleForm.declareStartTime, this.ruleForm.declareEndTime);
           if (this.ruleForm.declareStartTime) {
             this.declareStartTime = moment(this.ruleForm.declareStartTime).format('YYYY-MM-DD');
             this.ruleForm.declareStartTime = moment(this.ruleForm.declareStartTime).format('x');
@@ -222,6 +224,7 @@ export default {
                   showInput: 'yes'
                 }
               });
+              this.getCompanyDetails();
             } else {
               this.$notify.error({
                 title: '指标数据提交失败',
@@ -254,6 +257,7 @@ export default {
       api.get('admin/indicator/detail', { companyId: this.$route.query.companyId }).then((e) => {
         if (e.status === 200) {
           this.ruleForm = e.data;
+          this.ruleForm.isHighTech = String(e.data.isHighTech);
           if (e.data.declareStartTime) {
             this.declareStartTime = moment(e.data.declareStartTime).format('YYYY-MM-DD');
           }
