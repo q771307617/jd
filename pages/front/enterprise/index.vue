@@ -4,9 +4,9 @@
       <el-main>
         <el-row>
           <el-col :span="24">
-            <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter.native="Search(FindCompanyName)">
-              <el-button slot="append" class="searchBtn" @click="Search(FindCompanyName)">搜&nbsp索</el-button>
+            <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter.native="Search(FindCompanyName)" style="width:983px">
             </el-input>
+              <el-button class="searchBtn" @click="Search(FindCompanyName)">搜&nbsp索</el-button>
           </el-col>
         </el-row>
         <el-row class="search">
@@ -220,6 +220,8 @@ export default {
     // 企业名称搜索
     Search(val) {
       if (val === '') {
+        this.params.companyName = null;
+        this.getCompanyInfo();
         return;
       }
       this.params.companyName = val;
@@ -333,7 +335,7 @@ export default {
     text-align: center;
     border: 1px solid #e0e0e0;
     border-radius: 1px;
-    width: 42px;
+    width: 39px;
     height: 20px;
     cursor: pointer;
     margin-left: -10px;
@@ -350,14 +352,20 @@ export default {
   .el-main {
     .el-row {
       .el-col {
+        .el-input__inner {
+          border-radius: 0;
+        }
         .searchBtn {
           background-color: #409eff;
-          width: 217px;
+          width: 219px;
           height: 40px;
-          border-radius: 0;
+          border-radius: none;
           font-size: 16px;
           color: #ffffff;
           letter-spacing: 9.14px;
+          position: absolute;
+          right: 4px;
+          top: 0;
         }
       }
       .content {

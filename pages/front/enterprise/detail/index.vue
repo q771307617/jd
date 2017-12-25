@@ -75,7 +75,7 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="6"><span class="justify_120" style="width:200px">是否“两代表一委员”：</span></el-col>
+            <el-col :span="5"><span class="justify_120" style="width:180px">是否“两代表一委员”：</span></el-col>
             <el-col :span="18">{{equals[companyInfo.isCommittee]}}</el-col>
               </el-col>
 
