@@ -53,9 +53,9 @@
             <div v-else>{{ruleForm.patentNumber}}</div>
           </el-form-item>
           <!-- <el-form-item label="创新平台：（技术中心、设计中心、研发中心）：" prop="staffScale">
-                                                                            <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
-                                                                            <div v-else>div</div>
-                                                                          </el-form-item> -->
+                                                                                  <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
+                                                                                  <div v-else>div</div>
+                                                                                </el-form-item> -->
           <el-form-item label="核定用能（吨标煤）：" prop="ratifiedCoal">
             <el-input v-model="ruleForm.ratifiedCoal" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.ratifiedCoal}}</div>
@@ -82,21 +82,21 @@
           </el-form-item>
           <el-form-item label="申报时间">
             <!-- <el-col :span="4" v-if="showInput=='yes'" style="margin-left:-12px;">
-                        <el-form-item prop="declareStartTime" class="input-length">
-                          <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
-                        </el-form-item>
-                      </el-col>
-                      <span v-else>{{declareStartTime}}
-                        <span class="line" :span="1">至</span>
-                      </span>
-                      <el-col :span="1" v-if="showInput=='yes'" style="margin-left:40px;">至
-                      </el-col>
-                      <el-col :span="11" v-if="showInput=='yes'">
-                        <el-form-item prop="declareEndTime" class="input-length" style="margin-left:-25px;">
-                          <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
-                        </el-form-item>
-                      </el-col>
-                      <span v-else>{{declareEndTime}}</span> -->
+                              <el-form-item prop="declareStartTime" class="input-length">
+                                <el-date-picker type="date" placeholder="请选择时间范围起始" v-model="ruleForm.declareStartTime" style="width: 100%;"></el-date-picker>
+                              </el-form-item>
+                            </el-col>
+                            <span v-else>{{declareStartTime}}
+                              <span class="line" :span="1">至</span>
+                            </span>
+                            <el-col :span="1" v-if="showInput=='yes'" style="margin-left:40px;">至
+                            </el-col>
+                            <el-col :span="11" v-if="showInput=='yes'">
+                              <el-form-item prop="declareEndTime" class="input-length" style="margin-left:-25px;">
+                                <el-date-picker type="date" placeholder="请选择时间范围结束" v-model="ruleForm.declareEndTime" style="width: 100%;"></el-date-picker>
+                              </el-form-item>
+                            </el-col>
+                            <span v-else>{{declareEndTime}}</span> -->
             <el-date-picker v-model="value" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" v-if="showInput=='yes'">
             </el-date-picker>
             <span v-else>{{value[0]}}至{{value[1]}}</span>
@@ -202,7 +202,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.value) {
+          if (this.value[0] && this.value[1]) {
             this.ruleForm.declareStartTime = moment(this.value[0]).format('x');
             this.ruleForm.declareEndTime = moment(this.value[1]).format('x');
           }
@@ -261,7 +261,9 @@ export default {
           if (e.data.isHighTech) {
             this.ruleForm.isHighTech = String(e.data.isHighTech);
           }
-          this.value.push(moment(e.data.declareStartTime).format('YYYY-MM-DD'), moment(e.data.declareEndTime).format('YYYY-MM-DD'));
+          if (e.data.declareStartTime && e.data.declareEndTime) {
+            this.value.push(moment(e.data.declareStartTime).format('YYYY-MM-DD'), moment(e.data.declareEndTime).format('YYYY-MM-DD'));
+          }
         }
       });
     },
