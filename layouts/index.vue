@@ -8,9 +8,11 @@
       <div class="nav">
         <p class="navLeft">
           <nuxt-link :to="{name:'front'}">首页</nuxt-link>
-          <span></span>
+          <!-- <span></span> -->
+          <img class="heightline" src="./../assets/img/heightLine.png" alt="">
           <nuxt-link :to="{name:'front-dataAnalysis'}">数据分析</nuxt-link>
-          <span></span>
+          <!-- <span></span> -->
+          <img class="heightline" src="./../assets/img/heightLine.png" alt="">
           <nuxt-link :to="{name:'front-enterprise'}">企业管理</nuxt-link>
         </p>
         <p class="navRight" @click="loginOut">
@@ -66,9 +68,9 @@ export default {
   },
   mounted() {
     window.localStorage.setItem('loginType', 'index');
+    this.isPermissions();
     // this.USER_GET();
     this.LIST_GET();
-    this.isPermissions();
   }
 };
 </script>
@@ -98,7 +100,11 @@ a {
     padding: 3px;
   }
 }
-
+.heightline{
+  display:inline-block;
+  width:2px;
+  margin-bottom: -10px;
+}
 .header {
   width: 100%;
   min-width: 1400px;
@@ -124,10 +130,10 @@ a {
 }
 .nav {
   width: 1200px;
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   margin: 0 auto;
-
+  z-index: 9999;
   .navLeft {
     width: 600px;
     height: 40px;
@@ -139,7 +145,7 @@ a {
       display: inline-block;
       text-align: center;
     }
-    span {
+    .span {
       background: -moz-linear-gradient(top, #072fa0 0%, #0267ca 50%, #072fa0 100%);
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #072fa0), color-stop(50%, #0267ca), color-stop(100%, #072fa0));
       background: -webkit-linear-gradient(top, #072fa0 0%, #0267ca 50%, #072fa0 100%);
