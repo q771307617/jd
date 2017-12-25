@@ -1,9 +1,9 @@
 <template>
   <div class="pages flex-box block">
     <!-- <p class="demonstration">共
-                                <span class="red">{{count}}</span>条数据
-                                <span style="margin-left:20px;">每页</span>
-                                <span class="red">{{pageSize}}</span>条</p> -->
+                                  <span class="red">{{count}}</span>条数据
+                                  <span style="margin-left:20px;">每页</span>
+                                  <span class="red">{{pageSize}}</span>条</p> -->
     <el-pagination background @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page.sync="pageNum" prev-text=" < 上一页 " next-text=" 下一页 > " :page-size="pageSize" layout="prev, pager, next" :total="count">
     </el-pagination>
     <p style="line-height:28px;" v-if="count==0">第1页/共1页</p>
@@ -25,7 +25,7 @@ export default {
       pageNum: 1
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     pageSizeChange(val) {
       this.$emit('pageSizeChange', val);
@@ -35,7 +35,11 @@ export default {
         this.pageNum = this.input;
         this.$emit('pageCurrentChange', Number(this.pageNum));
         if (this.input > Math.ceil(this.count / this.pageSize)) {
-          this.input = Math.ceil(this.count / this.pageSize);
+          if (this.count === 0) {
+            this.input = 1;
+          } else {
+            this.input = Math.ceil(this.count / this.pageSize);
+          }
           this.$emit('pageCurrentChange', Number(this.input));
         }
       }
