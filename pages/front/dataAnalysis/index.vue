@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column prop="village" label="所属村(社区)" min-width="180" header-align="center">
         </el-table-column>
-        <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" sortable header-align="center" @sort-change="sortType(order)">
+        <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" :sortable='item.status' header-align="center" @sort-change="sortType(order)">
         </el-table-column>
         <el-table-column label="操作" header-align="center">
           <div slot-scope="scope">
