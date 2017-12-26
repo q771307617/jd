@@ -105,21 +105,7 @@ export default {
       statusAbaled: false,
       loginSype: ['', '不限', '前台', '后台'],
       // 账户列表
-      PermissionList: [
-        {
-          deleted: null,
-          gmtCreate: null,
-          id: null,
-          name: null,
-          roleId: null,
-          status: null,
-          title: null,
-          type: '',
-          username: null,
-          pageSize: 15,
-          pageNum: ''
-        }
-      ],
+      PermissionList: [],
       // 添加账户信息
       UserInfo: {
         password: '',
