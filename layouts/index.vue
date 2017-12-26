@@ -48,6 +48,9 @@ export default {
     loginOut() {
       api.post('/user/logout')
         .then(e => {
+          if (e.status === 200) {
+            this.$router.push({ name: 'index' });
+          }
         })
         .catch(error => {
           this.$notify.error({
@@ -60,8 +63,6 @@ export default {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
         if (e.data.type === 3) {
-          // alert(e.data.type);
-          location.href = '/';
           this.loginOut();
         }
       });
