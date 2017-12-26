@@ -16,7 +16,7 @@
       </ul>
       <div class='seachJl'>
         <!-- <el-button :loading="false" style='color:#606266'>快速筛选：</el-button> -->
-        <span style="display:inline-block;width:119px;height:40px;line-height:40px;border:1px solid #c9ccd3; border-radius:5px;color:#606266;text-align:center;background-color:#fff;">快速筛选：</span>
+        <span style="display:inline-block;width:119px;height:37.8px;line-height:37.8px;border:1px solid #c9ccd3; border-radius:5px;color:#606266;text-align:center;background-color:#fff;">快速筛选：</span>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
             <el-option  label='全部乡镇' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
