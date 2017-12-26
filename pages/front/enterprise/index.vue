@@ -41,8 +41,8 @@
                 </li>
               </ul>
               <!--<transition name="el-zoom-in-top">
-                    <div class="transition-box">.el-zoom-in-top</div>
-                  </transition>-->
+                      <div class="transition-box">.el-zoom-in-top</div>
+                    </transition>-->
             </el-col>
             <el-col :span="1">
               <a @click="showTownShip" class="more">更多
@@ -200,6 +200,7 @@ export default {
     },
     // 职工人数排序
     staff() {
+      this.params.partyMemberNumberType = 0;
       this.params.staffScaleType = Number(++this.params.staffScaleType);
       if (this.params.staffScaleType === 3) {
         this.params.staffScaleType = 0;
@@ -208,6 +209,7 @@ export default {
     },
     // 党员人数排序
     party() {
+      this.params.staffScaleType = 0;
       this.params.partyMemberNumberType = Number(
         ++this.params.partyMemberNumberType
       );
