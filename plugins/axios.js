@@ -5,5 +5,5 @@ let options = {};
 if (process.server) {
   options.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`;
 }
-
+axios.defaults.withCredentials = true;
 export default axios.create(options);
