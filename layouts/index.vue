@@ -111,7 +111,7 @@ a {
 }
 .header {
   width: 100%;
-  min-width: 1400px;
+  min-width: 1200px;
   background:#0267ca;
   background: -moz-linear-gradient(top, #0267ca 0%, #072fa0 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0267ca), color-stop(100%, #072fa0));

@@ -477,7 +477,8 @@ export default {
 body #mapDiv {
   width: 100%;
   min-width: 1200px;
-  min-height: 600px;
+  min-height: 810px;
+  // height: auto;
   position: absolute;
   top: 150px;
   left: 0;
