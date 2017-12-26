@@ -222,7 +222,7 @@ export default {
                 query: {
                   type: this.$route.query.type,
                   companyId: this.$route.query.companyId,
-                  showInput: 'yes'
+                  showInput: 'no'
                 }
               });
               this.getCompanyDetails();
