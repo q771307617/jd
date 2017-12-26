@@ -11,7 +11,8 @@ var instance = axios.create({
   baseURL: '/api',
   timeout: 5000,
   headers: {
-    'Access-Control-Allow-Origin': '*'
+    'Content-Type': 'application/x-www-form-urlencoded'
+    // 'Access-Control-Allow-Origin': '*'
   }
 });
 
@@ -21,7 +22,7 @@ let goLogin = (data) => {
   // let router = new Router();
   // router.push({name: 'login'});
   var loginType = localStorage.getItem('loginType');
-  Vue.prototype.$alert(data, '错误', {
+  Vue.prototype.$alert(data.msg, '错误', {
     showConfirmButton: true,
     confirmButtonText: '重新登陆',
     callback: action => {
@@ -45,7 +46,6 @@ instance.interceptors.request.use(function (config) {
 
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
-  console.log(res.data);
   if (res.data && res.data.status === 401) {
     goLogin(res.data);
   }
