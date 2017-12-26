@@ -6,7 +6,7 @@
           <el-col :span="24">
             <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter.native="Search(FindCompanyName)" style="width:983px">
             </el-input>
-              <el-button class="searchBtn" @click="Search(FindCompanyName)">搜索</el-button>
+            <el-button class="searchBtn" @click="Search(FindCompanyName)">搜索</el-button>
           </el-col>
         </el-row>
         <el-row class="search">
@@ -41,8 +41,8 @@
                 </li>
               </ul>
               <!--<transition name="el-zoom-in-top">
-                  <div class="transition-box">.el-zoom-in-top</div>
-                </transition>-->
+                    <div class="transition-box">.el-zoom-in-top</div>
+                  </transition>-->
             </el-col>
             <el-col :span="1">
               <a @click="showTownShip" class="more">更多
@@ -70,65 +70,65 @@
             <div class="personal" @click="staff()">
               <span>职工人数</span>
               <span class="arrow">
-                <i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.staffScaleType }"></i>
-                <i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.staffScaleType }"></i>
+                <i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: params.staffScaleType==1 }"></i>
+                <i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.staffScaleType==2 }"></i>
               </span>
             </div>
             <div class="personal" @click="party()">
               <span>党员人数</span>
               <span class="arrow">
-                <i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: !params.partyMemberNumberType }"></i>
-                <i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType }"></i>
+                <i class="sort-caret el-icon-caret-top" v-bind:class="{ selected: params.partyMemberNumberType==1 }"></i>
+                <i class="sort-caret el-icon-caret-bottom" v-bind:class="{ selected: params.partyMemberNumberType==2 }"></i>
               </span>
             </div>
           </el-row>
           <!-- 企业信息展示 -->
           <div class="container">
-          <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
-            <el-col :span="6">
-              <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
+            <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
+              <el-col :span="6">
+                <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
+              </el-col>
+              <el-col :span="14">
+                <el-col :span="24">
+                  <h1>{{item.companyName}}</h1>
+                </el-col>
+                <el-col :span="24" class="height30">
+                  <el-col :span="6">
+                    <span>所 属乡镇/村：</span>
+                  </el-col>
+                  <el-col :span="18">{{item.townName}}</el-col>
+                </el-col>
+                <el-col :span="24" class="height30">
+                  <el-col :span="6">
+                    <span>所 属 行 业：</span>
+                  </el-col>
+                  <el-col :span="18">
+                    <i>{{item.tradeName}}</i>
+                  </el-col>
+                </el-col>
+                <el-col :span="24" class="height30">
+                  <el-col :span="6">
+                    <span>主 要核心产品：</span>
+                  </el-col>
+                  <el-col :span="18">{{item.productMainName}}</el-col>
+                </el-col>
+                <el-col :span="24" class="height30">
+                  <el-col :span="6">
+                    <span>地 址：</span>
+                  </el-col>
+                  <el-col :span="18">{{item.companyAddress}}</el-col>
+                </el-col>
+                <el-col :span="24" class="height30">
+                  <el-col :span="6">
+                    <span>联 系 方 式：</span>
+                  </el-col>
+                  <el-col :span="18">{{item.chargePersonTel}}</el-col>
+                </el-col>
+              </el-col>
+              <el-col :span="3">
+                <el-button type="primary" style="margin-top: 80px;" @click="ViewDetails(item.companyId)">查看企业详情</el-button>
+              </el-col>
             </el-col>
-            <el-col :span="14">
-              <el-col :span="24">
-                <h1>{{item.companyName}}</h1>
-              </el-col>
-              <el-col :span="24" class="height30">
-                <el-col :span="6">
-                  <span>所 属乡镇/村：</span>
-                </el-col>
-                <el-col :span="18">{{item.townName}}</el-col>
-              </el-col>
-              <el-col :span="24" class="height30">
-                <el-col :span="6">
-                  <span>所 属 行 业：</span>
-                </el-col>
-                <el-col :span="18">
-                  <i>{{item.tradeName}}</i>
-                </el-col>
-              </el-col>
-              <el-col :span="24" class="height30">
-                <el-col :span="6">
-                  <span>主 要核心产品：</span>
-                </el-col>
-                <el-col :span="18">{{item.productMainName}}</el-col>
-              </el-col>
-              <el-col :span="24" class="height30">
-                <el-col :span="6">
-                  <span>地 址：</span>
-                </el-col>
-                <el-col :span="18">{{item.companyAddress}}</el-col>
-              </el-col>
-              <el-col :span="24" class="height30">
-                <el-col :span="6">
-                  <span>联 系 方 式：</span>
-                </el-col>
-                <el-col :span="18">{{item.chargePersonTel}}</el-col>
-              </el-col>
-            </el-col>
-            <el-col :span="3">
-              <el-button type="primary" style="margin-top: 80px;" @click="ViewDetails(item.companyId)">查看企业详情</el-button>
-            </el-col>
-          </el-col>
           </div>
           <!-- 分页 -->
           <el-col :span="24">
@@ -200,14 +200,20 @@ export default {
     },
     // 职工人数排序
     staff() {
-      this.params.staffScaleType = Number(!this.params.staffScaleType);
+      this.params.staffScaleType = Number(++this.params.staffScaleType);
+      if (this.params.staffScaleType === 3) {
+        this.params.staffScaleType = 0;
+      }
       this.getCompanyInfo();
     },
     // 党员人数排序
     party() {
       this.params.partyMemberNumberType = Number(
-        !this.params.partyMemberNumberType
+        ++this.params.partyMemberNumberType
       );
+      if (this.params.partyMemberNumberType === 3) {
+        this.params.partyMemberNumberType = 0;
+      }
       this.getCompanyInfo();
     },
     // 查看企业详情
@@ -292,7 +298,7 @@ export default {
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .ListDetail {
-  .container{
+  .container {
     min-height: 400px;
     width: 1200px;
   }
