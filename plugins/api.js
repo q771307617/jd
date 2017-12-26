@@ -42,8 +42,8 @@ instance.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
   var loginType = localStorage.getItem('loginType');
+  alert(res.data);
   if (res.data && res.data.status === 401) {
-    alert(res.data.status);
     if (loginType === 'admin') {
       goLogin();
       setTimeout(location.href = '/adminLogin', 1000);
@@ -56,7 +56,6 @@ instance.interceptors.response.use(function (res) {
 
   if (res && res.data && res.data.status !== 200) {
     console.log(e.data);
-    alert(e.data, res.data.status);
     res.data.data = {
     };
   }

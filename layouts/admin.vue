@@ -137,7 +137,7 @@ export default {
       api.post('/user/logout')
         .then(e => {
           if (e.status === 200) {
-            location.href = '/adminLogin';
+            this.$router.push({ name: 'adminLogin' });
           }
         })
         .catch(error => {
