@@ -55,8 +55,8 @@ instance.interceptors.response.use(function (res) {
   }
 
   if (res && res.data && res.data.status !== 200) {
+    alert(res.data.status);
     res.data.data = {
-
     };
   }
   return res;

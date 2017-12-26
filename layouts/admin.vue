@@ -134,9 +134,11 @@ export default {
       });
     },
     loginOut() {
-      location.href = '/adminLogin';
       api.post('/user/logout')
         .then(e => {
+          if (e.status === 200) {
+            location.href = '/adminLogin';
+          }
         })
         .catch(error => {
           this.$notify.error({
