@@ -17,16 +17,20 @@ var instance = axios.create({
 
 instance.baseURL = '/api';
 
-let goLogin = () => {
+let goLogin = (data) => {
   // let router = new Router();
   // router.push({name: 'login'});
-  Vue.prototype.$alert('当前账号已登出，请重新登录', '错误', {
-    showConfirmButton: false,
+  var loginType = localStorage.getItem('loginType');
+  Vue.prototype.$alert(data, '错误', {
+    showConfirmButton: true,
+    confirmButtonText: '重新登陆',
     callback: action => {
-      this.$message({
-        type: 'info',
-        message: `action: $ { action }`
-      });
+      if (loginType === 'admin') {
+        setTimeout(location.href = '/adminLogin', 1000);
+      }
+      if (loginType === 'index') {
+        setTimeout(location.href = '/', 1000);
+      }
     }
   });
 };
@@ -41,21 +45,13 @@ instance.interceptors.request.use(function (config) {
 
 // 添加一个响应拦截器
 instance.interceptors.response.use(function (res) {
-  var loginType = localStorage.getItem('loginType');
-  alert(res.data);
+  console.log(res.data);
   if (res.data && res.data.status === 401) {
-    if (loginType === 'admin') {
-      goLogin();
-      setTimeout(location.href = '/adminLogin', 1000);
-    }
-    if (loginType === 'index') {
-      goLogin();
-      setTimeout(location.href = '/', 1000);
-    }
+    goLogin(res.data);
   }
 
   if (res && res.data && res.data.status !== 200) {
-    console.log(e.data);
+    // console.log(e.data);
     res.data.data = {
     };
   }
