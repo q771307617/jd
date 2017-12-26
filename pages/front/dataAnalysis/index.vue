@@ -3,10 +3,10 @@
   <div class='hello'>
     <div class="mainNav">
       <div class="mainNavs">
-        <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
+        <!-- <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
           <el-radio-button :label="item.key" class="redio" style="width:133px" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
-        </el-radio-group>
-        <!-- <ul><li v-for="(item,index) in type" :key="item.key" class="redio" :class="{native: index===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul> -->
+        </el-radio-group> -->
+        <ul><li v-for="item in type" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul>
       </div>
     </div>
     <div class="mainContent">
@@ -143,10 +143,10 @@ export default {
 </script>
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
 .hello {
-  width: 1200px;
-  margin: 0 auto;
+  // width: 1200px;
+  // margin: 0 auto;
   .mainNav {
     background: #f7f7f7;
     border: 1px solid #e0e0e0;
