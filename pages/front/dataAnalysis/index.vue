@@ -93,7 +93,6 @@ export default {
     handleCurrentChange(val) {
       this.dataParams.pageNum = Number(val);
       this.getData();
-      console.log(val);
     },
     // 表格颜色
     tableRowClassName({ row, rowIndex }) {

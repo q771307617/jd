@@ -150,9 +150,7 @@ export default {
     isPermissions() {
       api.get('user/info', {}).then(e => {
         if (e.status !== 200) return;
-        // console.log(e.data.type);
         if (e.data.type === 2) {
-          // alert(e.data.type);
           this.loginOut();
         }
       });
