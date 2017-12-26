@@ -6,7 +6,7 @@
           <el-col :span="24">
             <el-input placeholder="企业名称" prefix-icon="el-icon-search" v-model="FindCompanyName" @keyup.enter.native="Search(FindCompanyName)" style="width:983px">
             </el-input>
-              <el-button class="searchBtn" @click="Search(FindCompanyName)">搜&nbsp索</el-button>
+              <el-button class="searchBtn" @click="Search(FindCompanyName)">搜索</el-button>
           </el-col>
         </el-row>
         <el-row class="search">
@@ -94,13 +94,13 @@
               </el-col>
               <el-col :span="24" class="height30">
                 <el-col :span="6">
-                  <span>所属乡镇/村：</span>
+                  <span>所 属乡镇/村：</span>
                 </el-col>
                 <el-col :span="18">{{item.townName}}</el-col>
               </el-col>
               <el-col :span="24" class="height30">
                 <el-col :span="6">
-                  <span>所属行业：</span>
+                  <span>所 属 行 业：</span>
                 </el-col>
                 <el-col :span="18">
                   <i>{{item.tradeName}}</i>
@@ -108,19 +108,19 @@
               </el-col>
               <el-col :span="24" class="height30">
                 <el-col :span="6">
-                  <span>主要核心产品：</span>
+                  <span>主 要核心产品：</span>
                 </el-col>
                 <el-col :span="18">{{item.productMainName}}</el-col>
               </el-col>
               <el-col :span="24" class="height30">
                 <el-col :span="6">
-                  <span>地&nbsp&nbsp&nbsp址：</span>
+                  <span>地 址：</span>
                 </el-col>
                 <el-col :span="18">{{item.companyAddress}}</el-col>
               </el-col>
               <el-col :span="24" class="height30">
                 <el-col :span="6">
-                  <span>联系方式：</span>
+                  <span>联 系 方 式：</span>
                 </el-col>
                 <el-col :span="18">{{item.chargePersonTel}}</el-col>
               </el-col>

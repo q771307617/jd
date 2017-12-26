@@ -35,7 +35,7 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">所属村（社区）：</span></el-col>
+            <el-col :span="4"><span class="justify_120">所属村 （社区）：</span></el-col>
             <el-col :span="20">{{companyInfo.villageName}}</el-col>
               </el-col>
 
@@ -55,12 +55,12 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">主要核心产品：</span></el-col>
+            <el-col :span="4"><span class="justify_120">主 要 核 心 产 品：</span></el-col>
             <el-col :span="20">{{companyInfo.productName}}</el-col>
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">规上（规下）：</span></el-col>
+            <el-col :span="4"><span class="justify_120">规 上 （ 规下 ） ：</span></el-col>
             <el-col :span="20">{{scaleUp[companyInfo.scaleUp]}}</el-col>
               </el-col>
 
@@ -90,7 +90,7 @@
               </el-col>
 
             <el-col :span="24">
-            <el-col :span="4"><span class="justify_120">企业职工人数：</span></el-col>
+            <el-col :span="4"><span class="justify_120">企 业 职 工 人 数：</span></el-col>
             <el-col :span="20">{{companyInfo.staffScale}}</el-col>
               </el-col>
 
@@ -127,35 +127,35 @@
           <!-- 数据指标左-->
             <el-col :span="12" class="colHeight30" style="background:#eff6fa;">
               <el-col :span="24" style="margin-top:17px;">
-                <el-col :span="10"><span class="justify_180">厂房建筑面积（m²）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">厂 房 建 筑 面 积（m²）：</span></el-col>
                 <el-col :span="14">{{companyInfo.facBuildingArea}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">实际用地面积（亩）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">实 际 用 地 面 积（亩） ：</span></el-col>
                 <el-col :span="14">{{companyInfo.actualLandArea}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">存量厂房面积（m²）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">存 量 厂 房 面 积（m²）：</span></el-col>
                 <el-col :span="14">{{companyInfo.stockWorkArea}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">入库税收（万元）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">入 库 税 收（万元）：</span></el-col>
                 <el-col :span="14">{{companyInfo.tax}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">R＆D经费投入（万元）：</span></el-col>
+                <el-col :span="10"><span class="justify_180">R＆D经 费 投 入(万元)：</span></el-col>
                 <el-col :span="14">{{companyInfo.researchFee}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">主营业务收入(万元)：</span></el-col>
+                <el-col :span="10"><span class="justify_180">主 营 业 务 收 入(万元)：</span></el-col>
                 <el-col :span="14">{{companyInfo.mainBusIncome}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">是否高新技术企业：</span></el-col>
+                <el-col :span="10"><span class="justify_180">是 否 高 新 技 术 企 业 ：</span></el-col>
                 <el-col :span="14">{{equals[companyInfo.isHighTech]}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">发明专利量：</span></el-col>
+                <el-col :span="10"><span class="justify_180">发 明 专 利 量：</span></el-col>
                 <el-col :span="14">{{companyInfo.patentNumber}}</el-col>
               </el-col>
             <el-col>
@@ -164,11 +164,11 @@
           <!-- 数据指标右 -->
           <el-col :span="12" class="colHeight30"  style="background:#eff6fa;">
               <el-col :span="24" style="margin-top:17px;">
-                <el-col :span="10"><span class="justify_180">核定用能(吨标煤)：</span></el-col>
+                <el-col :span="10"><span class="justify_180">核 定 用 能 (吨 标 煤) ：</span></el-col>
                 <el-col :span="14">{{companyInfo.ratifiedCoal}}</el-col>
               </el-col>
               <el-col :span="24">
-                <el-col :span="10"><span class="justify_180">实际等价值能耗(吨标煤)：</span></el-col>
+                <el-col :span="10"><span class="justify_180">实际等价值能耗(吨  标  煤)：</span></el-col>
                 <el-col :span="14">{{companyInfo.energyConsume}}</el-col>
               </el-col>
             <el-col :span="24">
@@ -176,11 +176,11 @@
               <el-col :span="14">{{companyInfo.waterConsume}}</el-col>
             </el-col>
             <el-col :span="24">
-              <el-col :span="10"><span class="justify_180">电耗（万千瓦时）:</span></el-col>
+              <el-col :span="10"><span class="justify_180">电 耗 （万  千  瓦  时） :</span></el-col>
               <el-col :span="14">{{companyInfo.elecConsume}}</el-col>
             </el-col>
             <el-col :span="24">
-              <el-col :span="10"><span class="justify_180">煤耗（吨标煤）:</span></el-col>
+              <el-col :span="10"><span class="justify_180">煤    耗 （ 吨 标 煤 ） :</span></el-col>
               <el-col :span="14">{{companyInfo.coalConsume}}</el-col>
             </el-col>
             <el-col :span="24">
