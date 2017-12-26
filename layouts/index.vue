@@ -180,7 +180,7 @@ a {
 
 #content {
   min-height: 810px;
-  max-height:3200px;
+  // max-height:3200px;
   height: auto; // width: 1200px;
   margin: 0 auto;
 }

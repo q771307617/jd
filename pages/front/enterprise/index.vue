@@ -294,6 +294,7 @@ export default {
 .ListDetail {
   .container{
     min-height: 400px;
+    width: 1200px;
   }
   .search {
     margin-top: 23px;
