@@ -61,7 +61,9 @@ export default {
     },
     isPermissions() {
       api.get('user/info', {}).then(e => {
-        if (e.status !== 200) return;
+        if (e.status !== 200) {
+          this.$message(e.msg);
+        };
         if (e.data.type === 3) {
           this.loginOut();
         }
