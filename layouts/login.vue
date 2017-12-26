@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-      <p class="three">@2017 jiandezhengfuxinxi  Reserved.   浙ICP备案15043816号-1  浙公网安备 33010902000325</p>
+      <!-- <p class="three">@2017 jiandezhengfuxinxi  Reserved.   浙ICP备案15043816号-1  浙公网安备 33010902000325</p> -->
       <nuxt/>
   </div>
 </template>

@@ -134,9 +134,11 @@ export default {
       });
     },
     loginOut() {
-      location.href = '/adminLogin';
       api.post('/user/logout')
         .then(e => {
+          if (e.status === 200) {
+            this.$router.push({ name: 'adminLogin' });
+          }
         })
         .catch(error => {
           this.$notify.error({
@@ -147,10 +149,10 @@ export default {
     },
     isPermissions() {
       api.get('user/info', {}).then(e => {
-        if (e.status !== 200) return;
-        // console.log(e.data.type);
+        if (e.status !== 200) {
+          this.$message(e.msg);
+        };
         if (e.data.type === 2) {
-          // alert(e.data.type);
           this.loginOut();
         }
       });

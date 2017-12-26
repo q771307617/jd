@@ -23,8 +23,8 @@
     </div>
     <nuxt id="content" />
     <div class="footer" v-if="$route.name!='front'">
-      <p>关于我们</p>
-      <p>@2017 jiandezhengfuxinxi Reserved. 浙ICP备案15043816号-1 浙公网安备 33010902000325</p>
+      <!-- <p>关于我们</p>
+      <p>@2017 jiandezhengfuxinxi Reserved. 浙ICP备案15043816号-1 浙公网安备 33010902000325</p> -->
     </div>
 
   </div>
@@ -48,6 +48,9 @@ export default {
     loginOut() {
       api.post('/user/logout')
         .then(e => {
+          if (e.status === 200) {
+            this.$router.push({ name: 'index' });
+          }
         })
         .catch(error => {
           this.$notify.error({
@@ -58,10 +61,10 @@ export default {
     },
     isPermissions() {
       api.get('user/info', {}).then(e => {
-        if (e.status !== 200) return;
+        if (e.status !== 200) {
+          this.$message(e.msg);
+        };
         if (e.data.type === 3) {
-          // alert(e.data.type);
-          location.href = '/';
           this.loginOut();
         }
       });
@@ -85,11 +88,11 @@ a {
 .footer {
   width: 100%;
   min-width: 1200px;
-  height: 55px;
-  max-height: 55px;
+  height: 60px;
+  // max-height: 55px;
   text-align: center;
   background: #014bb2;
-  padding: 40px 0;
+  // padding: 10px 0;
   color: #FFF;
   p {
     height: 20px;
@@ -179,8 +182,8 @@ a {
 }
 
 #content {
-  min-height: 850px;
-  max-height:3200px;
+  min-height: 810px;
+  // max-height:3200px;
   height: auto; // width: 1200px;
   margin: 0 auto;
 }
