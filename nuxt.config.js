@@ -27,7 +27,7 @@ module.exports = {
   ],
   proxy: [
     ['/api', { target: 'http://online.jd.yumc.pw/' }],
-    ['/upload', { target: 'http://online.jd.yumc.pw:8181' }],
+    ['/upload', { target: 'http://online.jd.yumc.pw:8181'}],
   ],
   // proxy: {
   //   '/api': {
