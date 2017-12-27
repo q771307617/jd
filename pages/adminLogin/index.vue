@@ -1,5 +1,6 @@
 <template>
-    <div class="login container bg-admin">
+    <div class="login">
+    <div class="container bg-admin">
       <div class="slogan"></div>
       <div class="content">
         <p class="text">登录</p>
@@ -33,6 +34,8 @@
           <el-button class="btn" @click="submitLogin">登录</el-button>
         </div>
       </div>
+    </div>
+      <nuxt/>
   </div>
 </template>
 <script>
@@ -272,6 +275,3 @@ export default {
   height: 40px;
 }
 </style>
-
-
-
