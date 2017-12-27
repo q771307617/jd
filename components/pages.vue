@@ -1,19 +1,19 @@
 <template>
-  <div class="pages flex-box block">
-    <!-- <p class="demonstration">共
-                                  <span class="red">{{count}}</span>条数据
-                                  <span style="margin-left:20px;">每页</span>
-                                  <span class="red">{{pageSize}}</span>条</p> -->
-    <el-pagination background @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page.sync="pageNum" prev-text=" < 上一页 " next-text=" 下一页 > " :page-size="pageSize" layout="prev, pager, next" :total="count">
-    </el-pagination>
-    <p style="line-height:28px;" v-if="count==0">第1页/共1页</p>
-    <p style="line-height:28px;" v-else>第{{pageNum}}页/共{{Math.ceil(count/pageSize)}}页</p>
-    <div style="margin-left:16px;">到第
-      <el-input v-model="input" size="mini" style="width:46px;"></el-input>页</div>
-    <div style="line-height:28px;margin-left:16px;">
-      <el-button type="primary" size="mini" @click="pageCurrentNumChange">确定</el-button>
+  <div class="pages">
+    <div class="flex-box block">
+      <el-pagination style="display:inline-block;" background @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page.sync="pageNum" prev-text="　< 上一页　" next-text="　下一页 >　" :page-size="pageSize" layout="prev, pager, next" :total="count">
+      </el-pagination>
+      <p style="display:inline-block;line-height:28px;" v-if="count==0">第1页 / 共1页</p>
+      <p style="display:inline-block;line-height:28px;" v-else>第{{pageNum}}页/共{{Math.ceil(count/pageSize)}}页</p>
+      <div style="display:inline-block;margin-left:16px;">到第
+        <el-input v-model="input" size="mini" style="width:46px;"></el-input>页</div>
+      <div style="display:inline-block;line-height:28px;margin:0 16px;">
+        <el-button type="primary" size="mini" @click="pageCurrentNumChange">确定</el-button>
+      </div>
     </div>
+    <div class="clear"></div>
   </div>
+
 </template>
 <script>
 export default {
@@ -59,14 +59,16 @@ export default {
 </script>
 <style scoped lang="scss">
 .pages {
-  text-align: right;
   margin: 30px 0;
 }
-
+.clear{
+clear: both;
+}
 .block {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  text-align: right;
+  min-width: 400px;
+  float:right;
+
   .red {
     color: red;
   }

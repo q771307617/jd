@@ -196,11 +196,14 @@ export default {
         .then(e => {
           if (e.status === 200) {
             this.$message({
-              message: '修改成功',
+              message: e.msg,
               type: 'success'
             });
           } else {
-            this.$message.error('修改失败');
+            if (e.status === 403) {
+              this.getCompanyList();
+            }
+            this.$message.error(e.msg);
           }
         });
     },

@@ -15,8 +15,8 @@
           <img class="heightline" src="./../assets/img/heightLine.png" alt="">
           <nuxt-link :to="{name:'front-enterprise'}">企业管理</nuxt-link>
         </p>
-        <p class="navRight" @click="loginOut">
-          <nuxt-link :to="{name:'index'}">
+        <p class="navRight">
+          <nuxt-link @click="loginOut" :to="{name:'index'}">
             <i class="el-icon-remove-outline"></i> 退出</nuxt-link>
         </p>
       </div>
