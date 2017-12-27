@@ -200,6 +200,9 @@ export default {
               type: 'success'
             });
           } else {
+            if (e.status === 403) {
+              this.getCompanyList();
+            }
             this.$message.error(e.msg);
           }
         });
