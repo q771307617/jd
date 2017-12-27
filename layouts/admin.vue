@@ -4,13 +4,14 @@
       <!-- 顶部 -->
       <div class="header">
         <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
-        <div class="user-info"><div class="top-admin"></div>{{info.name}}{{info.username}}
+        <div class="user-info">
+          <div class="top-admin"></div>{{info.name}}{{info.username}}
           <a style="margin:0 30px;cursor:pointer" @click="loginOut">退出</a>
         </div>
       </div>
       <!-- 侧边栏 -->
-      <div class="sidebar">
-        <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" text-color="#7792d0" background-color="#4d67a4" active-text-color="#fff" unique-opened @select="selectMenu">
+      <div class="sidebar" v-loading="loading">
+        <el-menu :default-active="status" class="el-menu-vertical-demo" text-color="#7792d0" background-color="#4d67a4" active-text-color="#fff" unique-opened @select="selectMenu">
           <div v-for="item in menus" :key="item.index">
             <div v-if="item.subs">
               <el-submenu :index="item.index" :key="item.index">
@@ -33,7 +34,7 @@
       </div>
     </div>
     <div class="content">
-        <nuxt/>
+      <nuxt/>
     </div>
   </div>
 </template>
@@ -43,10 +44,10 @@ import api from '~/plugins/api';
 export default {
   data() {
     return {
-      onRoutes: 'admin',
+      loading: false,
       name: '王厂长',
       role: '管理员',
-      status: 'admin',
+      status: '',
       menus: [
         {
           icon: 'companyIcon',
@@ -114,6 +115,8 @@ export default {
     this.isPermissions();
     this.LIST_GET();
     this.USER_GET();
+    console.log('188', this.$route);
+    this.activeMenu(this.$route.name);
   },
   methods: {
     ...mapActions(['LIST_GET', 'USER_GET']),
@@ -132,6 +135,15 @@ export default {
       this.$router.push({
         name: routerName
       });
+    },
+    activeMenu(val) {
+      // setTimeout(() => {
+      //   this.loading = false;
+      // }, 800);
+      console.log('hahaha', val);
+      this.status = val;
+      // this.onRoutes = val;
+      this.selectMenu(val);
     },
     loginOut() {
       api.post('/user/logout')
@@ -157,6 +169,12 @@ export default {
         }
       });
     }
+  },
+  watch: {
+    // $route(to, from) {
+    //   console.log('111', to);
+    //   console.log(from);
+    // }
   }
 };
 </script>
