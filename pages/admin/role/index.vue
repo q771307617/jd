@@ -196,11 +196,11 @@ export default {
         .then(e => {
           if (e.status === 200) {
             this.$message({
-              message: '修改成功',
+              message: e.msg,
               type: 'success'
             });
           } else {
-            this.$message.error('修改失败');
+            this.$message.error(e.msg);
           }
         });
     },
