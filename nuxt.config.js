@@ -26,8 +26,8 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   proxy: [
-    ['/api', { target: 'http://dev.jd.yumc.pw' }],
-    ['/upload', { target: 'http://172.30.34.241:8081' }],
+    ['/api', { target: 'http://online.jd.yumc.pw/' }],
+    ['/upload', { target: 'http://online.jd.yumc.pw:8181' }],
   ],
   // proxy: {
   //   '/api': {
@@ -95,6 +95,6 @@ module.exports = {
     }
   },
   plugins: [
-    { src: '~plugins/element-ui', ssr: false }
+    { src: '~plugins/element-ui', ssr: true }
   ]
 }
