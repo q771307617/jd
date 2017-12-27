@@ -20,7 +20,7 @@
             <div v-else>
               <div style="width:260px;height:174px;overflow: hidden;" v-if="this.$route.query.type!='add'"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;"></div>
             </div>
-            <el-upload action="/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
+            <el-upload action="api/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
               <el-button size="small" type="primary">点击上传</el-button>
               <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
