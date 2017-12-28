@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  scrollToTop: true,
   data() {
     return {
     };
@@ -22,8 +23,6 @@ export default {
   mounted() {
   },
   methods: {
-  },
-  watch: {
   }
 };
 </script>

@@ -136,10 +136,13 @@ export default {
       });
     },
     activeMenu(val) {
-      // setTimeout(() => {
-      //   this.loading = false;
-      // }, 800);
-      this.status = val;
+      if (val.indexOf('admin') > 0) {
+        this.status = 'admin';
+      } else if (val.indexOf('role') > 0) {
+        this.status = 'admin-role';
+      } else {
+        this.status = 'admin';
+      }
       // this.selectMenu(val);
     },
     loginOut() {
