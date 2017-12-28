@@ -115,7 +115,6 @@ export default {
     this.isPermissions();
     this.LIST_GET();
     this.USER_GET();
-    console.log('188', this.$route);
     this.activeMenu(this.$route.name);
   },
   methods: {
@@ -140,10 +139,8 @@ export default {
       // setTimeout(() => {
       //   this.loading = false;
       // }, 800);
-      console.log('hahaha', val);
       this.status = val;
-      // this.onRoutes = val;
-      this.selectMenu(val);
+      // this.selectMenu(val);
     },
     loginOut() {
       api.post('/user/logout')
@@ -171,10 +168,9 @@ export default {
     }
   },
   watch: {
-    // $route(to, from) {
-    //   console.log('111', to);
-    //   console.log(from);
-    // }
+    $route(to, from) {
+      this.activeMenu(to.name);
+    }
   }
 };
 </script>
