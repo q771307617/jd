@@ -26,18 +26,13 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   proxy: [
+    // 开发地址
     ['/api', { target: 'http://dev.jd.yumc.pw' }],
     ['/upload', { target: 'http://172.30.34.241:8081' }],
+    // 线上地址
+    // ['/api', { target: 'http://online.jd.yumc.pw/' }],
+    // ['/upload', { target: 'http://online.jd.yumc.pw:8181' }],
   ],
-  // proxy: {
-  //   '/api': {
-  //     target: 'http://dev.jd.yumc.pw',
-  //     // changeOrigin: true,
-  //     pathRewrite: {
-  //       '^/api': ''
-  //     }  
-  //   }
-  // },
   loading: { color: '#3B8070' },
   /*
   **页面过渡动画
