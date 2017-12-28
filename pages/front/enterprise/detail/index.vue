@@ -93,6 +93,10 @@
             <el-col :span="4"><span class="justify_120">企 业 职 工 人 数：</span></el-col>
             <el-col :span="20">{{companyInfo.staffScale}}</el-col>
               </el-col>
+            <el-col :span="24">
+            <el-col :span="4"><span class="justify_120">企业职工平均工资:</span></el-col>
+            <el-col :span="20">{{companyInfo.averageSalary}}</el-col>
+              </el-col>
 
             <el-col :span="24">
             <el-col :span="4"><span class="justify_120">党 组 织 名 称：</span></el-col>
