@@ -24,7 +24,7 @@ module.exports = {
   */
   modules: ['@nuxtjs/axios', '@nuxtjs/proxy'],
   proxy: [
-    // 开发地址
+    /* 开发地址 */
     ['/api', { target: 'http://dev.jd.yumc.pw' }],
     ['/upload', { target: 'http://172.30.34.241:8081' }]
     // 线上地址
