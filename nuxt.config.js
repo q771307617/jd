@@ -47,7 +47,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    analyze: true,
+    // analyze: true,
     // or
     analyze: {
       analyzerMode: 'static'
@@ -55,8 +55,7 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    /*请求数据*/
-
+    /* 请求数据 */
     vendor: ['axios', 'element-ui'],
     extend(config, ctx) {
       if (ctx.dev && ctx.isClient) {
@@ -86,5 +85,7 @@ module.exports = {
       });
     }
   },
-  plugins: [{ src: '~plugins/element-ui', ssr: true }]
+  plugins: [
+    { src: '~plugins/element-ui', ssr: true }
+  ]
 };
