@@ -78,6 +78,7 @@ import api from './../../plugins/api.js';
 import moment from 'moment';
 import pages from './../../components/pages';
 export default {
+  scrollToTop: true,
   data() {
     return {
       data: false,

@@ -111,6 +111,7 @@
 import api from './../../../plugins/api.js';
 import moment from 'moment';
 export default {
+  scrollToTop: true,
   data() {
     var checkNumber = (rule, value, callback) => {
       if (!value) {
@@ -234,6 +235,10 @@ export default {
             }
           });
         } else {
+          this.$notify.error({
+            title: '企业指标数据提交失败',
+            message: '请检查填写指标数据'
+          });
           return false;
         }
       });

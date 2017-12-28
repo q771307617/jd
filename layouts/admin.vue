@@ -42,6 +42,7 @@
 import { mapState, mapActions } from 'vuex';
 import api from '~/plugins/api';
 export default {
+  scrollToTop: true,
   data() {
     return {
       loading: false,
@@ -136,10 +137,13 @@ export default {
       });
     },
     activeMenu(val) {
-      // setTimeout(() => {
-      //   this.loading = false;
-      // }, 800);
-      this.status = val;
+      if (val.indexOf('admin') > 0) {
+        this.status = 'admin';
+      } else if (val.indexOf('role') > 0) {
+        this.status = 'admin-role';
+      } else {
+        this.status = 'admin';
+      }
       // this.selectMenu(val);
     },
     loginOut() {
@@ -192,7 +196,7 @@ export default {
   bottom: 0;
   width: auto;
   box-sizing: border-box;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   overflow-x: hidden;
 }
 

@@ -30,9 +30,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                            <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
-                                                            <div v-else>div</div>
-                                                          </el-form-item>-->
+                                                                        <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
+                                                                        <div v-else>div</div>
+                                                                      </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput=='yes'" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -66,9 +66,9 @@
             </el-col>
           </el-row>
           <!-- <el-form-item label="行业代码：" prop="tradeId">
-                        <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
-                        <div v-else>div</div>
-                      </el-form-item>-->
+                                    <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
+                                    <div v-else>div</div>
+                                  </el-form-item>-->
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput=='yes'">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
@@ -120,7 +120,7 @@
             <span v-else>{{ruleForm.staffScale}}</span>人
           </el-form-item>
           <el-form-item label="企业职工平均工资：" prop="averageSalary">
-            <el-input v-model="ruleForm.averageSalary" class="input-length" v-if="showInput=='yes'"></el-input>
+            <el-input v-model="ruleForm.averageSalary" class="input-length" v-if="showInput=='yes'" placeholder="平均薪资保留两位小数"></el-input>
             <span v-else>{{ruleForm.averageSalary}}</span>元
           </el-form-item>
           <el-form-item label="党组织名称：" prop="partyName">
@@ -155,6 +155,7 @@ import {
   mapState
 } from 'vuex';
 export default {
+  scrollToTop: true,
   data() {
     var checkNumber = (rule, value, callback) => {
       if (!value) {
@@ -162,6 +163,17 @@ export default {
       } else {
         if (!Number.isInteger(Number(value))) {
           callback(new Error('请输入数字值'));
+        } else {
+          callback();
+        }
+      }
+    };
+    var averageSalary = (rule, value, callback) => {
+      if (!value) {
+        return callback();
+      } else {
+        if (!/^[0-9.]+$/.test(value)) {
+          callback(new Error('请输入正确薪资'));
         } else {
           callback();
         }
@@ -252,7 +264,7 @@ export default {
           { validator: checkNumber, trigger: 'blur' }
         ],
         averageSalary: [
-          { validator: checkNumber, trigger: 'blur' }
+          { validator: averageSalary, trigger: 'blur' }
         ]
       }
     };
@@ -331,6 +343,10 @@ export default {
             }
           });
         } else {
+          this.$notify.error({
+            title: '企业信息提交失败',
+            message: '请检查填写数据'
+          });
           return false;
         }
       });
@@ -394,11 +410,6 @@ export default {
   },
   mounted() {
     this.getCompanyInfo();
-  },
-  watch: {
-    // 'ruleForm.townId'(val) {
-    //   this.ruleForm.villageId = '';
-    // }
   }
 };
 </script>
