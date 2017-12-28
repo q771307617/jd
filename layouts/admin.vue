@@ -42,7 +42,6 @@
 import { mapState, mapActions } from 'vuex';
 import api from '~/plugins/api';
 export default {
-  scrollToTop: true,
   data() {
     return {
       loading: false,
@@ -196,7 +195,7 @@ export default {
   bottom: 0;
   width: auto;
   box-sizing: border-box;
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
   overflow-x: hidden;
 }
 
