@@ -1,6 +1,5 @@
 <template>
-    <div class="login">
-    <div class="container bg-admin">
+    <div class=" login container bg-admin">
       <div class="slogan">
         <p class="one">建德企业信息管理平台</p>
         <hr class="wire">
@@ -39,8 +38,6 @@
         </div>
       </div>
     </div>
-      <nuxt/>
-  </div>
 </template>
 <script>
 import api from '~/plugins/api';
@@ -174,9 +171,10 @@ export default {
   height: 1080px;
   position: relative;
   margin: 0 auto;
+  background-image: url(../../assets/img/bgFrontLogin.png);
 }
 .bg-admin {
-  background-image: url(../../assets/img/bgFrontLogin.png);
+
 }
 .slogan {
   position: absolute;

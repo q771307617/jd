@@ -275,7 +275,7 @@ export default {
       api
         .get('company/getcompany', this.params)
         .then(e => {
-          if (e.status === 200 && e.data) {
+          if (e.status === 200) {
             this.EnterpriseProfile = e.data.list;
             this.pageCount = e.data.count;
           }

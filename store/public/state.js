@@ -39,14 +39,62 @@ export default {
   ],
   scale: [{ key: '1', name: '规上' }, { key: '2', name: '规下' }],
   searchindicator: [
-    { key: '1', label: '厂房建筑面积（㎡）', name: 'facBuildingArea', tittle: '厂房建筑面积' },
-    { key: '2', label: '实际用地面积（亩）', name: 'actualLandArea', tittle: '实际用地面积' },
-    { key: '3', label: '存量厂房面积（㎡）', name: 'stockWorkArea', tittle: '存量厂房面积' },
-    { key: '4', label: '入库税收（万元）', name: 'tax', tittle: '入库税收' },
-    { key: '5', label: 'R&D经费投入（万元）', name: 'researchFee', tittle: 'R&D经费投入' },
-    { key: '6', label: '主营业务收入（万元）', name: 'mainBusIncome', tittle: '主营业务收入' },
-    { key: '7', label: '高新技术企业', name: 'isHighTech', tittle: '高新技术企业' },
-    { key: '8', label: '发明专利量', name: 'patentNumber', tittle: '发明专利量' },
-    { key: '9', label: '核定用能（吨标煤）', name: 'ratifiedCoal', tittle: '核定用能' }
+    {
+      key: '1',
+      label: '厂房建筑面积（㎡）',
+      name: 'facBuildingArea',
+      tittle: '厂房建筑面积',
+      status: true
+    },
+    {
+      key: '2',
+      label: '实际用地面积（亩）',
+      name: 'actualLandArea',
+      tittle: '实际用地面积',
+      status: true
+    },
+    {
+      key: '3',
+      label: '存量厂房面积（㎡）',
+      name: 'stockWorkArea',
+      tittle: '存量厂房面积',
+      status: true
+    },
+    { key: '4', label: '入库税收（万元）', name: 'tax', tittle: '入库税收', status: true },
+    {
+      key: '5',
+      label: 'R&D经费投入（万元）',
+      name: 'researchFee',
+      tittle: 'R&D经费投入',
+      status: true
+    },
+    {
+      key: '6',
+      label: '主营业务收入（万元）',
+      name: 'mainBusIncome',
+      tittle: '主营业务收入',
+      status: true
+    },
+    {
+      key: '7',
+      label: '高新技术企业',
+      name: 'isHighTech',
+      tittle: '高新技术企业',
+      status: false
+    },
+    {
+      key: '8',
+      label: '发明专利量',
+      name: 'patentNumber',
+      tittle: '发明专利量',
+      status: true
+    },
+    {
+      key: '9',
+      label: '核定用能（吨标煤）',
+      name: 'ratifiedCoal',
+      tittle: '核定用能',
+      status: true
+    }
   ]
 };
