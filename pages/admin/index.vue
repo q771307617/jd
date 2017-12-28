@@ -176,6 +176,9 @@ export default {
           showInput: showInput
         }
       });
+      // window.localStorage.setItem('type', val);
+      // window.localStorage.setItem('companyId', row);
+      // window.localStorage.setItem('showInput', showInput);
     },
     deleteCompany(val) {
       this.deleteCom = true;
