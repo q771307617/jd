@@ -364,9 +364,9 @@ export default {
         markers.push([this.allCompanys[i].lng, this.allCompanys[i].lat]);
       }
       var icon = new window.T.Icon({
-        iconUrl: 'http://p1.so.qhimgs1.com/t01989df0653e0a5ac1.png',
-        iconSize: new window.T.Point(20, 25),
-        iconAnchor: new window.T.Point(10, 25)
+        iconUrl: 'http://1.img.dianjiangla.com/jdAssets/Positioning.png',
+        iconSize: new window.T.Point(26, 26),
+        iconAnchor: new window.T.Point(13, 26)
       });
       // var infoWin1 = new window.T.InfoWindow();
       for (let i = 0; i < markers.length; i++) {
@@ -423,9 +423,10 @@ export default {
         [119.54909, 29.716525],
         [119.295718, 29.528502]
       ];
+      // 'http://172.30.34.63:6080/arcgis/rest/services/JDLand_XZM/MapServer/identify'
       for (var item in polygonList) {
         window.$.ajax({
-          url: 'http://172.30.34.63:6080/arcgis/rest/services/JDLand_XZM/MapServer/identify',
+          url: '/map/arcgis/rest/services/JDLand_XZM/MapServer/identify',
           data: 'f=json&tolerance=5&returnGeometry=true&imageDisplay=1398%2C210%2C96&geometry=%7B"x"%3A' + polygonList[item][0] + '%2C"y"%3A' + polygonList[item][1] + '%7D&geometryType=esriGeometryPoint&sr=4326&mapExtent=118.94165999313367%2C29.6123519861085%2C119.90159041305554%2C29.756547542749125&layers=top',
           success: function (data) {
             var d = JSON.parse(data).results[0].geometry.rings[0];
