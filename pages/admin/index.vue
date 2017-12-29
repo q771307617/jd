@@ -11,7 +11,7 @@
     </div>
     <div class="company-table">
       <el-table :data="tableData" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%">
-        <el-table-column prop="createCompanyTime" label="上传时间" width="180">
+        <el-table-column prop="createCompanyTime" label="上传时间" width="140">
         </el-table-column>
         <el-table-column prop="companyName" label="企业名称" width="230">
         </el-table-column>
@@ -22,7 +22,7 @@
             {{scope.row.townName}}>{{scope.row.villageName}}
           </div>
         </el-table-column>
-        <el-table-column prop="chargePersonName" label="主要负责人">
+        <el-table-column prop="chargePersonName" label="主要负责人" width="90">
         </el-table-column>
         <el-table-column prop="chargePersonTel" label="联系电话">
         </el-table-column>
@@ -210,7 +210,7 @@ export default {
     border: 1px solid #d4e1ea;
     border-radius: 2px;
     max-width: 1648px;
-    min-width: 1200px;
+    min-width: 500px;
     height: 86px;
     span {
       line-height: 86px;
