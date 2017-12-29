@@ -1,6 +1,26 @@
 <template>
-  <div>
-    <div id='mapDiv' style=''></div>
+  <div class="mainMap">
+    <div id='mapDiv' style=''>
+      <div class='right'>
+        <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
+        <div class='rm'>
+          <p class="rmTitle"><span></span> 热门企业</p>
+          <ul class="ul">
+            <li class="li" v-for = "item in remenParams" :key='item.companyId' @click="findCompany(item.companyId)">
+              <p>
+                <img :src='item.factoryImageUrl' alt=''>
+              </p>
+              <ul>
+                <li class='ellipsis'>企业名称：<a>{{item.companyName}}</a></li>
+                <li class='ellipsis'>所属乡镇：<span>{{item.townName}}</span></li>
+                <li class='ellipsis'>地　　址：<span>{{item.companyAddress}}</span></li>
+                <li class='ellipsis'>联系方式：<span>{{item.chargePersonTel}}</span></li>
+              </ul>
+            </li>          
+          </ul>
+        </div>
+    </div>
+  </div>
     <div class='seach'>
       <!-- <input  type='text'>
       <span></span> -->
@@ -26,25 +46,6 @@
             <el-option v-for = "item in industry" :label='item.tradeName':key='item.id' :value='item.id'></el-option>
         </el-select>
       </div>
-    </div>
-    <div class='right'>
-        <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
-        <div class='rm'>
-          <p class="rmTitle"><span></span> 热门企业</p>
-          <ul class="ul">
-            <li class="li" v-for = "item in remenParams" :key='item.companyId' @click="findCompany(item.companyId)">
-              <p>
-                <img :src='item.factoryImageUrl' alt=''>
-              </p>
-              <ul>
-                <li class='ellipsis'>企业名称：<a>{{item.companyName}}</a></li>
-                <li class='ellipsis'>所属乡镇：<span>{{item.townName}}</span></li>
-                <li class='ellipsis'>地　　址：<span>{{item.companyAddress}}</span></li>
-                <li class='ellipsis'>联系方式：<span>{{item.chargePersonTel}}</span></li>
-              </ul>
-            </li>          
-          </ul>
-        </div>
     </div>
   </div>
 </template>
@@ -475,15 +476,15 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-body #mapDiv {
+#mapDiv {
   width: 100%;
   min-width: 1200px;
   min-height: 810px;
   // height: auto;
-  position: absolute;
-  top: 150px;
-  left: 0;
-  bottom: 0px;
+  // position: absolute;
+  // top: 150px;
+  // left: 0;
+  // bottom: 0px;
 }
 
 .seach {
@@ -537,12 +538,13 @@ body #mapDiv {
 .right {
   overflow: hidden;
   position: absolute;
-  top: 150px;
-  right: 0px;
-  bottom: 0px;
+  // top: 150px;
+  right:0;
+  // bottom: 0px;
   z-index: 999;
   width: 443px;
-  min-height: 600px;
+  min-height:810px;
+  height: auto;
   .p {
     z-index: 999;
     position: absolute;
@@ -566,7 +568,8 @@ body #mapDiv {
     background: #f2f8ff;
     overflow: hidden;
     width: 413px;
-    height: 100%;
+    min-height:810px;
+    height: auto;
     border: 1px solid #e0e0e0;
     padding-left: 10px;
     cursor:pointer;
