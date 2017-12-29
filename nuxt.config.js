@@ -26,10 +26,13 @@ module.exports = {
   proxy: [
     /* 开发地址 */
     ['/api', { target: 'http://dev.jd.yumc.pw' }],
-    ['/upload', { target: 'http://172.30.34.241:8081' }]
+    ['/upload', { target: 'http://172.30.34.241:8081' }],
+    ['/map', { target: 'http://online.jd.yumc.pw/map' }]
+    // ['/map', { target: 'http://172.30.34.63:6080' }]
     // 线上地址
     // ['/api', { target: 'http://online.jd.yumc.pw/' }],
-    // ['/upload', { target: 'http://online.jd.yumc.pw:8181' }],
+    // ['/upload', { target: 'http://online.jd.yumc.pw/api/upload' }],
+    // ['/map', { target: 'http://online.jd.yumc.pw/map' }]
   ],
   loading: { color: '#3B8070' },
   /*
