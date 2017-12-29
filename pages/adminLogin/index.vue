@@ -157,12 +157,12 @@ export default {
   opacity: 0;
 }
 .login .container {
-  width: 1920px;
+  max-width: 1200px;
   height: 1080px;
   position: relative;
   margin: 0 auto;
 }
-.bg-admin {
+.login {
   background-image: url(../../assets/img/bgAdminLogin.png);
 }
 .slogan {
@@ -170,7 +170,7 @@ export default {
   height: 125px;
   position: absolute;
   top: 235px;
-  left: 350px;
+  /* left: 3%; */
   z-index: 10;
   background: url(../../assets/img/JdTilte.png) no-repeat;
 }
@@ -182,7 +182,7 @@ export default {
   height: 546px;
   position: absolute;
   top: 222px;
-  left: 1021px;
+  left: 55%;
   text-align: center;
 }
 .login .container .content .text {

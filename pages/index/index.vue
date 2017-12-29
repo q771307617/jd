@@ -1,5 +1,6 @@
 <template>
-    <div class=" login container bg-admin">
+  <div  class="login">
+    <div class="container bg-admin">
       <div class="slogan">
         <p class="one">建德企业信息管理平台</p>
         <hr class="wire">
@@ -38,6 +39,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 <script>
 import api from '~/plugins/api';
@@ -167,39 +169,31 @@ export default {
   opacity: 0;
 }
 .login .container {
-  width: 1920px;
+  max-width: 1200px;
   height: 1080px;
   position: relative;
   margin: 0 auto;
-  background-image: url(../../assets/img/bgFrontLogin.png);
 }
-.bg-admin {
-
+.login {
+  background-image: url(../../assets/img/bgFrontLogin.png);
 }
 .slogan {
   position: absolute;
   top: 235px;
-  left: 350px;
+  /* left: 3%; */
   z-index: 10;
   color:#fff;
   /* background-image:url(../../assets/img/JdTitle.png) no-repeat; */
 }
 .one {
   font-size: 48px;
-  /* background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
 }
 .two {
   font-size: 18px;
-  /* background: -webkit-linear-gradient(-90deg, #88faff 0%, #69adff 97%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
 }
 .wire {
   width: 527px;
   background-color: #fff;
-  /* background: -webkit-linear-gradient(0,rgba(136, 250, 255,0.7) 0%, rgba(0, 0, 0, 0) 97%); */
   margin:16px 0;
 }
 .login .container .content {
@@ -210,7 +204,7 @@ export default {
   height: 546px;
   position: absolute;
   top: 222px;
-  left: 1021px;
+  left: 55%;
   text-align: center;
 }
 .login .container .content .text {
