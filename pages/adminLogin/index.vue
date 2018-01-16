@@ -35,13 +35,14 @@
         </div>
       </div>
     </div>
-      <nuxt/>
+      <!-- <nuxt/> -->
   </div>
 </template>
 <script>
 import api from '~/plugins/api';
 // import qs from 'qs';
 export default {
+  layout: 'login',
   data() {
     return {
       loginIfon: {
@@ -163,7 +164,7 @@ export default {
   margin: 0 auto;
 }
 .login {
-  background-image: url(../../assets/img/bgAdminLogin.png);
+  background: url(../../assets/img/bgAdminLogin.png) no-repeat;
 }
 .slogan {
   width: 516px;
