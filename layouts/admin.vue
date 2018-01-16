@@ -182,7 +182,7 @@ export default {
 .wrapper {
   width: 100%;
   height: 100%;
-  min-width: 600px;
+  min-width: 1200px;
   overflow: hidden;
 }
 
@@ -194,6 +194,7 @@ export default {
   top: 108px;
   bottom: 0;
   width: auto;
+  min-width:970px;
   box-sizing: border-box;
   overflow-y: scroll;
   overflow-x: hidden;

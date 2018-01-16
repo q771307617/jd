@@ -101,7 +101,7 @@ import pages from '~/components/pages';
 export default {
   data() {
     return {
-      loading: true,
+      // loading: true,
       statusAbaled: false,
       loginSype: ['', '不限', '前台', '后台'],
       // 账户列表
@@ -177,11 +177,13 @@ export default {
         })
         .then(e => {
           if (e.status === 200) {
-            setTimeout(() => {
-              this.loading = false;
-            }, 800);
+            // setTimeout(() => {
+            //   this.loading = false;
+            // }, 0);
             this.PermissionList = e.data.list;
             this.totalData = e.data.count;
+          } else {
+            this.$message.error(e.msg);
           }
         });
     },
