@@ -15,6 +15,7 @@ export default {
 <style lang="scss" scoped>
 .login{
   position: relative;
+  min-width: 1200px;
   .three{
     position: absolute;
     z-index: 10;
