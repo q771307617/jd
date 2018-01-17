@@ -204,7 +204,6 @@ export default {
         .then(e => {
           this.allCompanys = e.data;
           this.map.clearOverLays();
-          this.imgOverLay(this.map);
           this.polygon(this.map);
           this.markers(this.map);
           // this.map.setZoom(15);
@@ -223,7 +222,6 @@ export default {
       api.get('company/getallcompany')
         .then(e => {
           this.map.clearOverLays();
-          this.imgOverLay(this.map);
           this.polygon(this.map);
           this.allCompanys = e.data;
           this.markers(this.map);
@@ -258,7 +256,6 @@ export default {
       this.mapParams.lng = data.lng;
       this.allCompanys = [data];
       this.fetchMap();
-      this.imgOverLay(this.map);
       // this.markerO.setLngLat({lng: 119.282672, lat: 29.409538});
       this.markers(this.map);
       this.polygon(this.map);
