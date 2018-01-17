@@ -50,17 +50,17 @@
             <div v-else>{{ruleForm.address}}</div>
           </el-form-item>
           <el-row :gutter="24">
-            <el-col :span="12">
+            <el-col :span="24">
               <el-form-item label="经纬度：" prop="lng">
                 经度
-                <el-input v-model="ruleForm.lng" style="width:120px;" v-if="showInput=='yes'"></el-input>
+                <el-input v-model="ruleForm.lng" style="width:185px;" v-if="showInput=='yes'" placeholder="请输入经度"></el-input>
                 <span v-else>{{ruleForm.lng}}</span>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="24">
               <el-form-item prop="lat">
-                <span style="margin-left:-250px;">纬度</span>
-                <el-input v-model="ruleForm.lat" style="width:120px;" v-if="showInput=='yes'"></el-input>
+                <span style="">纬度 </span>
+                <el-input v-model="ruleForm.lat" style="width:185px;" v-if="showInput=='yes'" placeholder="请输入纬度"></el-input>
                 <span v-else>{{ruleForm.lat}}</span>
               </el-form-item>
             </el-col>
