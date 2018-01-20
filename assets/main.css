@@ -29,6 +29,9 @@
 .el-table__body-wrapper{
   overflow: visible !important;
 }
+.el-aside, .el-main{
+  overflow: visible !important;
+}
 body{
   font-family: "Microsoft YaHei","微软雅黑" !important;
 }

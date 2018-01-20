@@ -21,7 +21,7 @@
         </div>
         <!-- 企业概述 -->
           <div class="scope">
-          <div class="el-col" style="width:1200px;margin:0 auto">
+          <div class="el-col" style="max-width:1200px;margin:0 auto">
           <div class="col colHeight30">
             <div class="top-text"><i style="background-position: -92px -70px"></i>企业概述</div>
             <el-col :span="24">
@@ -125,7 +125,7 @@
         </div>
         <!-- 数据指标 -->
         <div class="scope">
-          <div class="el-col" style="width:1200px;margin:0 auto;">
+          <div class="el-col" style="max-width:1200px;margin:0 auto;">
             <div class="col">
             <div class="top-text"><i style="background-position: -92px -122px"></i>数据指标</div>
           <!-- 数据指标左-->
