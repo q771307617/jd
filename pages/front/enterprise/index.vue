@@ -86,7 +86,7 @@
           <div class="container">
             <el-col :span="24" class="content" v-for="(item, index) in EnterpriseProfile" :key="item.id" v-show="index<15">
               <el-col :span="6">
-                <div class="imgInfo"><img :src="item.imageUrl" alt=""></div>
+                <div class="imgInfo"><img :src="item.imageUrl + '!260x174'" alt=""></div>
               </el-col>
               <el-col :span="14">
                 <el-col :span="24">
@@ -418,8 +418,8 @@ export default {
         }
         .imgInfo {
           margin-bottom: 20px;
-          width: 264px;
-          height: 176px;
+          width: 260px;
+          height: 174px;
           overflow: hidden;
           img {
             width: 100%;

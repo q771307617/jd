@@ -15,7 +15,7 @@
             <div class="el-col" style="width:1200px;margin:0 auto">
           <div class="top-text" style="padding-top:25px;"><i style="background-position:-92px -17px;top:25px;"></i>企业封面</div>
           <div class="top-picture">
-            <img :src="companyInfo.imageUrl" alt="">
+            <img :src="companyInfo.imageUrl + '!600x400'" alt="">
           </div>
           </div>
         </div>

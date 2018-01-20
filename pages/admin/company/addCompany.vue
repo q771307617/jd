@@ -16,13 +16,13 @@
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
           <el-form-item label="企业照片：" prop="imageUrl">
             <div style="width:260px;height:174px;overflow: hidden;" v-if="this.img!=null"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;" v-if="this.img==null">
-              <img :src="img" v-else alt="" style="max-width:100%;"></div>
+              <img :src="img + '!260x174'" v-else alt="" style="max-width:100%;"></div>
             <div v-else>
               <div style="width:260px;height:174px;overflow: hidden;" v-if="this.$route.query.type!='add'"><img :src="ruleForm.imageUrl" alt="" style="max-width:100%;"></div>
             </div>
             <el-upload action="/api/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小200KB以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
+              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小5M以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
@@ -295,12 +295,12 @@ export default {
       } else {
         isIMG = false;
       }
-      const isLt200 = file.size / 1024 < 200;
+      const isLt200 = file.size / 1024 < 5120;
       if (!isIMG) {
         this.$message.error('上传图片只能是 JPG/PNG 格式!');
       }
       if (!isLt200) {
-        this.$message.error('上传图片大小不能超过 200KB!');
+        this.$message.error('上传图片大小不能超过 5M!');
       }
       return isIMG && isLt200;
     },
