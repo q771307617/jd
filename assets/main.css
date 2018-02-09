@@ -1,0 +1,37 @@
+
+.move-enter-active,.move-leave-active{
+  transition: opacity .5s;
+}
+.move-enter,.move-leave{
+  opacity: 0;
+}
+.page-enter-active, .page-leave-active {
+    transition: opacity .25s;
+  }
+.page-enter, .page-leave-to {
+    opacity: 0;
+}
+/**
+表格样式
+*/
+.el-table .warning-row {
+  text-align:center;
+  background: #eff6fa;
+}
+
+.el-table .success-row {
+  text-align:center;
+}
+.el-table .cell-name {
+  overflow: hidden !important;
+  border-right:1px solid #c3c9cd;
+}
+.el-table__body-wrapper{
+  overflow: visible !important;
+}
+body{
+  font-family: "Microsoft YaHei","微软雅黑" !important;
+}
+
+
+
