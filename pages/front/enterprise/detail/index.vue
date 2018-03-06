@@ -6,7 +6,7 @@
       <div class="navbar">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ name: 'front' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ name: 'front-enterprise'}">企业管理</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'front-enterprise', query: {scrollY: $route.query.scrollY }}">企业管理</el-breadcrumb-item>
           <el-breadcrumb-item>企业详情</el-breadcrumb-item>
         </el-breadcrumb>
       </div>

@@ -196,8 +196,6 @@ export default {
   width: auto;
   min-width:970px;
   box-sizing: border-box;
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 .el-menu-demo a {
@@ -208,7 +206,8 @@ export default {
 
 .header {
   background-color: #5185de;
-  position: relative;
+  position: fixed;
+  z-index: 999;
   box-sizing: border-box;
   width: 100%;
   height: 90px;
@@ -323,7 +322,7 @@ export default {
 .sidebar {
   background-color: #354f8a;
   display: block;
-  position: absolute;
+  position: fixed;
   font-size: 20px;
   width: 230px;
   left: 0;

@@ -78,7 +78,6 @@ import api from './../../plugins/api.js';
 import moment from 'moment';
 import pages from './../../components/pages';
 export default {
-  scrollToTop: true,
   data() {
     return {
       data: false,
@@ -104,6 +103,11 @@ export default {
     this.getcompanyInfo();
   },
   methods: {
+    Scroll() {
+      setTimeout(() => {
+        window.scroll(0, this.$route.query.scrollY);
+      }, 1000);
+    },
     handleRemove(file, fileList) {
       // console.log(file, fileList);
     },
@@ -152,6 +156,7 @@ export default {
           this.tableData.map((i) => {
             i.createCompanyTime = moment(i.createCompanyTime).format('YYYY-MM-DD HH:mm');
           });
+          this.Scroll();
         }
       }).catch(err => {
         this.$notify.error({
@@ -174,7 +179,8 @@ export default {
         query: {
           type: val,
           companyId: row,
-          showInput: showInput
+          showInput: showInput,
+          scrollY: window.scrollY
         }
       });
       // window.localStorage.setItem('type', val);

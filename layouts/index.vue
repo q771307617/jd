@@ -13,7 +13,7 @@
           <nuxt-link :to="{name:'front-dataAnalysis'}">数据分析</nuxt-link>
           <!-- <span></span> -->
           <img class="heightline" src="./../assets/img/heightLine.png" alt="">
-          <nuxt-link :to="{name:'front-enterprise'}">企业管理</nuxt-link>
+          <nuxt-link :to="{name:'front-enterprise', query: {scrollY: $route.query.scrollY}}">企业管理</nuxt-link>
         </p>
         <p class="navRight">
           <nuxt-link @click="loginOut" :to="{name:'index'}">
