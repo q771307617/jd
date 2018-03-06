@@ -19,6 +19,11 @@ module.exports = {
       { src: 'http://code.jquery.com/jquery-1.7.2.min.js' }
     ]
   },
+  router: {
+    scrollBehavior: function (to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
+  },
   /*
   ** Customize the progress bar color
   */

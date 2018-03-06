@@ -5,7 +5,7 @@
       <el-button type="primary" class="top-btn" @click="AccountoPeration(null)">新增账号</el-button>
     </el-col>
     <el-col :span="24" style="text-align:center">
-      <el-table :data="PermissionList" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="max-width: 100%;" v-loading="loading" element-loading-background="#fff">
+      <el-table :data="PermissionList" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="max-width: 100%;"  element-loading-background="#fff">
         <el-table-column prop="name" label="账号名称" min-width="150" header-align="center"></el-table-column>
         <el-table-column prop="username" label="用户名" min-width="150" header-align="center"></el-table-column>
         <el-table-column prop="type" label="权限" min-width="150" header-align="center">

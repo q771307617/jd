@@ -155,7 +155,6 @@ import {
   mapState
 } from 'vuex';
 export default {
-  scrollToTop: true,
   data() {
     var checkNumber = (rule, value, callback) => {
       if (!value) {
@@ -371,7 +370,8 @@ export default {
         query: {
           type: this.$route.query.type,
           companyId: this.$route.query.companyId,
-          showInput: this.$route.query.showInput
+          showInput: this.$route.query.showInput,
+          scrollY: this.$route.query.scrollY
         }
       });
     },

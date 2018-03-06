@@ -183,7 +183,13 @@ export default {
       industry: state => state.Lists.AllIndustry
     })
   },
+  mounted() {},
   methods: {
+    Scroll() {
+      setTimeout(() => {
+        window.scroll(0, this.$route.query.scrollY);
+      }, 1000);
+    },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
     },
@@ -223,7 +229,8 @@ export default {
       this.$router.push({
         name: 'front-enterprise-detail',
         query: {
-          id: id
+          id: id,
+          scrollY: window.scrollY
         }
       });
     },
@@ -278,6 +285,7 @@ export default {
           if (e.status === 200) {
             this.EnterpriseProfile = e.data.list;
             this.pageCount = e.data.count;
+            this.Scroll();
           }
         })
         .catch(err => {
@@ -293,7 +301,8 @@ export default {
       this.getCompanyInfo();
       // this.RefreshSave();
     });
-  }
+  },
+  destroyed() {}
 };
 </script>
 
