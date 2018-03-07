@@ -47,6 +47,7 @@ export default {
     pageCurrentChange(val) {
       this.pageNum = Number(val);
       this.$emit('pageCurrentChange', Number(this.pageNum));
+      window.scroll(0, 0);
     }
   },
   watch: {

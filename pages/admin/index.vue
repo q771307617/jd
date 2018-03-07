@@ -100,12 +100,12 @@ export default {
     pages
   },
   mounted() {
-    this.getcompanyInfo();
+    this.getcompanyInfo(true);
   },
   methods: {
-    Scroll() {
+    Scroll(Number) {
       setTimeout(() => {
-        window.scroll(0, this.$route.query.scrollY);
+        window.scroll(0, Number);
       }, 1000);
     },
     handleRemove(file, fileList) {
@@ -148,7 +148,7 @@ export default {
       this.params.pageNum = Number(val);
       this.getcompanyInfo();
     },
-    getcompanyInfo() {
+    getcompanyInfo(type) {
       api.get('company/getcompany', this.params).then((e) => {
         if (e.status === 200) {
           this.tableData = e.data.list;
@@ -156,7 +156,9 @@ export default {
           this.tableData.map((i) => {
             i.createCompanyTime = moment(i.createCompanyTime).format('YYYY-MM-DD HH:mm');
           });
-          this.Scroll();
+          if (type) {
+            this.Scroll(this.$route.query.scrollY);
+          }
         }
       }).catch(err => {
         this.$notify.error({
