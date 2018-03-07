@@ -3,14 +3,15 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
+        <el-button class=" button" type="primary">信息导出</el-button>
         <el-upload class="upload" action="/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
-          <el-button class=" button one">数据导入</el-button>
+          <el-button class=" button" type="primary">数据导入</el-button>
         </el-upload>
-        <el-button class=" button two" @click="change('add','null')">新增企业</el-button>
+        <el-button class=" button two" type="success" @click="change('add','null')">新增企业</el-button>
       </div>
     </div>
     <div class="company-table">
-      <el-table :data="tableData" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" >
+      <el-table :data="tableData" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName">
         <el-table-column prop="createCompanyTime" label="上传时间" width="140">
         </el-table-column>
         <el-table-column prop="companyName" label="企业名称" width="230">
@@ -35,13 +36,13 @@
         </el-table-column>
       </el-table>
       <!-- <div class="flex-box block">
-              <p class="demonstration">共
-                <span class="red">{{params.count}}</span>条数据
-                <span style="margin-left:20px;">每页</span>
-                <span class="red">{{params.pageSize}}</span>条</p>
-              <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
-              </el-pagination>
-            </div> -->
+                  <p class="demonstration">共
+                    <span class="red">{{params.count}}</span>条数据
+                    <span style="margin-left:20px;">每页</span>
+                    <span class="red">{{params.pageSize}}</span>条</p>
+                  <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
+                  </el-pagination>
+                </div> -->
       <pages :pageSize=20 :count="params.count" @pageCurrentChange="handleCurrentChange"></pages>
     </div>
     <el-dialog :visible.sync="data" width="640px" center>
@@ -232,7 +233,7 @@ export default {
       height: 44px;
       border-radius: 3px;
       border: 1px solid #dcdfe6;
-      margin-top: 22px;
+      margin: 22px 10px 0 0;
     }
     .upload {
       display: inline;
@@ -242,7 +243,7 @@ export default {
       margin-right: 10px;
     }
     .two {
-      background: #27bc8d;
+      // background: #27bc8d;
       margin-right: 30px;
     }
   }
@@ -258,6 +259,8 @@ export default {
     }
   }
 }
+
+
 
 
 
