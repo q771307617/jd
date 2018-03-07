@@ -3,7 +3,10 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-button class=" button" type="primary">信息导出</el-button>
+        <el-input placeholder='企业名称' class="search" style="margin-right:10px;">
+          <el-button slot='append' style='margin:0 -20px;background-color:#409EFF;color:#fff' icon='el-icon-search'>搜索</el-button>
+        </el-input>
+        <el-button class=" button" type="primary">数据导出</el-button>
         <el-upload class="upload" action="/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
           <el-button class=" button" type="primary">数据导入</el-button>
         </el-upload>
@@ -36,13 +39,13 @@
         </el-table-column>
       </el-table>
       <!-- <div class="flex-box block">
-                  <p class="demonstration">共
-                    <span class="red">{{params.count}}</span>条数据
-                    <span style="margin-left:20px;">每页</span>
-                    <span class="red">{{params.pageSize}}</span>条</p>
-                  <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
-                  </el-pagination>
-                </div> -->
+                          <p class="demonstration">共
+                            <span class="red">{{params.count}}</span>条数据
+                            <span style="margin-left:20px;">每页</span>
+                            <span class="red">{{params.pageSize}}</span>条</p>
+                          <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
+                          </el-pagination>
+                        </div> -->
       <pages :pageSize=20 :count="params.count" @pageCurrentChange="handleCurrentChange"></pages>
     </div>
     <el-dialog :visible.sync="data" width="640px" center>
@@ -227,6 +230,9 @@ export default {
       text-align: justify;
       margin-left: 40px;
     }
+    .search {
+      width: 300px;
+    }
     .button {
       color: #fff;
       width: 150px;
@@ -259,6 +265,10 @@ export default {
     }
   }
 }
+
+
+
+
 
 
 
