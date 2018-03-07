@@ -1,6 +1,8 @@
 <template>
   <div class="pages">
     <div class="flex-box block">
+      <p style="display:inline-block;line-height:28px;">每页{{pageSize}}条/</p>
+      <p style="display:inline-block;line-height:28px;"> 共{{count}}条</p>
       <el-pagination style="display:inline-block;" background @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page.sync="pageNum" prev-text="　< 上一页　" next-text="　下一页 >　" :page-size="pageSize" layout="prev, pager, next" :total="count">
       </el-pagination>
       <p style="display:inline-block;line-height:28px;" v-if="count==0">第1页 / 共1页</p>
@@ -27,24 +29,31 @@ export default {
   },
   mounted() { },
   methods: {
+    // scroll() {
+    //   document.body.scrollTop = 0;
+    //   document.documentElement.scrollTop = 0;
+    // },
     pageSizeChange(val) {
       this.$emit('pageSizeChange', val);
     },
     pageCurrentNumChange() {
-      if (this.input) {
-        this.pageNum = this.input;
+      let value = Number(this.input);
+      if (value) {
+        this.pageNum = value;
         this.$emit('pageCurrentChange', Number(this.pageNum));
-        if (this.input > Math.ceil(this.count / this.pageSize)) {
+        if (value > Math.ceil(this.count / this.pageSize)) {
           if (this.count === 0) {
-            this.input = 1;
+            value = 1;
           } else {
-            this.input = Math.ceil(this.count / this.pageSize);
+            value = Math.ceil(this.count / this.pageSize);
           }
-          this.$emit('pageCurrentChange', Number(this.input));
+          // this.$emit('pageCurrentChange', Number(this.input));
+          this.$emit('pageCurrentChange', value);
         }
       }
     },
     pageCurrentChange(val) {
+      // this.scroll();
       this.pageNum = Number(val);
       this.$emit('pageCurrentChange', Number(this.pageNum));
       window.scroll(0, 0);
