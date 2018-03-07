@@ -185,9 +185,9 @@ export default {
   },
   mounted() {},
   methods: {
-    Scroll() {
+    Scroll(Number) {
       setTimeout(() => {
-        window.scroll(0, this.$route.query.scrollY);
+        window.scroll(0, Number);
       }, 1000);
     },
     handleSizeChange(val) {
@@ -278,14 +278,16 @@ export default {
     /* @argument val
     * 获取企业信息
     */
-    getCompanyInfo() {
+    getCompanyInfo(type) {
       api
         .get('company/getcompany', this.params)
         .then(e => {
           if (e.status === 200) {
             this.EnterpriseProfile = e.data.list;
             this.pageCount = e.data.count;
-            this.Scroll();
+            if (type) {
+              this.Scroll(this.$route.query.scrollY);
+            }
           }
         })
         .catch(err => {
@@ -298,7 +300,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.getCompanyInfo();
+      this.getCompanyInfo(true);
       // this.RefreshSave();
     });
   },
