@@ -1,12 +1,12 @@
 <template>
   <div class="pages">
     <div class="flex-box block">
-      <p style="display:inline-block;line-height:28px;">每页{{pageSize}}条/</p>
-      <p style="display:inline-block;line-height:28px;"> 共{{count}}条</p>
+      <p class="text" style="margin-right:20px"> 共<span class="red">{{count}}</span>条记录</p>
+      <p class="text">每页<span class="red">{{pageSize}}</span>条</p>
       <el-pagination style="display:inline-block;" background @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page.sync="pageNum" prev-text="　< 上一页　" next-text="　下一页 >　" :page-size="pageSize" layout="prev, pager, next" :total="count">
       </el-pagination>
-      <p style="display:inline-block;line-height:28px;" v-if="count==0">第1页 / 共1页</p>
-      <p style="display:inline-block;line-height:28px;" v-else>第{{pageNum}}页/共{{Math.ceil(count/pageSize)}}页</p>
+      <p class="text" v-if="count==0">第1页 / 共1页</p>
+      <p class="text" v-else>第{{pageNum}}页/共{{Math.ceil(count/pageSize)}}页</p>
       <div style="display:inline-block;margin-left:16px;">到第
         <el-input v-model="input" size="mini" style="width:46px;"></el-input>页</div>
       <div style="display:inline-block;line-height:28px;margin:0 16px;">
@@ -78,9 +78,12 @@ clear: both;
   text-align: right;
   min-width: 400px;
   float:right;
-
+  .text{
+    display:inline-block;
+    line-height:28px;
+  }
   .red {
-    color: red;
+   color: red;
   }
 }
 </style>
