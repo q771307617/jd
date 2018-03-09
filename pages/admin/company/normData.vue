@@ -38,6 +38,34 @@
             <el-input v-model="ruleForm.mainBusIncome" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.mainBusIncome}}</div>
           </el-form-item>
+          <el-form-item label="工业增加值（万元）：" prop="industrialValue">
+            <el-input v-model="ruleForm.industrialValue" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.industrialValue}}</div>
+          </el-form-item>
+          <el-form-item label="能源消费值（标吨煤）：" prop="powerConsume">
+            <el-input v-model="ruleForm.powerConsume" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.powerConsume}}</div>
+          </el-form-item>
+          <el-form-item label="核定排污权（吨）：" prop="approvedDischarge">
+            <el-input v-model="ruleForm.approvedDischarge" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.approvedDischarge}}</div>
+          </el-form-item>
+          <el-form-item label="单位排污权核定增加值（万元/吨）：" prop="sewageAdd">
+            <el-input v-model="ruleForm.sewageAdd" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.sewageAdd}}</div>
+          </el-form-item>
+          <el-form-item label="研究与试验发展经费支出占主营业务收入比（%）：" prop="researchRate">
+            <el-input v-model="ruleForm.researchRate" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.researchRate}}</div>
+          </el-form-item>
+          <el-form-item label="全员劳动生产率数据（万元/人）：" prop="aborProductivity">
+            <el-input v-model="ruleForm.aborProductivity" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.aborProductivity}}</div>
+          </el-form-item>
+          <el-form-item label="新产品产值率（%）：" prop="productRate">
+            <el-input v-model="ruleForm.productRate" class="input-length" v-if="showInput=='yes'"></el-input>
+            <div v-else>{{ruleForm.productRate}}</div>
+          </el-form-item>
           <el-form-item label="是否高新技术企业：" prop="isHighTech">
             <el-radio-group v-model="ruleForm.isHighTech" v-if="showInput=='yes'">
               <el-radio label='1' value='1'>是</el-radio>
@@ -143,6 +171,13 @@ export default {
         id: null,
         isHighTech: '0',
         mainBusIncome: '',
+        industrialValue: '',
+        powerConsume: '',
+        approvedDischarge: '',
+        sewageAdd: '',
+        researchRate: '',
+        aborProductivity: '',
+        productRate: '',
         patentNumber: '',
         ratifiedCoal: '',
         researchFee: '',
@@ -172,6 +207,27 @@ export default {
           { validator: checkNumber, trigger: 'blur' }
         ],
         mainBusIncome: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        industrialValue: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        powerConsume: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        approvedDischarge: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        sewageAdd: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        researchRate: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        aborProductivity: [
+          { validator: checkNumber, trigger: 'blur' }
+        ],
+        productRate: [
           { validator: checkNumber, trigger: 'blur' }
         ],
         patentNumber: [
