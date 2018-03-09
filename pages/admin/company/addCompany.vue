@@ -246,9 +246,9 @@ export default {
         imageUrl: '',
         imageUrlId: '',
         isCommittee: '',
-        isDevelopmentArea: '0',
-        isIndustrialPark: '0',
-        isRail: '0',
+        isDevelopmentArea: '',
+        isIndustrialPark: '',
+        isRail: '',
         lat: null,
         leaderId: '',
         leaderName: '',
@@ -424,6 +424,9 @@ export default {
         this.img = e.data.imageUrl;
         this.ruleForm.isCommittee = String(e.data.isCommittee);
         this.ruleForm.scaleUp = String(e.data.scaleUp);
+        this.ruleForm.isDevelopmentArea = String(e.data.isDevelopmentArea);
+        this.ruleForm.isIndustrialPark = String(e.data.isIndustrialPark);
+        this.ruleForm.isRail = String(e.data.isRail);
         this.selectTownId(this.ruleForm.townId);
       }).catch(err => {
         this.$notify.error({
