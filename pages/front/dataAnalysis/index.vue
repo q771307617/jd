@@ -1,36 +1,35 @@
 <template>
-<div class="content">
-  <div class='hello'>
-    <div class="mainNav">
-      <div class="mainNavs">
-        <!-- <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
-          <el-radio-button :label="item.key" class="redio" style="width:133px" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
-        </el-radio-group> -->
-        <ul><li v-for="item in type" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul>
+  <div class="content">
+    <div class='hello'>
+      <div class="mainNav">
+        <div class="mainNavs">
+          <ul>
+            <li v-for="item in type" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="mainContent">
-      <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center">
-        <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
-        </el-table-column>
-        <el-table-column prop="town" label="所属乡镇" min-width="180" header-align="center">
-        </el-table-column>
-        <el-table-column prop="village" label="所属村(社区)" min-width="180" header-align="center">
-        </el-table-column>
-        <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" :sortable='item.status' header-align="center" @sort-change="sortType(order)">
-        </el-table-column>
-        <el-table-column label="操作" header-align="center">
-          <div slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-          </div>
-        </el-table-column>
-      </el-table>
-      <div class="page">
-      <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
+      <div class="mainContent">
+        <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center" @sort-change="sortType">
+          <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
+          </el-table-column>
+          <el-table-column prop="town" label="所属乡镇" min-width="180" header-align="center">
+          </el-table-column>
+          <el-table-column prop="village" label="所属村(社区)" min-width="180" header-align="center">
+          </el-table-column>
+          <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" :sortable="item.status" header-align="center">
+          </el-table-column>
+          <el-table-column label="操作" header-align="center">
+            <div slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
+            </div>
+          </el-table-column>
+        </el-table>
+        <div class="page">
+          <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
+        </div>
       </div>
+      <nuxt-child/>
     </div>
-    <nuxt-child/>
-  </div>
   </div>
 </template>
 <script>
@@ -88,7 +87,7 @@ export default {
         }
       });
     },
-    handleSizeChange() {},
+    handleSizeChange() { },
     // 改变页数时回调
     handleCurrentChange(val) {
       this.dataParams.pageNum = Number(val);
@@ -108,6 +107,19 @@ export default {
     selecType(val) {
       this.radio = val;
       this.dataParams.type = val;
+      this.getData();
+    },
+    // 数据排序
+    sortType(column) {
+      switch (column.order) {
+        case 'ascending':
+          this.dataParams.sort = 1;
+          break;
+
+        case 'descending':
+          this.dataParams.sort = 2;
+          break;
+      }
       this.getData();
     },
     getData() {
@@ -160,11 +172,11 @@ export default {
         display: inline-block;
         width: 133px;
         height: 42px;
-        line-height:42px;
+        line-height: 42px;
         cursor: pointer;
         text-align: center;
       }
-      .nactive{
+      .nactive {
         background-color: #f2ba55;
       }
     }
