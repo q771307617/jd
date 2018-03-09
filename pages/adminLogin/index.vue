@@ -31,8 +31,8 @@ export default {
       width: 516px;
       height: 125px;
       position: absolute;
-      top: 235px;
-      /* left: 3%; */
+      top: 232px;
+      left: 100px;
       z-index: 10;
       background: url(../../assets/img/JdTilte.png) no-repeat;
     }

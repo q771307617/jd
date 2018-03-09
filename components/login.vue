@@ -1,8 +1,8 @@
 <template>
   <div class="content">
     <p class="text">登录</p>
-    <div class="demo-input-size" style="margin-right:30px:position:relative">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <div style="margin-right:30px:position:relative">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="38px">
         <el-form-item label="" prop="username">
           <i class="icon" style="background-position: -20px -18px;"></i>
           <el-input type="text" v-model="ruleForm.username" placeholder="用户名" autofocus auto-complete="off"></el-input>
@@ -13,7 +13,7 @@
         </el-form-item>
         <el-form-item label="" prop="code">
           <i class="icon" style="background-position: -20px -88px;"></i>
-          <el-input v-model.number="ruleForm.code" class="input" :maxlength="4" style="width: 214px;margin-right:164px;" placeholder="验证码" auto-complete="off" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+          <el-input v-model="ruleForm.code" :maxlength="4" class="code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')" auto-complete="off" @blur="addBorderCss"></el-input>
           <div class="loginCode"></div>
           <i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
         </el-form-item>
@@ -40,18 +40,9 @@ export default {
         if (!regex.test(value)) {
           callback(new Error('请输入正确的验证码!'));
         } else {
-          api
-            .post('/user/verify', {
-              code: value
-            })
-            .then(e => {
-              if (e.status === 200) {
-                callback();
-              } else {
-                callback(new Error('验证码错误!'));
-                this.getCode();
-              }
-            });
+          if (this.isbulr) {
+            this.checkCode(value, callback);
+          }
         }
       }
     };
@@ -85,6 +76,7 @@ export default {
       verifycodeUrl: '',
       statusCode: false,
       msg: '',
+      isbulr: '',
       ruleForm: {
         password: '',
         username: '',
@@ -109,8 +101,24 @@ export default {
     getCode() {
       this.verifycodeUrl = '/api/user/verifycode?time=' + new Date().getTime();
     },
+    // 验证验证码
+    checkCode(value, callback) {
+      api
+        .post('/user/verify', {
+          code: value
+        })
+        .then(e => {
+          if (e.status === 200) {
+            callback();
+          } else {
+            callback(new Error('验证码错误!'));
+            this.getCode();
+          }
+        });
+    },
     // 登录提交
     submitForm(formName) {
+      this.isbulr = true;
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loginFun();
@@ -138,6 +146,9 @@ export default {
             this.getCode();
           }
         });
+    },
+    addBorderCss() {
+      this.isbulr = false;
     }
   },
   mounted() {
@@ -149,136 +160,117 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.login .container {
-  max-width: 1200px;
-  height: 1080px;
-  position: relative;
-  margin: 0 auto;
-}
-
-.login .container .content {
-  background: #f7f7f7;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.39);
-  border-radius: 8px;
-  width: 540px;
-  height: 546px;
-  position: absolute;
-  top: 222px;
-  left: 55%;
-  text-align: center;
-}
-
-.login .container .content .text {
-  font-size: 36px;
-  color: #333333;
-  text-align: center;
-  padding: 58px 180px;
+.login {
+  .container {
+    max-width: 1200px;
+    height: 1080px;
+    position: relative;
+    margin: 0 auto;
+    .content {
+      background: #f7f7f7;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.39);
+      border-radius: 8px;
+      width: 415px;
+      height: 430px;
+      position: absolute;
+      top: 224px;
+      left: 55%;
+      text-align: center;
+      .text {
+        font-family: MicrosoftYaHei;
+        font-size: 32px;
+        color: #333333;
+        text-align: center;
+        padding: 31px 166px;
+      }
+      .btn {
+        background: #1c7bef;
+        border-radius: 3px;
+        width: 340px;
+        height: 42px;
+        font-size: 18px;
+        color: #fff;
+      }
+      .hint {
+        position: absolute;
+        left: 38px;
+        bottom: 87px;
+        font-size: 12px;
+        color: #f56c6c;
+      }
+      .icon {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 10;
+        background: url(../assets/img/iconBackground.png) no-repeat;
+        width: 20px;
+        height: 20px;
+        margin: 10px 20px;
+        font-style: normal;
+      }
+      .icon::after {
+        content: '|';
+        position: absolute;
+        left: 0;
+        top: -10px;
+        width: 1px;
+        height: 29px;
+        margin-left: 38px;
+        color: #bbb;
+      }
+      .code {
+        width: 181px;
+        margin-right: 164px;
+      }
+      .loginCode {
+        width: 111px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        left: 312px;
+      }
+      .updateCode {
+        display: inline-block;
+        width: 16px;
+        height: 16px; // background-color: red;
+        position: absolute;
+        top: 12px;
+        left: 326px;
+        cursor: pointer;
+        background: url(../assets/img/iconFront.png) no-repeat -10px -123px;
+        img {
+          display: inline-block;
+          position: absolute;
+          right: 34px;
+          top: -11px;
+          width: 110px;
+          height: 40px;
+        }
+      }
+    }
+  }
 }
 
 .el-form-item {
   margin: 0 60px 40px 0;
   position: relative;
-}
-
-.el-input {
-  background: #ffffff;
-  border-radius: 3px;
-  width: 378px;
-  font-size: 14px;
-  color: #333333;
-}
-
-.input-warnnp {
-  position: relative;
-}
-
-.hint {
-  position: absolute;
-  left: 100px;
-  bottom: 145px;
-  font-size: 12px;
-  color: red;
-}
-
-.el-input__inner {
-  padding: 0;
-  margin-left: 50px;
-}
-
-.el-input__prefix {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  font-style: normal;
-  background-color: red;
-  margin-left: 50px;
-}
-
-.icon {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 10;
-  background: url(../assets/img/iconBackground.png) no-repeat;
-  width: 20px;
-  height: 20px;
-  margin: 10px 20px;
-  font-style: normal;
-}
-
-.icon::after {
-  content: '|';
-  position: absolute;
-  left: 0;
-  top: -10px;
-  width: 1px;
-  height: 29px;
-  margin-left: 38px;
-  color: #bbb;
-}
-
-.login .container .content .btn {
-  background: #1c7bef;
-  border-radius: 3px;
-  width: 380px;
-  height: 48px;
-  font-size: 18px;
-  color: #fff;
+  .el-input {
+    background: #ffffff;
+    border-radius: 3px;
+    width: 340px;
+    font-size: 14px;
+    color: #333333;
+  }
+  .input-warnnp {
+    position: relative;
+  }
 }
 
 .el-input /deep/ .el-input--prefix,
 .el-input /deep/ .el-input__inner {
   padding-left: 80px;
-}
-
-.loginCode {
-  width: 111px;
-  height: 40px;
-  /* border: 1px solid #eee; */
-  position: absolute;
-  top: 0;
-  left: 312px;
-}
-
-.updateCode {
-  display: inline-block;
-  width: 16px;
-  height: 16px; // background-color: red;
-  position: absolute;
-  top: 12px;
-  left: 365px;
-  cursor: pointer;
-  background: url(../assets/img/iconFront.png) no-repeat -10px -123px;
-}
-
-.updateCode img {
-  display: inline-block;
-  position: absolute;
-  right: 34px;
-  top: -11px;
-  width: 113px;
-  height: 40px;
 }
 </style>
 
