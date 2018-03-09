@@ -30,9 +30,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                                        <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
-                                                                        <div v-else>div</div>
-                                                                      </el-form-item>-->
+              <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
+              <div v-else>div</div>
+            </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput=='yes'" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -74,6 +74,36 @@
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
             </el-select>
             <div v-else>{{ruleForm.tradeName}}</div>
+          </el-form-item>
+          <el-form-item label="是否在开发区：" prop="isDevelopmentArea" v-if="ruleForm.townId=='2'||ruleForm.townId=='4'||ruleForm.townId=='10'">
+            <el-radio-group v-model="ruleForm.isDevelopmentArea" v-if="showInput=='yes'">
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
+            </el-radio-group>
+            <div v-else>
+              <p v-if="ruleForm.isDevelopmentArea==1">是</p>
+              <p v-if="ruleForm.isDevelopmentArea==2">否</p>
+            </div>
+          </el-form-item>
+          <el-form-item label="是否在工业区：" prop="isIndustrialPark">
+            <el-radio-group v-model="ruleForm.isIndustrialPark" v-if="showInput=='yes'">
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
+            </el-radio-group>
+            <div v-else>
+              <p v-if="ruleForm.isIndustrialPark==1">是</p>
+              <p v-if="ruleForm.isIndustrialPark==2">否</p>
+            </div>
+          </el-form-item>
+          <el-form-item label="是否在高铁新区：" prop="isRail" v-if="ruleForm.townId=='3'||ruleForm.townId=='8'||ruleForm.townId=='11'||ruleForm.townId=='16'">
+            <el-radio-group v-model="ruleForm.isRail" v-if="showInput=='yes'">
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
+            </el-radio-group>
+            <div v-else>
+              <p v-if="ruleForm.isRail==1">是</p>
+              <p v-if="ruleForm.isRail==2">否</p>
+            </div>
           </el-form-item>
           <el-form-item label="主要核心产品：" prop="productName">
             <el-input v-model="ruleForm.productName" class="input-length" v-if="showInput=='yes'"></el-input>
@@ -216,6 +246,9 @@ export default {
         imageUrl: '',
         imageUrlId: '',
         isCommittee: '',
+        isDevelopmentArea: '',
+        isIndustrialPark: '',
+        isRail: '',
         lat: null,
         leaderId: '',
         leaderName: '',
@@ -391,6 +424,9 @@ export default {
         this.img = e.data.imageUrl;
         this.ruleForm.isCommittee = String(e.data.isCommittee);
         this.ruleForm.scaleUp = String(e.data.scaleUp);
+        this.ruleForm.isDevelopmentArea = String(e.data.isDevelopmentArea);
+        this.ruleForm.isIndustrialPark = String(e.data.isIndustrialPark);
+        this.ruleForm.isRail = String(e.data.isRail);
         this.selectTownId(this.ruleForm.townId);
       }).catch(err => {
         this.$notify.error({
