@@ -398,7 +398,7 @@ export default {
       this.mapParams.lng = data.lng;
       this.allCompanys = [data];
       this.fetchMap();
-      // this.imgOverLay(this.map);
+      this.imgOverLay(this.map);
       this.markers(this.map);
       this.polygon(this.map);
     },
