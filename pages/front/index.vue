@@ -86,7 +86,7 @@ export default {
       },
       dataParams: {
         sort: '',
-        type: 1,
+        type: 6,
         pageSize: 13,
         pageNum: 0,
         isPark: '',
@@ -150,6 +150,7 @@ export default {
   },
   mounted() {
     this.LIST_GET();
+    this.selecType('6');
     /* 热门企业 */
     this.getData();
     /* 地图实例化 */
