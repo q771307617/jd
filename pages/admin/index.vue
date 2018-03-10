@@ -3,13 +3,13 @@
     <div class="tittle">
       <span>企业管理</span>
       <div>
-        <el-input placeholder='企业名称' class="search" v-model="params.companyName" @keyup.enter.native="Search(params.companyName)" style="margin-right:10px;">
-          <el-button slot='append' style='margin:0 -20px;background-color:#409EFF;color:#fff' @click="Search(params.companyName)"  icon='el-icon-search'>搜索</el-button>
+        <el-input placeholder='请输入企业名称' class="search" v-model="params.companyName" @keyup.enter.native="Search(params.companyName)" style="margin-right:10px;">
+          <el-button slot='append' class="search-btn" size="small" style='margin:0 -20px;color:#fff;' @click="Search(params.companyName)"  icon='el-icon-search'></el-button>
         </el-input>
         <el-upload class="upload" action="/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
-          <el-button class=" button" type="primary">数据导入</el-button>
+          <el-button class=" button" style="line-height: 10px;background: #1C7BEF;">数据导入</el-button>
         </el-upload>
-        <el-button class=" button two" type="success" @click="change('add','null')">新增企业</el-button>
+        <el-button class=" button two" type="success" @click="change('add','null')" style="line-height: 10px;">新增企业</el-button>
       </div>
     </div>
     <div class="company-table">
@@ -95,6 +95,7 @@ export default {
         companyName: '',
         pageNum: 1,
         pageSize: 20,
+        keywords: '',
         count: 0
       },
       tableData: []
@@ -104,9 +105,12 @@ export default {
     pages
   },
   mounted() {
-    this.getcompanyInfo(true);
+    this.getcompanyInfo();
   },
   methods: {
+    search() {
+      this.getcompanyInfo(true);
+    },
     Scroll(Number) {
       setTimeout(() => {
         window.scroll(0, Number);
@@ -236,15 +240,33 @@ export default {
       margin-left: 40px;
     }
     .search {
-      width: 300px;
+      width: 296px;
+      .search-btn{
+        width: 43px;
+        height: 33px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background-color: #1C7BEF;
+      }
+    }
+    .search /deep/ .el-input__inner {
+      height: 34px;
+      border-right: 0; 
+    }
+    .search /deep/ .el-input-group__append {
+      height: 32px;
+      position: relative;
+      bottom: 1px;
+      // border: 0px;
     }
     .button {
       color: #fff;
-      width: 150px;
-      height: 44px;
+      width: 130px;
+      height: 34px;
       border-radius: 3px;
       border: 1px solid #dcdfe6;
       margin: 22px 10px 0 0;
+      background-color: #27BC8D;
     }
     .upload {
       display: inline;
