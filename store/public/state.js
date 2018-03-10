@@ -40,6 +40,13 @@ export default {
   scale: [{ key: '1', name: '规上' }, { key: '2', name: '规下' }],
   searchindicator: [
     {
+      key: '6',
+      label: '主营业务收入（万元）',
+      name: 'mainBusIncome',
+      tittle: '主营业务收入',
+      status: 'custom'
+    },
+    {
       key: '1',
       label: '厂房建筑面积（㎡）',
       name: 'facBuildingArea',
@@ -66,13 +73,6 @@ export default {
       label: 'R&D经费投入（万元）',
       name: 'researchFee',
       tittle: 'R&D经费投入',
-      status: 'custom'
-    },
-    {
-      key: '6',
-      label: '主营业务收入（万元）',
-      name: 'mainBusIncome',
-      tittle: '主营业务收入',
       status: 'custom'
     },
     {
