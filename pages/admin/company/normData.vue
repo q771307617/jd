@@ -26,15 +26,15 @@
             <el-input v-model="ruleForm.stockWorkArea" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.stockWorkArea}}</div>
           </el-form-item>
-          <el-form-item label="入库税收（万元）：" prop="tax">
+          <el-form-item label="入库税收（元）：" prop="tax">
             <el-input v-model="ruleForm.tax" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.tax}}</div>
           </el-form-item>
-          <el-form-item label="R＆D经费投入（万元）：" prop="researchFee">
+          <el-form-item label="R＆D经费投入（元）：" prop="researchFee">
             <el-input v-model="ruleForm.researchFee" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.researchFee}}</div>
           </el-form-item>
-          <el-form-item label="主营业务收入（万元）：" prop="mainBusIncome">
+          <el-form-item label="主营业务收入（元）：" prop="mainBusIncome">
             <el-input v-model="ruleForm.mainBusIncome" class="input-length" v-if="showInput=='yes'"></el-input>
             <div v-else>{{ruleForm.mainBusIncome}}</div>
           </el-form-item>

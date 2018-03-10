@@ -33,7 +33,7 @@
                   </el-col>
                   <el-col :span="12" v-else class="rightborder">
                     <span class="w160">{{subitem.title}}</span>
-                    <span v-if="subitem.id===11">{{equals[companyInfo[subitem.value]]}}</span>
+                    <span v-if="subitem.id===9">{{equals[companyInfo[subitem.value]]}}</span>
                     <span v-else>{{companyInfo[subitem.value]}}</span>
                   </el-col>
                 </section>
@@ -59,11 +59,13 @@
                 <section v-else v-for="subitem in item" :key="subitem.id">
                   <el-col :span="12" v-if="subitem.position===3" class="leftborders">
                     <span class="w230">{{subitem.title}}</span>
-                    <span>{{companyInfo[subitem.value]}}</span>
+                    <span v-if="subitem.id===13">{{equals[companyInfo[subitem.value]]}}</span>
+                    <span v-else>{{companyInfo[subitem.value]}}</span>
                   </el-col>
                   <el-col :span="12" v-else class="rightborder">
                     <span class="w230">{{subitem.title}}</span>
-                    <span>{{companyInfo[subitem.value]}}</span>
+                    <span v-if="subitem.id===14&&companyInfo[subitem.value]">{{companyInfo[subitem.value]}} 至 {{companyInfo.declareEndTime}}</span>
+                    <span v-else>{{companyInfo[subitem.value]}}</span>
                   </el-col>
                 </section>
               </el-col>

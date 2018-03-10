@@ -226,7 +226,6 @@ export default {
     },
     // 查看企业详情
     ViewDetails(id) {
-      console.log(this.$router);
       this.$router.push({
         name: 'front-enterprise-detail',
         query: {

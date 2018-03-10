@@ -27,7 +27,11 @@ export default {
       pageNum: 1
     };
   },
-  mounted() { },
+  mounted() {
+    this.$on('bridge', () => {
+      this.pageNum = 1;
+    });
+  },
   methods: {
     // scroll() {
     //   document.body.scrollTop = 0;
