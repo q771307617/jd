@@ -53,7 +53,7 @@
           <el-option  label='规上' value='1'></el-option>
           <el-option  label='规下' value='2'></el-option>
         </el-select>
-        <el-select class='gs' v-model='qy' slot='prepend' placeholder='全部区域'>
+        <el-select class='gy' v-model='qy' slot='prepend' placeholder='全部区域'>
           <el-option  label='全部区域' value=''></el-option>
           <el-option  label='工业功能区内' value='1'></el-option>
           <el-option  label='非工业功能区' value='2'></el-option>
@@ -669,6 +669,9 @@ export default {
     }
     .gs{
       width: 120px;
+    }
+    .gy{
+      width: 130px;
     }
   }
 }

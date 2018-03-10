@@ -322,7 +322,7 @@ export default {
 .sidebar {
   background-color: #354f8a;
   display: block;
-  position: fixed;
+  position: fixed;z-index: 99;
   font-size: 20px;
   width: 230px;
   left: 0;
