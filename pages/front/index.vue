@@ -501,7 +501,7 @@ export default {
           }
         );
         map.addOverLay(marker);
-        // map.removeOverLay(marker);
+        map.removeOverLay(marker);
         /** 信息窗体 **/
         var content = '';
         if (this.allCompanys[i].mainBusIncome) {
@@ -676,9 +676,7 @@ export default {
 .right {
   overflow: hidden;
   position: absolute;
-  // top: 150px;
   right:0;
-  // bottom: 0px;
   z-index: 999;
   width: 443px;
   min-height:840px;
@@ -747,7 +745,7 @@ export default {
       padding-left: 10px;
     }
     .redio {
-        display: inline-block;
+        float: left;
         width: auto;
         height: 28px;
         line-height:28px;
