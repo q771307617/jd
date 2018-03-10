@@ -39,6 +39,7 @@ export default {
       color: #fff;
       .one {
         font-family: hzgb;
+        font-weight: bold;
         font-size: 36px;
         color: #FFFFFF;
       }

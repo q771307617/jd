@@ -164,8 +164,8 @@ export default {
       },
       {
         id: 9,
-        title: '主 要 负 责 人 ：',
-        value: 'corporationName',
+        title: '是否"两代表一委员" ：',
+        value: 'isCommittee',
         flag: 2,
         position: 4
       }
@@ -173,15 +173,15 @@ export default {
     [
       {
         id: 10,
-        title: '联    系   电   话 ：',
-        value: 'corporationPhone',
+        title: '主 要 负 责 人 ：',
+        value: 'corporationName',
         flag: 2,
         position: 3
       },
       {
         id: 11,
-        title: '是否"两代表一委员" ：',
-        value: 'isCommittee',
+        title: '联    系   电   话 ：',
+        value: 'corporationPhone',
         flag: 2,
         position: 4
       }

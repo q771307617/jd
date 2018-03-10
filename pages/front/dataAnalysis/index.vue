@@ -12,9 +12,9 @@
         <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center" @sort-change="sortType">
           <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
           </el-table-column>
-          <el-table-column prop="town" label="所属乡镇" min-width="180" header-align="center">
+          <el-table-column prop="townName" label="所属乡镇" min-width="180" header-align="center">
           </el-table-column>
-          <el-table-column prop="village" label="所属村(社区)" min-width="180" header-align="center">
+          <el-table-column prop="villageName" label="所属村(社区)" min-width="180" header-align="center">
           </el-table-column>
           <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" :sortable="item.status" header-align="center">
           </el-table-column>
@@ -25,7 +25,7 @@
           </el-table-column>
         </el-table>
         <div class="page">
-          <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
+          <pages :pageSize='15' :count="pageCount" @pageCurrentChange="handleCurrentChange" ref="emitChild"></pages>
         </div>
       </div>
       <nuxt-child/>
@@ -42,12 +42,12 @@ export default {
   },
   data() {
     return {
-      radio: '1',
+      radio: '6',
       dataParams: {
         sort: 1,
         type: 1,
         pageSize: 15,
-        pageNum: 0
+        pageNum: 1
       },
       currentPage: 1,
       pageCount: 0,
@@ -63,8 +63,8 @@ export default {
           researchFee: null,
           stockWorkArea: null,
           tax: null,
-          town: null,
-          village: null
+          townName: null,
+          villageName: null
         }
       ]
     };
@@ -79,7 +79,6 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      // console.log(index, row);
       this.$router.push({
         name: 'front-enterprise-detail',
         query: {
@@ -107,6 +106,10 @@ export default {
     selecType(val) {
       this.radio = val;
       this.dataParams.type = val;
+      this.dataParams.sort = 1;
+      this.dataParams.pageNum = 1;
+      // 页面回到第一页
+      this.$refs.emitChild.$emit('bridge');
       this.getData();
     },
     // 数据排序
@@ -124,16 +127,22 @@ export default {
     },
     getData() {
       api
-        .get('company/searchindicator', this.dataParams)
+        .get('company/hotcompany', this.dataParams)
         .then(e => {
           if (e.status === 200) {
             this.companyInfo = e.data.list;
             this.pageCount = e.data.count;
             this.companyInfo.map(x => {
-              if (x.isHighTech === 1) {
-                x.isHighTech = '是';
-              } else if (x.isHighTech === 2) {
-                x.isHighTech = '否';
+              switch (x.isHighTech) {
+                case 1:
+                  x.isHighTech = '是';
+                  break;
+                case 2:
+                  x.isHighTech = '否';
+                  break;
+                default:
+                  x.isHighTech = '';
+                  break;
               }
             });
           } else {
