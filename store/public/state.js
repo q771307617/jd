@@ -41,7 +41,7 @@ export default {
   searchindicator: [
     {
       key: '6',
-      label: '主营业务收入（万元）',
+      label: '主营业务收入（元）',
       name: 'mainBusIncome',
       tittle: '主营业务收入',
       status: 'custom'
@@ -67,10 +67,10 @@ export default {
       tittle: '存量厂房面积',
       status: 'custom'
     },
-    { key: '4', label: '入库税收（万元）', name: 'tax', tittle: '入库税收', status: 'custom' },
+    { key: '4', label: '入库税收（元）', name: 'tax', tittle: '入库税收', status: 'custom' },
     {
       key: '5',
-      label: 'R&D经费投入（万元）',
+      label: 'R&D经费投入（元）',
       name: 'researchFee',
       tittle: 'R&D经费投入',
       status: 'custom'

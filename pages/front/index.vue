@@ -335,7 +335,7 @@ export default {
           this.allCompanys = e.data;
           this.getData();
           this.map.clearOverLays();
-          this.imgOverLay(this.map);
+          // this.imgOverLay(this.map);
           this.polygon(this.map);
           this.markers(this.map);
         })
@@ -353,7 +353,7 @@ export default {
       api.get('company/getallcompany')
         .then(e => {
           this.map.clearOverLays();
-          this.imgOverLay(this.map);
+          // this.imgOverLay(this.map);
           this.polygon(this.map);
           this.allCompanys = e.data;
           this.markers(this.map);
@@ -398,7 +398,7 @@ export default {
       this.mapParams.lng = data.lng;
       this.allCompanys = [data];
       this.fetchMap();
-      this.imgOverLay(this.map);
+      // this.imgOverLay(this.map);
       this.markers(this.map);
       this.polygon(this.map);
     },
@@ -676,9 +676,7 @@ export default {
 .right {
   overflow: hidden;
   position: absolute;
-  // top: 150px;
   right:0;
-  // bottom: 0px;
   z-index: 999;
   width: 443px;
   min-height:840px;
@@ -747,7 +745,7 @@ export default {
       padding-left: 10px;
     }
     .redio {
-        display: inline-block;
+        float: left;
         width: auto;
         height: 28px;
         line-height:28px;
