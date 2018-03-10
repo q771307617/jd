@@ -501,7 +501,7 @@ export default {
           }
         );
         map.addOverLay(marker);
-        map.removeOverLay(marker);
+        // map.removeOverLay(marker);
         /** 信息窗体 **/
         var content = '';
         if (this.allCompanys[i].mainBusIncome) {
