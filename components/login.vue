@@ -119,6 +119,7 @@ export default {
     // 登录提交
     submitForm(formName) {
       this.isbulr = true;
+      this.msg = '';
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loginFun();
