@@ -25,7 +25,7 @@
           </el-table-column>
         </el-table>
         <div class="page">
-          <pages :pageSize='15' :count="pageCount" :pageNum="dataParams.pageNum" @pageCurrentChange="handleCurrentChange" ref="emitChild"></pages>
+          <pages :pageSize='15' :count="pageCount" @pageCurrentChange="handleCurrentChange" ref="emitChild"></pages>
         </div>
       </div>
       <nuxt-child/>
