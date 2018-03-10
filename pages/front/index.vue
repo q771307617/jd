@@ -68,7 +68,7 @@ import {mapState, mapActions} from 'vuex';
 export default {
   data() {
     return {
-      radio: '1',
+      radio: '6',
       map: {},
       allCompanys: { },
       companyInfo: '',
@@ -150,7 +150,6 @@ export default {
   },
   mounted() {
     this.LIST_GET();
-    this.selecType('6');
     /* 热门企业 */
     this.getData();
     /* 地图实例化 */
@@ -316,7 +315,7 @@ export default {
       let searchParams = this.searchParams;
       api.get('company/searchcompany', searchParams)
         .then(e => {
-          this.searchList = e.data.list.slice(0, 6);
+          this.searchList = e.data.slice(0, 6);
         })
         .catch(err => {
           this.$notify.error({
@@ -328,12 +327,10 @@ export default {
       window.$('.searchList').on('mouseleave', function () {
         window.$('.searchList').css({display: 'none'});
       });
-      // window.$('.searchList li').on('click', function (e) {
-      //   window.$('.searchList').css({display: 'none'});
-      // });
     },
     // 乡镇行业搜索
     searchXzHy(type, val) {
+      this.searchParams.value = '';
       api.get('/company/getcompanybytownid', {townId: this.xz, tradeId: this.hy, scaleType: this.gs, isPark: this.qy})
         .then(e => {
           this.allCompanys = e.data;
@@ -392,8 +389,9 @@ export default {
     },
     // 企业搜索
     searchItem(id, data) {
-      console.log(id, data);
-      this.clearData();
+      // if (type) {
+      //   this.clearData();
+      // }
       this.map.clearOverLays();
       this.searchParams.value = data.name;
       this.mapParams.zoom = '13';
@@ -497,7 +495,6 @@ export default {
         iconSize: new window.T.Point(26, 26),
         iconAnchor: new window.T.Point(13, 26)
       });
-      // var infoWin1 = new window.T.InfoWindow();
       for (let i = 0; i < markers.length; i++) {
         var marker = new window.T.Marker(
           new window.T.LngLat(markers[i][0], markers[i][1]), {
