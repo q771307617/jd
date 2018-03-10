@@ -5,45 +5,58 @@
         <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
         <div class='rm'>
           <p class="rmTitle"><span></span> 热门企业</p>
-          <ul class="ul">
-            <li class="li" v-for = "item in remenParams" :key='item.companyId' @click="findCompany(item.companyId)">
-              <p>
-                <img :src='item.factoryImageUrl' alt=''>
-              </p>
-              <ul>
-                <li class='ellipsis'>企业名称：<a>{{item.companyName}}</a></li>
-                <li class='ellipsis'>所属乡镇：<span>{{item.townName}}</span></li>
-                <li class='ellipsis'>地　　址：<span>{{item.companyAddress}}</span></li>
-                <li class='ellipsis'>联系方式：<span>{{item.chargePersonTel}}</span></li>
-              </ul>
-            </li>          
-          </ul>
+          <p class="rmDetail">
+            一共
+            <span class="rmDetailItem">{{this.analyze.allCount}}</span> 家企业, 其中规上企业 
+            <span class="rmDetailItem">{{this.analyze.upCount}}</span> 家, 规下企业 
+            <span class="rmDetailItem">{{this.analyze.downCount}}</span> 家。年度累计销售产值 
+            <span class="rmDetailItem">{{this.analyze.allMain}}</span> 万元, 税收 
+            <span class="rmDetailItem">{{this.analyze.allTax}}</span> 万元, 水耗 
+            <span class="rmDetailItem">{{this.analyze.allWater}}</span> 万立方米, 电耗 
+            <span class="rmDetailItem">{{this.analyze.allElec}}</span> 万千瓦时。
+          </p>
+          <ul class="rmUl"><li v-for="item in rmType" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul>
+          <el-table :data="companyInfo" max-height="630" :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" class="tables" @sort-change="sortType">
+            <el-table-column label="企业名称" width="170" header-align="center">
+              <span class="block ellipsis" slot-scope="scope" @click="searchItem(scope.row.id, scope.row)" href="">{{scope.row.name}}</span>
+            </el-table-column>
+            <el-table-column label="所属乡镇村(社区)" width="100" header-align="center">
+              <span class="block ellipsis" slot-scope="scope">{{scope.row.townName}} -&nbsp;{{scope.row.villageName}}</span>
+            </el-table-column>
+            <el-table-column v-for="item in rmType" :key="item.key" :label="item.label" v-if="item.key==radio" width="165" :sortable='item.status' header-align="center">
+              <p class="block" slot-scope="scope"><span class="blocknum ellipsis">{{scope.row[item.name]}}</span><a @click="handleEdit(scope.$index, scope.row)" >详情</a></p>
+            </el-table-column>
+          </el-table>
+           <p  class="rmmore"><a href="/front/dataAnalysis">更多公司 <span>>></span></a></p> 
         </div>
+      </div>
     </div>
-  </div>
     <div class='seach'>
-      <!-- <input  type='text'>
-      <span></span> -->
       <el-input placeholder='请输入企业名称' v-model='searchParams.value' class='input-with-select'>
-        <!-- <el-select v-model='select' slot='prepend' placeholder='请选择'>
-          <el-option label='企业' value='1'></el-option>
-          <el-option label='项目' value='2'></el-option>
-        </el-select> -->
         <el-button  slot='append' style='background:#1c7bef;color:#FFF;margin:0 -20px;' icon='el-icon-search' class="searchBtn" @click="searchcompany(1)"></el-button>
       </el-input>
       <ul class="searchList" >
         <li class="searchItem" v-for = "item in searchList" :key='item.id' @click="searchItem(item.id, item)">{{item.name}}</li>
       </ul>
       <div class='seachJl'>
-        <!-- <el-button :loading="false" style='color:#606266'>快速筛选：</el-button> -->
-        <span style="display:inline-block;width:119px;height:37.8px;line-height:37.8px;border:1px solid #c9ccd3; border-radius:5px;color:#606266;text-align:center;background-color:#fff;">快速筛选：</span>
+        <span class="fast">快速筛选：</span>
         <el-select class='xz' v-model='xz' slot='prepend' placeholder='乡镇'>
             <el-option  label='全部乡镇' value=''></el-option>
             <el-option v-for = "item in townShip " :key='item.id' :label='item.name' :value='item.id'></el-option>
         </el-select>
         <el-select class='hy' v-model='hy' slot='prepend' placeholder='行业分类'>
           <el-option  label='全部行业' value=''></el-option>
-            <el-option v-for = "item in industry" :label='item.tradeName':key='item.id' :value='item.id'></el-option>
+            <el-option v-for = "item in industry" :label='item.tradeName' :key='item.id' :value='item.id'></el-option>
+        </el-select>
+        <el-select class='gs' v-model='gs' slot='prepend' placeholder='规上规下'>
+          <el-option  label='规上规下' value=''></el-option>
+          <el-option  label='规上' value='1'></el-option>
+          <el-option  label='规下' value='2'></el-option>
+        </el-select>
+        <el-select class='gs' v-model='qy' slot='prepend' placeholder='全部区域'>
+          <el-option  label='全部区域' value=''></el-option>
+          <el-option  label='工业功能区内' value='1'></el-option>
+          <el-option  label='非工业功能区' value='2'></el-option>
         </el-select>
       </div>
     </div>
@@ -55,17 +68,32 @@ import {mapState, mapActions} from 'vuex';
 export default {
   data() {
     return {
+      radio: '1',
       map: {},
-      markerO: {},
       allCompanys: { },
+      companyInfo: '',
+      analyze: '',
       seachInput: '',
-      xz: '',
-      hy: '',
+      xz: '', /* 乡镇 */
+      hy: '', /* 行业 */
+      qy: '', /* 工业区 */
+      gs: '', /* 规上规下 */
       remenParams: {
         img: '',
         name: '',
         address: '',
         phone: ''
+      },
+      dataParams: {
+        sort: '',
+        type: 1,
+        pageSize: 13,
+        pageNum: 0,
+        isPark: '',
+        scaleType: '',
+        townId: '',
+        tradeId: '',
+        companyName: ''
       },
       searchParams: {
         type: '1',
@@ -96,7 +124,9 @@ export default {
           [119.505145, 29.428079],
           [119.286105, 29.603753],
           [119.54909, 29.716525],
-          [119.295718, 29.528502]
+          [119.295718, 29.528502],
+          [119.22, 29.36],
+          [119.37, 29.54]
         ]
       }
     };
@@ -112,15 +142,16 @@ export default {
   },
   computed: {
     ...mapState({
-      townShip: state => state.Lists.AllTownShip,
+      townShip: state => state.Lists.AllTownShip.concat([{id: 17, name: '开发区', lng: 119.22, lat: 29.36}, {id: 18, name: '高铁新区', lng: 119.37, lat: 29.54}]),
       scale: state => state.Lists.scale,
-      industry: state => state.Lists.AllIndustry
+      industry: state => state.Lists.AllIndustry,
+      rmType: state => state.Pub.searchindicator
     })
   },
   mounted() {
     this.LIST_GET();
     /* 热门企业 */
-    this.remen();
+    this.getData();
     /* 地图实例化 */
     this.allCompany();
   },
@@ -138,6 +169,18 @@ export default {
       if (val === '') {
         this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
       }
+    },
+    gs(val, old) {
+      this.searchXzHy(3, val);
+      if (val === '') {
+        this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
+      }
+    },
+    qy(val, old) {
+      this.searchXzHy(3, val);
+      if (val === '') {
+        this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 11);
+      }
     }
   },
   methods: {
@@ -150,6 +193,29 @@ export default {
         }
       });
     },
+    // 热门企业去详情页
+    handleEdit(index, row) {
+      this.$router.push({
+        name: 'front-enterprise-detail',
+        query: {
+          id: row.id
+        }
+      });
+    },
+    // 数据排序
+    sortType(column) {
+      console.log(column);
+      switch (column.order) {
+        case 'ascending':
+          this.dataParams.sort = 1;
+          break;
+
+        case 'descending':
+          this.dataParams.sort = 2;
+          break;
+      }
+      this.getData();
+    },
     // 右边侧边栏
     rmShow() {
       if (window.$('.right').css('width') === '20px') {
@@ -157,7 +223,7 @@ export default {
           width: '443px'
         });
         window.$('.rm').animate({
-          width: '413px'
+          width: '423px'
         });
         window.$('.p i').removeClass('el-icon-caret-left').addClass('el-icon-caret-right');
         window.$('.p').animate({
@@ -175,6 +241,75 @@ export default {
       window.$('.p').animate({
         right: '0px', top: '50%'
       });
+    },
+    // 选择具体信息
+    selecType(val) {
+      this.radio = val;
+      this.dataParams.type = val;
+      this.dataParams.sort = '';
+      this.getData();
+    },
+    // 表格颜色
+    tableRowClassName({ row, rowIndex }) {
+      if (rowIndex % 2 !== 0) {
+        return 'warning-row';
+      }
+      return 'success-row';
+    },
+    tableHeaderClassName({ row, rowIndex }) {
+      return 'warning-row';
+    },
+    getData() {
+      api
+        .get('company/analyze')
+        .then(e => {
+          if (e.status === 200) {
+            this.analyze = e.data;
+          } else {
+            this.$notify.error({
+              title: '企业说明获取失败',
+              message: e.msg
+            });
+          }
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '企业说明获取失败',
+            message: err.msg
+          });
+        });
+      this.dataParams.townId = this.xz;
+      this.dataParams.tradeId = this.hy;
+      this.dataParams.scaleType = this.gs;
+      this.dataParams.isPark = this.qy;
+      api
+        .get('company/hotcompany', this.dataParams)
+        .then(e => {
+          if (e.status === 200) {
+            this.companyInfo = e.data.list;
+            this.pageCount = e.data.count;
+            this.companyInfo.map(x => {
+              if (x.isHighTech === 1) {
+                x.isHighTech = '是';
+              } else if (x.isHighTech === 2) {
+                x.isHighTech = '否';
+              } else if (x.isHighTech === 0) {
+                x.isHighTech = '';
+              }
+            });
+          } else {
+            this.$notify.error({
+              title: '热门企业获取失败',
+              message: e.msg
+            });
+          }
+        })
+        .catch(err => {
+          this.$notify.error({
+            title: '热门企业获取失败',
+            message: err.msg
+          });
+        });
     },
     searchcompany(type) {
       let searchParams = this.searchParams;
@@ -198,16 +333,14 @@ export default {
     },
     // 乡镇行业搜索
     searchXzHy(type, val) {
-      // this.searchxzhyParams.value = val;
-      // this.searchxzhyParams.type = type;
-      api.get('/company/getcompanybytownid', {townId: this.xz, tradeId: this.hy})
+      api.get('/company/getcompanybytownid', {townId: this.xz, tradeId: this.hy, scaleType: this.gs, isPark: this.qy})
         .then(e => {
           this.allCompanys = e.data;
+          this.getData();
           this.map.clearOverLays();
           this.imgOverLay(this.map);
           this.polygon(this.map);
           this.markers(this.map);
-          // this.map.setZoom(15);
         })
         .catch(error => {
           this.$notify.error({
@@ -237,7 +370,7 @@ export default {
     },
     // 所有企业
     allCompany() {
-      api.get('company/getallcompany')
+      api.get('company/getcompanybytownid')
         .then(e => {
           this.allCompanys = e.data;
           this.getMap();
@@ -249,8 +382,17 @@ export default {
           });
         });
     },
+    // 清空搜索数据
+    clearData() {
+      this.xz = '';
+      this.hy = '';
+      this.qy = '';
+      this.gs = '';
+    },
     // 企业搜索
     searchItem(id, data) {
+      console.log(id, data);
+      this.clearData();
       this.map.clearOverLays();
       this.searchParams.value = data.name;
       this.mapParams.zoom = '13';
@@ -259,26 +401,11 @@ export default {
       this.allCompanys = [data];
       this.fetchMap();
       this.imgOverLay(this.map);
-      // this.markerO.setLngLat({lng: 119.282672, lat: 29.409538});
       this.markers(this.map);
       this.polygon(this.map);
     },
-    // 热门企业
-    remen() {
-      api.get('company/hotcompany')
-        .then(e => {
-          this.remenParams = e.data;
-        })
-        .catch(error => {
-          this.$notify.error({
-            title: '错误',
-            message: error.msg
-          });
-        });
-    },
     // 更新地图
     fetchMap() {
-      // this.map.setZoom(this.mapParams.zoom);
       this.map.panTo(new window.T.LngLat(this.mapParams.lng, this.mapParams.lat), 13);
     },
     getMap() {
@@ -288,6 +415,8 @@ export default {
       var map = new window.T.Map('mapDiv');
       // 移动到指定点
       map.centerAndZoom(new window.T.LngLat(lng, lat), zoom);
+      // 获取热门
+      this.getData();
       map.enableDrag();
       /* 不同图层加载不同的底图 */
       this.imgOverLay(map);
@@ -298,13 +427,12 @@ export default {
       this.map = map;
     },
     imgOverLay(map) {
-      // map.removeEventListener('zoomend');
       var bd = new window.T.LngLatBounds(
         new window.T.LngLat(118.8940912546568, 29.20439576265778),
         new window.T.LngLat(120.32081607375262, 30.155545642054992)
       );
       var img1 = new window.T.ImageOverlay(
-        'http://1.img.dianjiangla.com/jdAssets/JD3.png',
+        'http://1.img.dianjiangla.com/jdAssets/JD2.png',
         bd, {
           opacity: '.7',
           alt: '建德市'
@@ -342,7 +470,6 @@ export default {
       map.addEventListener('zoomend', function (e) {
         map.removeOverLay(img1);
         var zoom = map.getZoom();
-        // console.log(zoom);
         map.removeOverLay(img1);
         map.removeOverLay(img3);
         map.removeOverLay(img5);
@@ -380,16 +507,15 @@ export default {
         // map.removeOverLay(marker);
         /** 信息窗体 **/
         var content = '';
-        if (this.allCompanys[i].chargePersonTel) {
-          content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;" >' + this.allCompanys[i].name + '</h2>' + '</a>' + this.allCompanys[i].chargePersonTel + '';
+        if (this.allCompanys[i].mainBusIncome) {
+          content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;" >' + this.allCompanys[i].name + '</h2>' + '</a>' + '产值：' + this.allCompanys[i].mainBusIncome + '元' + '';
         } else {
           content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;"">' + this.allCompanys[i].name + '</h2>' + '' + '</a>';
         }
         addClickHandler(content, marker);
       }
-      this.markerO = marker;
       function addClickHandler(content, marker) {
-        marker.addEventListener('mousemove', function (e) {
+        marker.addEventListener('mouseover', function (e) {
           openInfo(content, e);
         });
       }
@@ -472,30 +598,35 @@ export default {
       //   }
       // });
     }
+  },
+  destroyed() {
+  // 离开页面时销毁组件
+    // this.map.destroy();
   }
 };
 </script>
 <style lang='scss' scoped>
 #mapDiv {
   width: 100%;
-  min-width: 1200px;
-  min-height: 810px;
-  // height: auto;
-  // position: absolute;
-  // top: 150px;
-  // left: 0;
-  // bottom: 0px;
+  min-width: 1460px;
+  min-height: 840px;
+  clear: both;
 }
-
+@media screen and (min-width : 1567px){
+.seach {width: 1080px;}
+}
+@media screen and (max-width : 1567px){
+.seach {width: 880px;}
+}
 .seach {
   position: absolute;
-  top: 157px;
+  top: 150px;
   left: 100px;
   z-index: 999;
-  width: 800px;
   .input-with-select {
     width: 354px;
     float: left;
+    margin-top:10px;
     margin-right: 50px;
     input {
       width: 294px;
@@ -506,12 +637,13 @@ export default {
   }
   .searchList {
     position: absolute;
-    top: 39px;
+    top: 50px;
     background: #ffffff;
     border: 1px solid #e0e0e0;
     width: 294px;
     height: 216px;
     display: none;
+    z-index: 1000;
     li {
       width: 274px;
       height: 16px;
@@ -525,11 +657,20 @@ export default {
     }
   }
   .seachJl {
-    el-button {}
+    // float: left;
+    margin-top:10px;
+    // width:630px;
+    display: inline-block;
+    .fast{
+      display:inline-block;width:119px;height:37.8px;line-height:37.8px;border:1px solid #c9ccd3; border-radius:5px;color:#606266;text-align:center;background-color:#fff;
+    }
     .xz {
       width: 120px;
     }
     .hy {
+      width: 120px;
+    }
+    .gs{
       width: 120px;
     }
   }
@@ -543,7 +684,7 @@ export default {
   // bottom: 0px;
   z-index: 999;
   width: 443px;
-  min-height:810px;
+  min-height:840px;
   height: auto;
   .p {
     z-index: 999;
@@ -567,11 +708,10 @@ export default {
     float: right;
     background: #f2f8ff;
     overflow: hidden;
-    width: 413px;
-    min-height:810px;
+    width: 423px;
+    min-height:840px;
     height: auto;
     border: 1px solid #e0e0e0;
-    padding-left: 10px;
     cursor:pointer;
     .rmTitle {
       height: 18px;
@@ -580,7 +720,8 @@ export default {
       font-size: 16px;
       font-weight: 600;
       color: #333333;
-      padding: 14px 0px;
+      background: #f2f8ff;
+      padding: 14px 10px 14px 10px;
       span {
         display: inline-block;
         background: #f2ba55;
@@ -590,48 +731,81 @@ export default {
         margin-right: 5px;
       }
     }
-    ul {
-      overflow: hidden;
-      width: 413px;
-      padding: 5px 0;
-      .li {
-        overflow: hidden;
-        clear: both;
-        margin-bottom: 10px;
-        p {
-          display: inline-block;
-          width: 121px;
-          height: 79px;
-          margin-right: 10px;
-          float: left;
-          img {
-            max-width: 119px;
-            // height: 79px;
-            margin: 0 auto;
-          }
+    .rmDetail{
+      padding:5px 10px;
+      height: auto;
+      max-height: 75px;
+      line-height: 25px;
+      background: #fff;
+      font-size: 12px;
+      color: #333333;
+       text-overflow: ellipsis;
+  overflow: hidden;
+      .rmDetailItem{
+        font-size: 12px;
+        color: #2983f0;
+      }
+    }
+    .rmUl{
+      padding-left: 10px;
+    }
+    .redio {
+        display: inline-block;
+        width: auto;
+        height: 28px;
+        line-height:28px;
+        cursor: pointer;
+        text-align: center;
+        border: 1px solid #C9DDFD;
+        background-color: #FFF;
+        border-radius: 3px;
+        padding:2px 5px;
+        margin:5px 5px 0 0;
+    }
+    .nactive{
+        background-color: #C9DDFD;
+    }
+    .el-table__body{
+      widows: 423px !important;;
+    }
+    .tables{
+      background: #f2f8ff;
+      // width: 100%;
+      font-size: 12px;
+      text-align:center
+      
+    }    
+    .cell{
+      padding:0;
+    }
+    .block{
+        display: block;
+        width: 100%;
+        a{
+           float: right;margin-right:20px;
+           color: #3087F1;
         }
-        ul {
-          float: right;
-          width: 277px;
-          display: inline-block;
-          li {
-            color: #8f9193;
-            font-size: 12px;
-            height: 16px;
-            line-height: 16px;
-            span {
-              color: #000;
-              max-width: 170px;
-            }
-            a {
-              font-family: MicrosoftYaHei;
-              font-size: 12px;
-              color: #1c7bef;
-              text-align: left;
-            }
-          }
+    }
+    .blocknum{
+      width: 105px; 
+      float: left;
+    }
+    .rmmore{
+      margin-top:20px; 
+      text-align: center;
+      a{
+        font-size: 12px;
+        width: 78px;
+        height:22px;
+        line-height:22px;
+        display: inline-block;
+        border: 1px solid #CCCCCC;
+        color: #000; 
+        span{
+          color:#999;
         }
       }
+      
     }
   }
 }

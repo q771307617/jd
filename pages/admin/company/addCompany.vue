@@ -22,7 +22,7 @@
             </div>
             <el-upload action="/api/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小5M以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
+              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
@@ -327,7 +327,7 @@ export default {
       } else {
         isIMG = false;
       }
-      const isLt200 = file.size / 1024 < 5120;
+      const isLt200 = file.size / 1024 < 51200;
       if (!isIMG) {
         this.$message.error('上传图片只能是 JPG/PNG 格式!');
       }
