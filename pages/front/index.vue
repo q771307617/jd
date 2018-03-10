@@ -335,7 +335,7 @@ export default {
           this.allCompanys = e.data;
           this.getData();
           this.map.clearOverLays();
-          // this.imgOverLay(this.map);
+          this.imgOverLay(this.map);
           this.polygon(this.map);
           this.markers(this.map);
         })
@@ -353,7 +353,7 @@ export default {
       api.get('company/getallcompany')
         .then(e => {
           this.map.clearOverLays();
-          // this.imgOverLay(this.map);
+          this.imgOverLay(this.map);
           this.polygon(this.map);
           this.allCompanys = e.data;
           this.markers(this.map);
@@ -501,7 +501,7 @@ export default {
           }
         );
         map.addOverLay(marker);
-        // map.removeOverLay(marker);
+        map.removeOverLay(marker);
         /** 信息窗体 **/
         var content = '';
         if (this.allCompanys[i].mainBusIncome) {
