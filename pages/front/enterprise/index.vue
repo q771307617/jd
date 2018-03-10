@@ -357,6 +357,7 @@ export default {
     border-radius: 1px;
     width: 39px;
     height: 20px;
+    padding: 5px;
     cursor: pointer;
     margin-left: -10px;
     -webkit-user-select: none;
