@@ -333,16 +333,22 @@ export default {
         this.$message.error('上传图片只能是 JPG/PNG 格式!');
       }
       if (!isLt200) {
-        this.$message.error('上传图片大小不能超过 5M!');
+        this.$message.error('上传图片大小不能超过 50M!');
       }
       return isIMG && isLt200;
     },
     handleSuccess(response, file, fileList) {
-      this.img = response.data.imgUrl;
-      this.ruleForm.imageUrl = response.data.imgUrl;
+      if (response.status === 200) {
+        this.img = response.data.imgUrl;
+        this.ruleForm.imageUrl = response.data.imgUrl;
+        this.$message({
+          message: '企业图片上传成功！',
+          type: 'success'
+        });
+      }
       this.$message({
-        message: '企业图片上传成功！',
-        type: 'success'
+        message: '企业图片上传失败！',
+        type: 'error'
       });
     },
     submitForm(formName) {
