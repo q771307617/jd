@@ -70,8 +70,8 @@ export default {
     return {
       radio: '6',
       map: {},
-      allCompanys: { },
-      companyInfo: '',
+      allCompanys: {},
+      companyInfo: [],
       analyze: '',
       seachInput: '',
       xz: '', /* 乡镇 */
@@ -204,7 +204,6 @@ export default {
     },
     // 数据排序
     sortType(column) {
-      console.log(column);
       switch (column.order) {
         case 'ascending':
           this.dataParams.sort = 1;
