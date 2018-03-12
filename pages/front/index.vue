@@ -432,7 +432,7 @@ export default {
       var img1 = new window.T.ImageOverlay(
         'http://1.img.dianjiangla.com/jdAssets/JD2.png',
         bd, {
-          opacity: '.7',
+          opacity: '.9',
           alt: '建德市'
         }
       );
@@ -446,7 +446,7 @@ export default {
       var img3 = new window.T.ImageOverlay(
         'http://1.img.dianjiangla.com/jdAssets/JD3.png',
         bd, {
-          opacity: '.7',
+          opacity: '.9',
           alt: '建德市'
         }
       );
@@ -460,7 +460,7 @@ export default {
       var img5 = new window.T.ImageOverlay(
         'http://1.img.dianjiangla.com/jdAssets/JD5.png',
         bd, {
-          opacity: '.7',
+          opacity: '.9',
           alt: '建德市'
         }
       );
