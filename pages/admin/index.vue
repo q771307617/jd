@@ -243,7 +243,7 @@ export default {
     .right-box {
       position: relative;
       .search {
-        width: 296px;
+        width: 420px;
         position: absolute;
         bottom: 28px;
         right: 300px;

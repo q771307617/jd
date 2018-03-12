@@ -4,7 +4,7 @@
       <div class='right'>
         <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
         <div class='rm'>
-          <p class="rmTitle"><span></span> 热门企业</p>
+          <p class="rmTitle rmmore"><span class="span"></span> 数据分析<a href="/front/dataAnalysis">更多公司 <span>>></span></a> </p>
           <p class="rmDetail">
             一共
             <span class="rmDetailItem">{{this.analyze.allCount}}</span> 家企业, 其中规上企业 
@@ -15,19 +15,18 @@
             <span class="rmDetailItem">{{this.analyze.allWater}}</span> 万立方米, 电耗 
             <span class="rmDetailItem">{{this.analyze.allElec}}</span> 万千瓦时。
           </p>
-          <ul class="rmUl"><li v-for="item in rmType" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul>
+          <ul class="rmUl"><li v-for="item in rmType" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li><br class="clearfloat" /> </ul>
           <el-table :data="companyInfo" max-height="630" :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" class="tables" @sort-change="sortType">
             <el-table-column label="企业名称" width="170" header-align="center">
               <span class="block ellipsis" slot-scope="scope" @click="searchItem(scope.row.id, scope.row)" href="">{{scope.row.name}}</span>
             </el-table-column>
-            <el-table-column label="所属乡镇村(社区)" width="100" header-align="center">
+            <el-table-column label="所属乡镇村(社区)" width="116" header-align="center">
               <span class="block ellipsis" slot-scope="scope">{{scope.row.townName}} -&nbsp;{{scope.row.villageName}}</span>
             </el-table-column>
             <el-table-column v-for="item in rmType" :key="item.key" :label="item.label" v-if="item.key==radio" width="165" :sortable='item.status' header-align="center">
               <p class="block" slot-scope="scope"><span class="blocknum ellipsis">{{scope.row[item.name]}}</span><a @click="handleEdit(scope.$index, scope.row)" >详情</a></p>
             </el-table-column>
           </el-table>
-           <p  class="rmmore"><a href="/front/dataAnalysis">更多公司 <span>>></span></a></p> 
         </div>
       </div>
     </div>
@@ -219,14 +218,14 @@ export default {
     rmShow() {
       if (window.$('.right').css('width') === '20px') {
         window.$('.right').animate({
-          width: '443px'
+          width: '470px'
         });
         window.$('.rm').animate({
-          width: '423px'
+          width: '450px'
         });
         window.$('.p i').removeClass('el-icon-caret-left').addClass('el-icon-caret-right');
         window.$('.p').animate({
-          right: '423px', top: '50%'
+          right: '450px', top: '50%'
         });
         return;
       }
@@ -505,9 +504,9 @@ export default {
         /** 信息窗体 **/
         var content = '';
         if (this.allCompanys[i].mainBusIncome) {
-          content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;" >' + this.allCompanys[i].name + '</h2>' + '</a>' + '产值：' + this.allCompanys[i].mainBusIncome + '元' + '';
+          content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="color: #333333;width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" >' + this.allCompanys[i].name + '</h2>' + '</a>' + '产值(元)：' + '<span style="color: #cb2b2b;" >' + this.allCompanys[i].mainBusIncome + '</span>' + '';
         } else {
-          content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="text-overflow: ellipsis;"">' + this.allCompanys[i].name + '</h2>' + '' + '</a>';
+          content = '<a href="/front/enterprise/detail?id=' + this.allCompanys[i].id + '">' + '<h2 style="color: #333333;width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">' + this.allCompanys[i].name + '</h2>' + '' + '</a>';
         }
         addClickHandler(content, marker);
       }
@@ -609,6 +608,9 @@ export default {
   min-height: 840px;
   clear: both;
 }
+.black{
+  color: #333333;
+}
 @media screen and (min-width : 1567px){
 .seach {width: 1080px;}
 }
@@ -654,9 +656,7 @@ export default {
     }
   }
   .seachJl {
-    // float: left;
     margin-top:10px;
-    // width:630px;
     display: inline-block;
     .fast{
       display:inline-block;width:119px;height:37.8px;line-height:37.8px;border:1px solid #c9ccd3; border-radius:5px;color:#606266;text-align:center;background-color:#fff;
@@ -681,7 +681,7 @@ export default {
   position: absolute;
   right:0;
   z-index: 999;
-  width: 443px;
+  width: 470px;
   min-height:840px;
   height: auto;
   .p {
@@ -706,21 +706,20 @@ export default {
     float: right;
     background: #f2f8ff;
     overflow: hidden;
-    width: 423px;
+    width: 450px;
     min-height:840px;
     height: auto;
     border: 1px solid #e0e0e0;
     cursor:pointer;
     .rmTitle {
-      height: 18px;
-      line-height: 18px;
+      line-height:22px;
       font-family: MicrosoftYaHei-Bold;
       font-size: 16px;
       font-weight: 600;
       color: #333333;
       background: #f2f8ff;
-      padding: 14px 10px 14px 10px;
-      span {
+      padding: 14px 10px 14px 20px;
+      .span {
         display: inline-block;
         background: #f2ba55;
         width: 4px;
@@ -728,24 +727,40 @@ export default {
         margin-bottom: -3px;
         margin-right: 5px;
       }
+      a{
+        display: inline-block;
+        margin-left: 240px;
+        font-size: 12px;
+        font-weight: 500;
+        width: 78px;
+        height:22px;
+        line-height:22px;
+        border: 1px solid #CCCCCC;
+        color: #333333; 
+        span{
+          color:#333333;
+        }
+      }
     }
     .rmDetail{
-      padding:5px 10px;
+      padding:5px 20px;
       height: auto;
       max-height: 75px;
       line-height: 25px;
       background: #fff;
       font-size: 12px;
       color: #333333;
-       text-overflow: ellipsis;
-  overflow: hidden;
+      text-overflow: ellipsis;
+      overflow: hidden;
       .rmDetailItem{
         font-size: 12px;
-        color: #2983f0;
+        color: #cb2b2b;
       }
     }
     .rmUl{
-      padding-left: 10px;
+      padding:5px 15px;
+      height: 88px;
+      overflow: hidden;
     }
     .redio {
         float: left;
@@ -758,20 +773,19 @@ export default {
         background-color: #FFF;
         border-radius: 3px;
         padding:2px 5px;
-        margin:5px 5px 0 0;
+        margin:5px 5px;
     }
+    .clearfloat{clear:both} 
     .nactive{
         background-color: #C9DDFD;
     }
     .el-table__body{
-      widows: 423px !important;;
+      width: 470px !important;
     }
     .tables{
       background: #f2f8ff;
-      // width: 100%;
       font-size: 12px;
-      text-align:center
-      
+      text-align:center;
     }    
     .cell{
       padding:0;
@@ -780,30 +794,14 @@ export default {
         display: block;
         width: 100%;
         a{
-           float: right;margin-right:20px;
+           float: right;
+           margin-right:20px;
            color: #3087F1;
         }
     }
     .blocknum{
-      width: 105px; 
+      width: 95px; 
       float: left;
-    }
-    .rmmore{
-      margin-top:20px; 
-      text-align: center;
-      a{
-        font-size: 12px;
-        width: 78px;
-        height:22px;
-        line-height:22px;
-        display: inline-block;
-        border: 1px solid #CCCCCC;
-        color: #000; 
-        span{
-          color:#999;
-        }
-      }
-      
     }
   }
 }
