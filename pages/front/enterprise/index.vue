@@ -185,6 +185,10 @@ export default {
     })
   },
   mounted() {
+    this.$nextTick(() => {
+      this.getCompanyInfo(true);
+      // this.RefreshSave();
+    });
     window.onscroll = (event) => {
       this.scrollY = document.documentElement.scrollTop || document.body.scrollTop;
     };
@@ -298,10 +302,10 @@ export default {
     }
   },
   created() {
-    this.$nextTick(() => {
-      this.getCompanyInfo(true);
-      // this.RefreshSave();
-    });
+    // this.$nextTick(() => {
+    //   this.getCompanyInfo(true);
+    //   // this.RefreshSave();
+    // });
   },
   destroyed() {}
 };

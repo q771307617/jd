@@ -387,8 +387,11 @@ export default {
       this.Delete.deleteStatus = false;
     }
   },
-  created() {
+  mounted() {
     this.getCompanyList();
+  },
+  created() {
+    // this.getCompanyList();
   }
 };
 </script>
