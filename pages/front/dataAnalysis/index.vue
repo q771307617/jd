@@ -186,7 +186,7 @@ export default {
         text-align: center;
       }
       .nactive {
-        background-color: #f2ba55;
+        background: #D9E7FE;
       }
     }
   }
