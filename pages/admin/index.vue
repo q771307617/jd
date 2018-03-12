@@ -2,7 +2,7 @@
   <div class="company">
     <div class="tittle">
       <span>企业管理</span>
-      <div>
+      <div class="right-box">
         <el-input placeholder='请输入企业名称' class="search" v-model="params.companyName" @keyup.enter.native="Search(params.companyName)" style="margin-right:10px;">
           <el-button slot='append' class="search-btn" size="small" style='margin:0 -20px;color:#fff;' @click="Search(params.companyName)"  icon='el-icon-search'></el-button>
         </el-input>
@@ -239,16 +239,23 @@ export default {
       text-align: justify;
       margin-left: 40px;
     }
-    .search {
-      width: 296px;
-      .search-btn{
-        width: 43px;
-        height: 33px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        background-color: #1C7BEF;
+    .right-box {
+      position: relative;
+      .search {
+        width: 296px;
+        position: absolute;
+        bottom: 28px;
+        right: 300px;
+        .search-btn{
+          width: 43px;
+          height: 33px;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          background-color: #1C7BEF;
+        }
       }
     }
+    
     .search /deep/ .el-input__inner {
       height: 34px;
       border-right: 0; 
