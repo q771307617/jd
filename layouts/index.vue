@@ -3,22 +3,26 @@
 
     <div class="header">
       <div class="topbackground">
-        <img class="frontHeader" src="" alt="">
+        <div style="width: 1200px;height:100px;margin: 0 auto;">
+          <img class="frontHeader" src="./../assets/img/frontHeaderIcon2.png" alt="">
+        </div>
       </div>
-      <div class="nav">
-        <p class="navLeft">
-          <nuxt-link :to="{name:'front'}">首页</nuxt-link>
-          <!-- <span></span> -->
-          <img class="heightline" src="./../assets/img/heightLine.png" alt="">
-          <nuxt-link :to="{name:'front-dataAnalysis'}">数据分析</nuxt-link>
-          <!-- <span></span> -->
-          <img class="heightline" src="./../assets/img/heightLine.png" alt="">
-          <nuxt-link :to="{name:'front-enterprise', query: {scrollY: $route.query.scrollY}}">企业管理</nuxt-link>
-        </p>
-        <p class="navRight">
-          <nuxt-link @click="loginOut" :to="{name:'index'}">
-            <i class="el-icon-remove-outline"></i> 退出</nuxt-link>
-        </p>
+      <div class="gradient">
+        <div class="nav">
+          <p class="navLeft">
+            <nuxt-link :to="{name:'front'}">首页</nuxt-link>
+            <!-- <span></span> -->
+            <img class="heightline" src="./../assets/img/heightLine.png" alt="">
+            <nuxt-link :to="{name:'front-dataAnalysis'}">数据分析</nuxt-link>
+            <!-- <span></span> -->
+            <img class="heightline" src="./../assets/img/heightLine.png" alt="">
+            <nuxt-link :to="{name:'front-enterprise', query: {scrollY: $route.query.scrollY}}">企业管理</nuxt-link>
+          </p>
+          <p class="navRight">
+            <nuxt-link @click="loginOut" :to="{name:'index'}">
+              <i class="el-icon-remove-outline"></i> 退出</nuxt-link>
+          </p>
+        </div>
       </div>
     </div>
     <nuxt id="content" />
@@ -112,28 +116,35 @@ a {
 .header {
   width: 100%;
   min-width: 1460px;
-  background:#0267ca;
-  background: -moz-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0267ca), color-stop(100%, #072fa0));
-  background: -webkit-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-  background: -webkit-gradient(linear, 0 0, 0 100%, from(#0267ca), to(#072fa0));
-  background: -webkit-linear-gradient(left, #0267ca, #072fa0);
-  background: -o-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-  background: -ms-linear-gradient(top, #0267ca 0%, #072fa0 100%);
-  background: linear-gradient(to bottom, #0267ca 0%, #072fa0 100%);
   .topbackground{
     background:url(./../assets/img/frontHeaderBg.png)no-repeat;
-    padding-left: 356px;
+    
     height:100px;
     background-size:100% 100%;
     .frontHeader{
-      margin-top: 10px;
+      margin-top: 30px;
     }
   }
 }
+.gradient{
+  width: 100%;
+  height: 40px;
+  background:#2963D4;
+  background: -moz-linear-gradient(top, #2963D4 0%, #004BAC 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2963D4), color-stop(100%, #004BAC));
+  background: -webkit-linear-gradient(top, #2963D4 0%, #004BAC 100%);
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#2963D4), to(#004BAC));
+  background: -webkit-linear-gradient(left, #2963D4, #004BAC);
+  background: -o-linear-gradient(top, #2963D4 0%, #004BAC 100%);
+  background: -ms-linear-gradient(top, #2963D4 0%, #004BAC 100%);
+  background: linear-gradient(to bottom, #2963D4 0%, #004BAC 100%);
+}
+
 .nav {
   width: 1200px;
-  height: 50px;
+  height: 40px;
+  position: relative;
+  bottom: 5px;
   line-height: 50px;
   margin: 0 auto;
   z-index: 9999;
