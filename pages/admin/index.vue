@@ -4,7 +4,7 @@
       <span>企业管理</span>
       <div class="right-box">
         <el-input placeholder='请输入企业名称' class="search" v-model="params.companyName" @keyup.enter.native="Search(params.companyName)" style="margin-right:10px;">
-          <el-button slot='append' class="search-btn" size="small" style='margin:0 -20px;color:#fff;' @click="Search(params.companyName)"  icon='el-icon-search'></el-button>
+          <el-button slot='append' class="search-btn" size="small" style='margin:0 -20px;color:#fff;' @click="Search(params.companyName)" icon='el-icon-search'></el-button>
         </el-input>
         <el-upload class="upload" action="/api/admin/company/import" :on-preview="handlePreview" :on-error="handleError" :show-file-list="false" :on-success="handleSuccess">
           <el-button class=" button" style="line-height: 10px;background: #1C7BEF;">数据导入</el-button>
@@ -38,13 +38,13 @@
         </el-table-column>
       </el-table>
       <!-- <div class="flex-box block">
-                            <p class="demonstration">共
-                              <span class="red">{{params.count}}</span>条数据
-                              <span style="margin-left:20px;">每页</span>
-                              <span class="red">{{params.pageSize}}</span>条</p>
-                            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
-                            </el-pagination>
-                          </div> -->
+                              <p class="demonstration">共
+                                <span class="red">{{params.count}}</span>条数据
+                                <span style="margin-left:20px;">每页</span>
+                                <span class="red">{{params.pageSize}}</span>条</p>
+                              <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" prev-text=" < 上一页 " next-text=" 下一页 > " :current-page.sync="params.pageNum" :page-size="params.pageSize" layout="prev, pager, next, jumper" :total="params.count">
+                              </el-pagination>
+                            </div> -->
       <pages :pageSize=20 :count="params.count" @pageCurrentChange="handleCurrentChange"></pages>
     </div>
     <el-dialog :visible.sync="data" width="640px" center>
@@ -87,6 +87,7 @@ export default {
       fileStatus: true,
       deleteCom: false,
       message: null,
+      scrollY: '',
       company: {
         companyId: null,
         companyName: ''
@@ -105,12 +106,12 @@ export default {
     pages
   },
   mounted() {
-    this.getcompanyInfo();
+    this.getcompanyInfo(true);
+    window.onscroll = (event) => {
+      this.scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    };
   },
   methods: {
-    search() {
-      this.getcompanyInfo(true);
-    },
     Scroll(Number) {
       setTimeout(() => {
         window.scroll(0, Number);
@@ -195,7 +196,7 @@ export default {
           type: val,
           companyId: row,
           showInput: showInput,
-          scrollY: window.scrollY
+          scrollY: this.scrollY
         }
       });
       // window.localStorage.setItem('type', val);
@@ -242,11 +243,11 @@ export default {
     .right-box {
       position: relative;
       .search {
-        width: 296px;
+        width: 420px;
         position: absolute;
         bottom: 28px;
         right: 300px;
-        .search-btn{
+        .search-btn {
           width: 43px;
           height: 33px;
           border-top-left-radius: 0;
@@ -255,16 +256,15 @@ export default {
         }
       }
     }
-    
+
     .search /deep/ .el-input__inner {
       height: 34px;
-      border-right: 0; 
+      border-right: 0;
     }
     .search /deep/ .el-input-group__append {
       height: 32px;
       position: relative;
-      bottom: 1px;
-      // border: 0px;
+      bottom: 1px; // border: 0px;
     }
     .button {
       color: #fff;
@@ -299,56 +299,6 @@ export default {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* 深度击穿 */
 
 .el-table /deep/ .el-table__body-wrapper {

@@ -26,6 +26,7 @@ export default {
 <style lang="scss" scoped>
 .login {
   background-image: url(../../assets/img/bgFrontLogin.png);
+  background-position: center 0;
   .container {
     max-width: 1200px;
     height: 1080px;

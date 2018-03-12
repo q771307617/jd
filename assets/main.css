@@ -28,7 +28,7 @@
 .tables td{
   color: #000;
   height:40px!important;
-  padding:5px 3px!important;
+  padding:0 0 0 20px!important;
 }
 .tables .cell{
   padding:0!important;
