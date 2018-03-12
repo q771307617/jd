@@ -151,19 +151,6 @@ export default {
         }
       }
     };
-    var checkNumberAndPercent = (rule, value, callback) => {
-      if (!value) {
-        return callback();
-      } else {
-        if (!/^[0-9.]+$/.test(value)) {
-          callback(new Error('请输入数字值'));
-        } else if (value > 100) {
-          callback(new Error('请输入正确的百分比'));
-        } else {
-          callback();
-        }
-      }
-    };
     return {
       value: [],
       radio: '2',
@@ -235,13 +222,13 @@ export default {
           { validator: checkNumber, trigger: 'blur' }
         ],
         researchRate: [
-          { validator: checkNumberAndPercent, trigger: 'blur' }
+          { validator: checkNumber, trigger: 'blur' }
         ],
         aborProductivity: [
           { validator: checkNumber, trigger: 'blur' }
         ],
         productRate: [
-          { validator: checkNumberAndPercent, trigger: 'blur' }
+          { validator: checkNumber, trigger: 'blur' }
         ],
         patentNumber: [
           { validator: checkNumber, trigger: 'blur' }
