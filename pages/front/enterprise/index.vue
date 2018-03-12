@@ -41,8 +41,8 @@
                 </li>
               </ul>
               <!--<transition name="el-zoom-in-top">
-                      <div class="transition-box">.el-zoom-in-top</div>
-                    </transition>-->
+                            <div class="transition-box">.el-zoom-in-top</div>
+                          </transition>-->
             </el-col>
             <el-col :span="1">
               <a @click="showTownShip" class="more">更多
@@ -153,6 +153,7 @@ export default {
     return {
       isActiveIndustry: true,
       isActiveTown: true,
+      scrollY: '',
       params: {
         companyName: null,
         pageNum: 0,
@@ -183,7 +184,11 @@ export default {
       industry: state => state.Lists.AllIndustry
     })
   },
-  mounted() {},
+  mounted() {
+    window.onscroll = (event) => {
+      this.scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    };
+  },
   methods: {
     Scroll(Number) {
       setTimeout(() => {
@@ -230,7 +235,7 @@ export default {
         name: 'front-enterprise-detail',
         query: {
           id: id,
-          scrollY: window.scrollY
+          scrollY: this.scrollY
         }
       });
     },
