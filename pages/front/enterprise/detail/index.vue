@@ -19,8 +19,8 @@
             <div class="table-content">
               <el-col :span="24" v-for="(item, index) in enterpriseOverview" :key="item.id" class="full" :class="{bgc: (index+1) % 2===0}">
                 <section v-if="item.flag===1">
-                  <el-col :span="24" class="leftborders" :class="{bottomborder: item.id===20, c7: item.id==7}">
-                    <span :class="{bright: item.id!==20 || item.id===7}" style="min-width:140px">{{item.title}}</span>
+                  <el-col :span="24" class="leftborders" :class="{bottomborder: item.id===20, c7: item.id==7, h50: item.id===1}">
+                    <span :class="{bright: item.id!==20 || item.id===7, b0: item.id===1}" style="min-width:140px">{{item.title}}</span>
                     <span :class="{companyfont: item.id===1, detile: item.id===20, h40: !companyInfo[item.value]}">{{companyInfo[item.value]}}</span>
                   </el-col>
                 </section>
@@ -219,16 +219,25 @@ export default {
             align-items: center;
           }
           .h50 {
-            min-height: 40px;
+            min-height: 50px;
             line-height: 40px;
+            display: flex;
+            align-items: center;
           }
           .companyfont {
             font-family: MicrosoftYaHei-Bold;
             font-size: 18px;
             color: #333333;
             font-weight: bold;
+            border-left: 1px solid #D4E1EA;
+            text-indent: 25px;
+            min-height: 50px;
+            align-items: center;
+            padding: 0 14px 0 25px;
+            text-indent: 0;
+            line-height: 50px;
           }
-          .c7{
+          .c7 {
             height: 41px;
             display: flex;
             align-items: center;
@@ -238,10 +247,13 @@ export default {
             .bright {
               border-right: 1px solid #D4E1EA
             }
+            .b0 {
+              border-right: 0;
+            }
             .detile {
               border-left: 1px solid #D4E1EA;
               padding: 0 14px 0 20px;
-              text-indent: 25px;
+              text-indent: 0;
             }
             .h40 {
               min-height: 40px;
