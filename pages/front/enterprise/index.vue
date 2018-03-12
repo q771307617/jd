@@ -315,10 +315,11 @@ export default {
 <style lang="scss" scoped>
 .ListDetail {
   .container {
-    min-height: 400px;
     width: 1200px;
+    min-height: 400px;
   }
   .search {
+    max-width: 1200px;
     margin-top: 23px;
     padding: 10px 0 0 20px;
     background: #ffffff;
@@ -381,6 +382,7 @@ export default {
   .el-main {
     .el-row {
       .el-col {
+        max-width: 1200px;
         .el-input__inner {
           border-radius: 0;
         }
@@ -444,6 +446,7 @@ export default {
         }
       }
       .selecteType {
+        max-width: 1200px;
         border: 1px solid #d4e1ea;
         margin: 20px 0;
         cursor: pointer;

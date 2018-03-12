@@ -214,6 +214,8 @@ export default {
       } else {
         if (!/^[0-9.]+$/.test(value)) {
           callback(new Error('请输入正确纬度'));
+        } else if (value > 180) {
+          callback(new Error('请输入正确经度'));
         } else {
           callback();
         }
@@ -224,6 +226,8 @@ export default {
         return callback(new Error('请输入经度'));
       } else {
         if (!/^[0-9.]+$/.test(value)) {
+          callback(new Error('请输入正确经度'));
+        } else if (value > 180) {
           callback(new Error('请输入正确经度'));
         } else {
           callback();
