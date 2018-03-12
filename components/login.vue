@@ -13,7 +13,7 @@
         </el-form-item>
         <el-form-item label="" prop="code">
           <i class="icon" style="background-position: -20px -88px;"></i>
-          <el-input v-model="ruleForm.code" :maxlength="4" class="code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')" auto-complete="off" @blur="addBorderCss"></el-input>
+          <el-input v-model="ruleForm.code" :maxlength="4" class="code" placeholder="验证码" @keydown.enter.native="submitForm('ruleForm')" auto-complete="off" @blur="addBorderCss"></el-input>
           <div class="loginCode"></div>
           <i class="updateCode" @click="getCode"><img :src="verifycodeUrl" alt="" class="verifycode"></i>
         </el-form-item>
@@ -195,7 +195,7 @@ export default {
       .hint {
         position: absolute;
         left: 38px;
-        bottom: 87px;
+        bottom: 90px;
         font-size: 12px;
         color: #f56c6c;
       }

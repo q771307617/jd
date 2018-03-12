@@ -3,7 +3,7 @@
 
     <div class="header">
       <div class="topbackground">
-        <img class="frontHeader" src="./../assets/img/frontHeaderIcon.png" alt="">
+        <img class="frontHeader" src="" alt="">
       </div>
       <div class="nav">
         <p class="navLeft">
