@@ -44,7 +44,7 @@ export default {
     return {
       radio: '6',
       dataParams: {
-        sort: 1,
+        sort: '',
         type: 1,
         pageSize: 15,
         pageNum: 1
@@ -106,7 +106,7 @@ export default {
     selecType(val) {
       this.radio = val;
       this.dataParams.type = val;
-      this.dataParams.sort = 1;
+      this.dataParams.sort = '';
       this.dataParams.pageNum = 1;
       // 页面回到第一页
       this.$refs.emitChild.$emit('bridge');

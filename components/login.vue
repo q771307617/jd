@@ -35,10 +35,10 @@ export default {
       let reg = /^[0-9a-zA-Z]+$/;
       let regex = new RegExp(reg);
       if (!value) {
-        return callback(new Error('请输入验证码!'));
+        return callback(new Error('请输入验证码'));
       } else {
         if (!regex.test(value)) {
-          callback(new Error('请输入正确的验证码!'));
+          callback(new Error('请输入正确的验证码'));
         } else {
           if (this.isbulr) {
             this.checkCode(value, callback);
@@ -51,10 +51,10 @@ export default {
       let reg = /(^\s+)|(\s+$)/g;
       let regex = new RegExp(reg);
       if (!value) {
-        callback(new Error('请输入用户名!'));
+        callback(new Error('请输入用户名'));
       } else {
         if (regex.test(value)) {
-          callback(new Error('请输入正确的用户名!'));
+          callback(new Error('请输入正确的用户名'));
         }
         callback();
       }
@@ -64,10 +64,10 @@ export default {
       let reg = /(^\s+)|(\s+$)/g;
       let regex = new RegExp(reg);
       if (!value) {
-        callback(new Error('请输入密码!'));
+        callback(new Error('请输入密码'));
       } else {
         if (regex.test(value) || value.length < 6) {
-          callback(new Error('请输入正确的密码!'));
+          callback(new Error('请输入正确的密码'));
         }
         callback();
       }
@@ -111,7 +111,7 @@ export default {
           if (e.status === 200) {
             callback();
           } else {
-            callback(new Error('验证码错误!'));
+            callback(new Error(e.msg));
             this.getCode();
           }
         });
