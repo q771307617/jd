@@ -39,8 +39,8 @@ module.exports = {
   **页面过渡动画
   */
   css: [
-    'assets/main.css',
-    'assets/scss/reset.css',
+    '~assets/main.css',
+    { src: '~assets/scss/reset.scss', lang: 'scss' },
     'element-ui/lib/theme-chalk/index.css'
   ],
   /*
