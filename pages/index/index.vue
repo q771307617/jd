@@ -33,20 +33,25 @@ export default {
     margin: 0 auto;
     .slogan {
       position: absolute;
-      top: 235px;
+      top: 232px;
+      left: 160px;
       z-index: 10;
       color: #fff;
       .one {
-        font-size: 48px;
-        /* color: #7cdbff; */
+        font-family: hzgb;
+        font-weight: bold;
+        font-size: 36px;
+        color: #FFFFFF;
       }
       .two {
-        font-size: 18px;
+        font-family: MicrosoftYaHei;
+        font-size: 16px;
+        color: #FFFFFF;
       }
       .wire {
-        width: 527px;
+        width: 374px;
         background-color: #fff;
-        margin: 16px 0;
+        margin: 27px 0;
       }
     }
   }

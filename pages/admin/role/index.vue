@@ -423,10 +423,12 @@ export default {
 }
 
 .top-btn {
-  width: 150px;
-  height: 44px;
+  width: 114px;
+  height: 34px;
   float: right;
-  margin: 20px 30px 0 0;
+  margin: 25px 30px 0 0;
+  line-height: 10px;
+  background-color: #1C7BEF;
 }
 
 .dialog .el-input {

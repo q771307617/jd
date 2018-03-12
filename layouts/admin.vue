@@ -3,7 +3,7 @@
     <div class="wrapper">
       <!-- 顶部 -->
       <div class="header">
-        <div class="logo"><img class="logo-left" src="../assets/img/emblem.png">后台管理系统</div>
+        <div class="logo"><img class="logo-left" src="">后台管理系统</div>
         <div class="user-info">
           <div class="top-admin"></div>{{info.name}}{{info.username}}
           <a style="margin:0 30px;cursor:pointer" @click="loginOut">退出</a>
@@ -322,7 +322,7 @@ export default {
 .sidebar {
   background-color: #354f8a;
   display: block;
-  position: fixed;
+  position: fixed;z-index: 99;
   font-size: 20px;
   width: 230px;
   left: 0;

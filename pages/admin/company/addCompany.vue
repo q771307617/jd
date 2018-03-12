@@ -22,7 +22,7 @@
             </div>
             <el-upload action="/api/upload/companyimg" :show-file-list="false" :on-success="handleSuccess" :before-upload="beforeAvatarUpload" :on-preview="handlePictureCardPreview" :on-remove="handleRemove" v-if="showInput=='yes'">
               <el-button size="small" type="primary">点击上传</el-button>
-              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，大小5M以内；格式：JPG、PNG（建议最小600*400尺寸）</div>
+              <div class="el-upload__tip" slot="tip">说明：比例大小：3：2，格式：JPG、PNG（建议最小600*400尺寸）</div>
             </el-upload>
           </el-form-item>
           <el-form-item label="企业名称：" prop="name">
@@ -30,9 +30,9 @@
             <div v-else>{{ruleForm.name}}</div>
           </el-form-item>
           <!--<el-form-item label="所属乡镇：" prop="townId">
-                                                                        <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
-                                                                        <div v-else>div</div>
-                                                                      </el-form-item>-->
+              <el-cascader :options="options2" @active-item-change="handleItemChange" :props="props" v-if="showInput=='yes'" @change="handleChange"></el-cascader>
+              <div v-else>div</div>
+            </el-form-item>-->
           <el-form-item label="所属乡镇：" prop="townId">
             <el-select v-model="ruleForm.townId" placeholder="请选择乡镇" v-if="showInput=='yes'" @change="selectTownId">
               <el-option :label="item.name" :value="item.id" v-for="item in townShip" :key="item.id"></el-option>
@@ -65,15 +65,45 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- <el-form-item label="行业代码：" prop="tradeId">
-                                    <el-input v-model="ruleForm.tradeId" class="input-length" v-if="showInput=='yes'"></el-input>
-                                    <div v-else>div</div>
-                                  </el-form-item>-->
+          <el-form-item label="行业代码：" prop="industryCode">
+                <el-input v-model="ruleForm.industryCode" class="input-length" v-if="showInput=='yes'"></el-input>
+                <div v-else>{{ruleForm.industryCode}}</div>
+              </el-form-item>
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput=='yes'">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
             </el-select>
             <div v-else>{{ruleForm.tradeName}}</div>
+          </el-form-item>
+          <el-form-item label="是否在开发区：" prop="isDevelopmentArea" v-if="ruleForm.townId=='2'||ruleForm.townId=='4'||ruleForm.townId=='10'">
+            <el-radio-group v-model="ruleForm.isDevelopmentArea" v-if="showInput=='yes'">
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
+            </el-radio-group>
+            <div v-else>
+              <p v-if="ruleForm.isDevelopmentArea==1">是</p>
+              <p v-if="ruleForm.isDevelopmentArea==2">否</p>
+            </div>
+          </el-form-item>
+          <el-form-item label="是否在工业区：" prop="isIndustrialPark">
+            <el-radio-group v-model="ruleForm.isIndustrialPark" v-if="showInput=='yes'">
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
+            </el-radio-group>
+            <div v-else>
+              <p v-if="ruleForm.isIndustrialPark==1">是</p>
+              <p v-if="ruleForm.isIndustrialPark==2">否</p>
+            </div>
+          </el-form-item>
+          <el-form-item label="是否在高铁新区：" prop="isRail" v-if="ruleForm.townId=='3'||ruleForm.townId=='8'||ruleForm.townId=='11'||ruleForm.townId=='16'">
+            <el-radio-group v-model="ruleForm.isRail" v-if="showInput=='yes'">
+              <el-radio label="1" value="1">是</el-radio>
+              <el-radio label="2" value="2">否</el-radio>
+            </el-radio-group>
+            <div v-else>
+              <p v-if="ruleForm.isRail==1">是</p>
+              <p v-if="ruleForm.isRail==2">否</p>
+            </div>
           </el-form-item>
           <el-form-item label="主要核心产品：" prop="productName">
             <el-input v-model="ruleForm.productName" class="input-length" v-if="showInput=='yes'"></el-input>
@@ -216,6 +246,10 @@ export default {
         imageUrl: '',
         imageUrlId: '',
         isCommittee: '',
+        isDevelopmentArea: '',
+        isIndustrialPark: '',
+        isRail: '',
+        industryCode: '',
         lat: null,
         leaderId: '',
         leaderName: '',
@@ -294,21 +328,27 @@ export default {
       } else {
         isIMG = false;
       }
-      const isLt200 = file.size / 1024 < 5120;
+      const isLt200 = file.size / 1024 < 51200;
       if (!isIMG) {
         this.$message.error('上传图片只能是 JPG/PNG 格式!');
       }
       if (!isLt200) {
-        this.$message.error('上传图片大小不能超过 5M!');
+        this.$message.error('上传图片大小不能超过 50M!');
       }
       return isIMG && isLt200;
     },
     handleSuccess(response, file, fileList) {
-      this.img = response.data.imgUrl;
-      this.ruleForm.imageUrl = response.data.imgUrl;
+      if (response.status === 200) {
+        this.img = response.data.imgUrl;
+        this.ruleForm.imageUrl = response.data.imgUrl;
+        this.$message({
+          message: '企业图片上传成功！',
+          type: 'success'
+        });
+      }
       this.$message({
-        message: '企业图片上传成功！',
-        type: 'success'
+        message: '企业图片上传失败！',
+        type: 'error'
       });
     },
     submitForm(formName) {
@@ -391,6 +431,9 @@ export default {
         this.img = e.data.imageUrl;
         this.ruleForm.isCommittee = String(e.data.isCommittee);
         this.ruleForm.scaleUp = String(e.data.scaleUp);
+        this.ruleForm.isDevelopmentArea = String(e.data.isDevelopmentArea);
+        this.ruleForm.isIndustrialPark = String(e.data.isIndustrialPark);
+        this.ruleForm.isRail = String(e.data.isRail);
         this.selectTownId(this.ruleForm.townId);
       }).catch(err => {
         this.$notify.error({

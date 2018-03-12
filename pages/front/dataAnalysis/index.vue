@@ -1,36 +1,35 @@
 <template>
-<div class="content">
-  <div class='hello'>
-    <div class="mainNav">
-      <div class="mainNavs">
-        <!-- <el-radio-group v-model="radio" fill="#f2ba55" @change="selecType(radio)">
-          <el-radio-button :label="item.key" class="redio" style="width:133px" v-for="item in type" :key="item.key">{{item.tittle}}</el-radio-button>
-        </el-radio-group> -->
-        <ul><li v-for="item in type" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li></ul>
+  <div class="content">
+    <div class='hello'>
+      <div class="mainNav">
+        <div class="mainNavs">
+          <ul>
+            <li v-for="item in type" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="mainContent">
-      <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center">
-        <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
-        </el-table-column>
-        <el-table-column prop="town" label="所属乡镇" min-width="180" header-align="center">
-        </el-table-column>
-        <el-table-column prop="village" label="所属村(社区)" min-width="180" header-align="center">
-        </el-table-column>
-        <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" :sortable='item.status' header-align="center" @sort-change="sortType(order)">
-        </el-table-column>
-        <el-table-column label="操作" header-align="center">
-          <div slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-          </div>
-        </el-table-column>
-      </el-table>
-      <div class="page">
-      <pages :pageSize=15 :count="pageCount" @pageCurrentChange="handleCurrentChange"></pages>
+      <div class="mainContent">
+        <el-table :data="companyInfo" border :row-class-name="tableRowClassName" :header-cell-class-name="tableHeaderClassName" style="width: 100%;text-align:center" @sort-change="sortType">
+          <el-table-column prop="name" label="企业名称" min-width="180" header-align="center">
+          </el-table-column>
+          <el-table-column prop="townName" label="所属乡镇" min-width="180" header-align="center">
+          </el-table-column>
+          <el-table-column prop="villageName" label="所属村(社区)" min-width="180" header-align="center">
+          </el-table-column>
+          <el-table-column v-for="item in type" :key="item.key" :prop="item.name" :label="item.label" v-if="item.key==radio" min-width="180" :sortable="item.status" header-align="center">
+          </el-table-column>
+          <el-table-column label="操作" header-align="center">
+            <div slot-scope="scope">
+              <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">详情</el-button>
+            </div>
+          </el-table-column>
+        </el-table>
+        <div class="page">
+          <pages :pageSize='15' :count="pageCount" @pageCurrentChange="handleCurrentChange" ref="emitChild"></pages>
+        </div>
       </div>
+      <nuxt-child/>
     </div>
-    <nuxt-child/>
-  </div>
   </div>
 </template>
 <script>
@@ -43,12 +42,12 @@ export default {
   },
   data() {
     return {
-      radio: '1',
+      radio: '6',
       dataParams: {
         sort: 1,
         type: 1,
         pageSize: 15,
-        pageNum: 0
+        pageNum: 1
       },
       currentPage: 1,
       pageCount: 0,
@@ -64,8 +63,8 @@ export default {
           researchFee: null,
           stockWorkArea: null,
           tax: null,
-          town: null,
-          village: null
+          townName: null,
+          villageName: null
         }
       ]
     };
@@ -80,7 +79,6 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      // console.log(index, row);
       this.$router.push({
         name: 'front-enterprise-detail',
         query: {
@@ -88,7 +86,7 @@ export default {
         }
       });
     },
-    handleSizeChange() {},
+    handleSizeChange() { },
     // 改变页数时回调
     handleCurrentChange(val) {
       this.dataParams.pageNum = Number(val);
@@ -108,20 +106,43 @@ export default {
     selecType(val) {
       this.radio = val;
       this.dataParams.type = val;
+      this.dataParams.sort = 1;
+      this.dataParams.pageNum = 1;
+      // 页面回到第一页
+      this.$refs.emitChild.$emit('bridge');
+      this.getData();
+    },
+    // 数据排序
+    sortType(column) {
+      switch (column.order) {
+        case 'ascending':
+          this.dataParams.sort = 1;
+          break;
+
+        case 'descending':
+          this.dataParams.sort = 2;
+          break;
+      }
       this.getData();
     },
     getData() {
       api
-        .get('company/searchindicator', this.dataParams)
+        .get('company/hotcompany', this.dataParams)
         .then(e => {
           if (e.status === 200) {
             this.companyInfo = e.data.list;
             this.pageCount = e.data.count;
             this.companyInfo.map(x => {
-              if (x.isHighTech === 1) {
-                x.isHighTech = '是';
-              } else if (x.isHighTech === 2) {
-                x.isHighTech = '否';
+              switch (x.isHighTech) {
+                case 1:
+                  x.isHighTech = '是';
+                  break;
+                case 2:
+                  x.isHighTech = '否';
+                  break;
+                default:
+                  x.isHighTech = '';
+                  break;
               }
             });
           } else {
@@ -160,11 +181,11 @@ export default {
         display: inline-block;
         width: 133px;
         height: 42px;
-        line-height:42px;
+        line-height: 42px;
         cursor: pointer;
         text-align: center;
       }
-      .nactive{
+      .nactive {
         background-color: #f2ba55;
       }
     }

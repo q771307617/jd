@@ -236,13 +236,7 @@ export default {
     },
     // 企业名称搜索
     Search(val) {
-      if (val === '') {
-        this.params.companyName = null;
-        this.getCompanyInfo();
-        return;
-      }
-      this.params.companyName = val;
-      // console.log(this.params.companyName);
+      this.params.companyName = val === '' ? null : val;
       this.getCompanyInfo();
     },
     /* @argument val
@@ -362,6 +356,7 @@ export default {
     border-radius: 1px;
     width: 39px;
     height: 20px;
+    padding: 5px;
     cursor: pointer;
     margin-left: -10px;
     -webkit-user-select: none;
@@ -383,14 +378,12 @@ export default {
         .searchBtn {
           background-color: #409eff;
           width: 219px;
-          height: 40px;
-          border-radius: none;
+          height: 41px;
+          margin:0 -1px;
           font-size: 16px;
           color: #ffffff;
           letter-spacing: 9.14px;
-          position: absolute;
-          right: 4px;
-          top: 0;
+          border-radius: 0 5px 5px 0;
         }
       }
       .content {
