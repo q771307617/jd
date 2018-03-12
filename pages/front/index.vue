@@ -65,6 +65,15 @@
 import api from '~/plugins/api';
 import {mapState, mapActions} from 'vuex';
 export default {
+  // head: {
+  //   script: [{
+  //     src: 'http://api.tianditu.com/api?v=4.0'
+  //   },
+  //   {
+  //     src: 'http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/ImageOverlay.js'
+  //   }
+  //   ]
+  // },
   data() {
     return {
       radio: '6',
@@ -129,15 +138,6 @@ export default {
         ]
       }
     };
-  },
-  head: {
-    script: [{
-      src: 'http://api.tianditu.com/api?v=4.0'
-    },
-    {
-      src: 'http://lbs.tianditu.com/api/js4.0/opensource/openlibrary/ImageOverlay.js'
-    }
-    ]
   },
   computed: {
     ...mapState({
