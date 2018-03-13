@@ -141,7 +141,7 @@ export default {
   },
   computed: {
     ...mapState({
-      townShip: state => state.Lists.AllTownShip.concat([{id: 17, name: '开发区', lng: 119.22, lat: 29.36}, {id: 18, name: '高铁新区', lng: 119.37, lat: 29.54}]),
+      townShip: state => state.Lists.AllTownShipS,
       scale: state => state.Lists.scale,
       industry: state => state.Lists.AllIndustry,
       rmType: state => state.Pub.searchindicator
