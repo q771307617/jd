@@ -7,12 +7,12 @@
           <p class="rmTitle rmmore"><span class="span"></span> 数据分析<a href="/front/dataAnalysis">更多公司 <span>>></span></a> </p>
           <p class="rmDetail">
             一共
-            <span class="rmDetailItem">{{this.analyze.allCount}}</span> 家企业, 其中规上企业 
-            <span class="rmDetailItem">{{this.analyze.upCount}}</span> 家, 规下企业 
-            <span class="rmDetailItem">{{this.analyze.downCount}}</span> 家。年度累计销售产值 
-            <span class="rmDetailItem">{{this.analyze.allMain}}</span> 万元, 税收 
-            <span class="rmDetailItem">{{this.analyze.allTax}}</span> 万元, 水耗 
-            <span class="rmDetailItem">{{this.analyze.allWater}}</span> 万立方米, 电耗 
+            <span class="rmDetailItem">{{this.analyze.allCount}}</span> 家企业, 其中规上企业
+            <span class="rmDetailItem">{{this.analyze.upCount}}</span> 家, 规下企业
+            <span class="rmDetailItem">{{this.analyze.downCount}}</span> 家。年度累计销售产值
+            <span class="rmDetailItem">{{this.analyze.allMain}}</span> 万元, 税收
+            <span class="rmDetailItem">{{this.analyze.allTax}}</span> 万元, 水耗
+            <span class="rmDetailItem">{{this.analyze.allWater}}</span> 万立方米, 电耗
             <span class="rmDetailItem">{{this.analyze.allElec}}</span> 万千瓦时。
           </p>
           <ul class="rmUl"><li v-for="item in rmType" :key="item.key" class="redio" :class="{nactive: radio===item.key}" @click="selecType(item.key)">{{item.tittle}}</li><br class="clearfloat" /> </ul>
@@ -210,6 +210,9 @@ export default {
 
         case 'descending':
           this.dataParams.sort = 2;
+          break;
+        default:
+          this.dataParams.sort = '';
           break;
       }
       this.getData();
@@ -736,7 +739,7 @@ export default {
         height:22px;
         line-height:22px;
         border: 1px solid #CCCCCC;
-        color: #333333; 
+        color: #333333;
         span{
           color:#333333;
         }
@@ -775,7 +778,7 @@ export default {
         padding:2px 5px;
         margin:5px 5px;
     }
-    .clearfloat{clear:both} 
+    .clearfloat{clear:both}
     .nactive{
         background-color: #C9DDFD;
     }
@@ -786,7 +789,7 @@ export default {
       background: #f2f8ff;
       font-size: 12px;
       text-align:center;
-    }    
+    }
     .cell{
       padding:0;
     }
@@ -800,7 +803,7 @@ export default {
         }
     }
     .blocknum{
-      width: 95px; 
+      width: 95px;
       float: left;
     }
   }

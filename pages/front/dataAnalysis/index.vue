@@ -122,6 +122,9 @@ export default {
         case 'descending':
           this.dataParams.sort = 2;
           break;
+        default:
+          this.dataParams.sort = '';
+          break;
       }
       this.getData();
     },
