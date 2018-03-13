@@ -45,7 +45,7 @@ export default {
       radio: '6',
       dataParams: {
         sort: '',
-        type: 1,
+        type: 6,
         pageSize: 15,
         pageNum: 1
       },
