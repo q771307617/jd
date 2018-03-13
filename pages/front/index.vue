@@ -612,10 +612,10 @@ export default {
   color: #333333;
 }
 @media screen and (min-width : 1567px){
-.seach {width: 1080px;}
+.seach {width: 1020px;}
 }
 @media screen and (max-width : 1567px){
-.seach {width: 880px;}
+.seach {width: 860px;}
 }
 .seach {
   position: absolute;
@@ -626,7 +626,7 @@ export default {
     width: 354px;
     float: left;
     margin-top:10px;
-    margin-right: 50px;
+    margin-right: 30px;
     input {
       width: 294px;
     }
