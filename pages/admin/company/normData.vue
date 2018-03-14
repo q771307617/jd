@@ -323,6 +323,7 @@ export default {
             this.ruleForm.isHighTech = String(e.data.isHighTech);
           }
           if (e.data.declareStartTime && e.data.declareEndTime) {
+            this.value = [];
             this.value.push(moment(e.data.declareStartTime).format('YYYY-MM-DD'), moment(e.data.declareEndTime).format('YYYY-MM-DD'));
           }
         }
