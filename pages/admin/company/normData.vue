@@ -127,7 +127,7 @@
                             <span v-else>{{declareEndTime}}</span> -->
             <el-date-picker v-model="value" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" v-if="showInput=='yes'">
             </el-date-picker>
-            <div v-else>{{value[0]}}<span v-show="value[0]">　至　</span>{{value[1]}}</div>
+            <span v-else>{{value[0]}}<span v-show="value[0]">　至　</span>{{value[1]}}</span>
           </el-form-item>
         </el-form>
       </el-col>
