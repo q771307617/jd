@@ -127,7 +127,7 @@
                             <span v-else>{{declareEndTime}}</span> -->
             <el-date-picker v-model="value" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" v-if="showInput=='yes'">
             </el-date-picker>
-            <span v-else>{{value[0]}}<span v-show="value[0]">　至　</span>{{value[1]}}</span>
+            <div v-else>{{value[0]}}<span v-show="value[0]">　至　</span>{{value[1]}}</div>
           </el-form-item>
         </el-form>
       </el-col>
@@ -257,8 +257,16 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
+        console.log(this.value);
+        console.log(this.value);
+        if (this.value === null) {
+          this.value = [];
+          this.ruleForm.declareStartTime = '';
+          this.ruleForm.declareEndTime = '';
+        }
         if (valid) {
           if (this.value[0] && this.value[1]) {
+            console.log(this.value);
             this.ruleForm.declareStartTime = moment(this.value[0]).format('x');
             this.ruleForm.declareEndTime = moment(this.value[1]).format('x');
           }
