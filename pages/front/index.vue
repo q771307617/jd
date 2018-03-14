@@ -4,7 +4,7 @@
       <div class='right'>
         <p class='p' @click='rmShow'><i class='el-icon-caret-right' style='color:#1c7bef;'></i></p>
         <div class='rm'>
-          <p class="rmTitle rmmore"><span class="span"></span> 数据分析<a href="/front/dataAnalysis">更多公司 <span>>></span></a> </p>
+          <p class="rmTitle"><span class="span"></span> 数据分析<a href="/front/dataAnalysis">更多公司 >></a> </p>
           <p class="rmDetail">
             一共
             <span class="rmDetailItem">{{this.analyze.allCount}}</span> 家企业, 其中规上企业
@@ -730,6 +730,9 @@ export default {
         margin-bottom: -3px;
         margin-right: 5px;
       }
+      a:hover{
+        color:#3087F1;
+      }
       a{
         display: inline-block;
         margin-left: 240px;
@@ -751,10 +754,15 @@ export default {
       max-height: 75px;
       line-height: 25px;
       background: #fff;
-      font-size: 12px;
+      font-size: 14px;
       color: #333333;
+      width:410px;
+      word-break: break-all;
       text-overflow: ellipsis;
-      overflow: hidden;
+      display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
+      -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+      -webkit-line-clamp: 3; /** 显示的行数 **/
+      overflow: hidden;  /** 隐藏超出的内容 **/
       .rmDetailItem{
         font-size: 12px;
         color: #cb2b2b;
