@@ -2,9 +2,9 @@
   <div class="login">
     <div class="container bg-admin">
       <div class="slogan">
-        <p class="one">建德工业企业信息平台</p>
-        <hr class="wire">
-        <p class="two">以企业为中心,以服务为核心</p>
+        <!-- <p class="one">建德工业企业信息平台</p>
+          <hr class="wire">
+          <p class="two">以企业为中心,以服务为核心</p> -->
       </div>
       <login :type="type"></login>
     </div>
@@ -33,27 +33,34 @@ export default {
     position: relative;
     margin: 0 auto;
     .slogan {
+      // position: absolute;
+      // top: 232px;
+      // left: 160px;
+      // z-index: 10;
+      // color: #fff;
+      width: 516px;
+      height: 125px;
       position: absolute;
       top: 232px;
-      left: 160px;
+      left: 100px;
       z-index: 10;
-      color: #fff;
-      .one {
-        font-family: hzgb;
-        font-weight: bold;
-        font-size: 36px;
-        color: #FFFFFF;
-      }
-      .two {
-        font-family: MicrosoftYaHei;
-        font-size: 16px;
-        color: #FFFFFF;
-      }
-      .wire {
-        width: 374px;
-        background-color: #fff;
-        margin: 27px 0;
-      }
+      background: url(../../assets/img/frontTilte.png) no-repeat;
+      // .one {
+      //   font-family: hzgb;
+      //   font-weight: bold;
+      //   font-size: 36px;
+      //   color: #FFFFFF;
+      // }
+      // .two {
+      //   font-family: MicrosoftYaHei;
+      //   font-size: 16px;
+      //   color: #FFFFFF;
+      // }
+      // .wire {
+      //   width: 374px;
+      //   background-color: #fff;
+      //   margin: 27px 0;
+      // }
     }
   }
 }
