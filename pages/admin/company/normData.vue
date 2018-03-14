@@ -257,8 +257,6 @@ export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        console.log(this.value);
-        console.log(this.value);
         if (this.value === null) {
           this.value = [];
           this.ruleForm.declareStartTime = '';
@@ -266,7 +264,6 @@ export default {
         }
         if (valid) {
           if (this.value[0] && this.value[1]) {
-            console.log(this.value);
             this.ruleForm.declareStartTime = moment(this.value[0]).format('x');
             this.ruleForm.declareEndTime = moment(this.value[1]).format('x');
           }
