@@ -185,10 +185,15 @@ export default {
     })
   },
   mounted() {
-    this.$nextTick(() => {
+    if (this.$route.query.pageNum) {
+      this.handleCurrentChange(this.$route.query.pageNum, true);
+    } else {
       this.getCompanyInfo(true);
-      // this.RefreshSave();
-    });
+    }
+    // this.$nextTick(() => {
+    //   this.getCompanyInfo(true);
+    //   // this.RefreshSave();
+    // });
     window.onscroll = (event) => {
       this.scrollY = document.documentElement.scrollTop || document.body.scrollTop;
     };
@@ -203,9 +208,17 @@ export default {
       // console.log(`每页 ${val} 条`);
     },
     // 改变页数时回调
-    handleCurrentChange(val) {
+    handleCurrentChange(val, type) {
       this.params.pageNum = Number(val);
-      this.getCompanyInfo();
+      if (!type) {
+        this.$router.push({
+          name: 'front-enterprise',
+          query: {
+            pageNum: this.params.pageNum
+          }
+        });
+      }
+      this.getCompanyInfo(type);
     },
     showIndustry() {
       this.isActiveIndustry = !this.isActiveIndustry;
@@ -239,7 +252,8 @@ export default {
         name: 'front-enterprise-detail',
         query: {
           id: id,
-          scrollY: this.scrollY
+          scrollY: this.scrollY,
+          pageNum: this.params.pageNum
         }
       });
     },

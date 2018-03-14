@@ -106,7 +106,11 @@ export default {
     pages
   },
   mounted() {
-    this.getcompanyInfo(true);
+    if (this.$route.query.pageNum) {
+      this.handleCurrentChange(this.$route.query.pageNum, true);
+    } else {
+      this.getcompanyInfo(true);
+    }
     window.onscroll = (event) => {
       this.scrollY = document.documentElement.scrollTop || document.body.scrollTop;
     };
@@ -153,9 +157,17 @@ export default {
     handleSizeChange() { //  每页条数
       this.getcompanyInfo();
     },
-    handleCurrentChange(val) { // 改变当前页码
+    handleCurrentChange(val, type) { // 改变当前页码
       this.params.pageNum = Number(val);
-      this.getcompanyInfo();
+      if (!type) {
+        this.$router.push({
+          name: 'admin',
+          query: {
+            pageNum: this.params.pageNum
+          }
+        });
+      }
+      this.getcompanyInfo(type);
     },
     // 企业名称搜索
     Search(val) {
@@ -196,7 +208,8 @@ export default {
           type: val,
           companyId: row,
           showInput: showInput,
-          scrollY: this.scrollY
+          scrollY: this.scrollY,
+          pageNum: this.params.pageNum
         }
       });
       // window.localStorage.setItem('type', val);

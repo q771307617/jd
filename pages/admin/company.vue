@@ -2,7 +2,7 @@
   <div class='hello'>
     <div class='add-company'>
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin', query: {scrollY: $route.query.scrollY}}">企业管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/admin', query: {scrollY: $route.query.scrollY, pageNum: $route.query.pageNum}}">企业管理</el-breadcrumb-item>
         <el-breadcrumb-item>详情</el-breadcrumb-item>
       </el-breadcrumb>
       <br>

@@ -24,12 +24,12 @@ export default {
   data() {
     return {
       input: 1,
-      pageNum: 1
+      pageNum: Number(this.$route.query.pageNum) || 1
     };
   },
   mounted() {
     this.$on('bridge', () => {
-      this.pageNum = 1;
+      this.pageNum = Number(this.$route.query.pageNum) || 1;
     });
   },
   methods: {
