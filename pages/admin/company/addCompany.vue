@@ -65,15 +65,15 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="行业代码：" prop="industryCode">
-                <el-input v-model="ruleForm.industryCode" class="input-length" v-if="showInput=='yes'"></el-input>
-                <div v-else>{{ruleForm.industryCode}}</div>
-              </el-form-item>
           <el-form-item label="所属行业：" prop="tradeId">
             <el-select v-model="ruleForm.tradeId" placeholder="请选择所属行业" v-if="showInput=='yes'">
               <el-option :label="item.tradeName" :value="item.id" v-for="item in industry" :key="item.id"></el-option>
             </el-select>
             <div v-else>{{ruleForm.tradeName}}</div>
+          </el-form-item>
+          <el-form-item label="行业代码：" prop="industryCode">
+              <el-input v-model="ruleForm.industryCode" class="input-length" v-if="showInput=='yes'"></el-input>
+              <div v-else>{{ruleForm.industryCode}}</div>
           </el-form-item>
           <el-form-item label="是否在开发区：" prop="isDevelopmentArea" v-if="ruleForm.townId=='2'||ruleForm.townId=='4'||ruleForm.townId=='10'">
             <el-radio-group v-model="ruleForm.isDevelopmentArea" v-if="showInput=='yes'">
@@ -147,11 +147,11 @@
           </el-form-item>
           <el-form-item label="企业职工人数： " prop="staffScale">
             <el-input v-model="ruleForm.staffScale" class="input-length" v-if="showInput=='yes'"></el-input>
-            <span v-else>{{ruleForm.staffScale}}</span>人
+            <span v-else>{{ruleForm.staffScale}}</span><span v-show="ruleForm.staffScale!==null">　人</span>
           </el-form-item>
           <el-form-item label="企业职工平均工资：" prop="averageSalary">
             <el-input v-model="ruleForm.averageSalary" class="input-length" v-if="showInput=='yes'" placeholder="平均薪资保留两位小数"></el-input>
-            <span v-else>{{ruleForm.averageSalary}}</span>元
+            <span v-else>{{ruleForm.averageSalary}}</span><span v-show="ruleForm.averageSalary!==null">　元</span>
           </el-form-item>
           <el-form-item label="党组织名称：" prop="partyName">
             <el-input v-model="ruleForm.partyName" class="input-length" v-if="showInput=='yes'"></el-input>

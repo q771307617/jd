@@ -25,7 +25,7 @@
             {{scope.row.townName}}>{{scope.row.villageName}}
           </div>
         </el-table-column>
-        <el-table-column prop="chargePersonName" label="主要负责人" width="90">
+        <el-table-column prop="chargePersonName" label="主要负责人" width="100">
         </el-table-column>
         <el-table-column prop="chargePersonTel" label="联系电话">
         </el-table-column>
